@@ -8,11 +8,12 @@ export default function PosterToolbar({ word }) {
   if (!word) return null;
 
   return (
-    <div className={styles.toolbar}>
+    <div className={styles.toolbarGrid}>
       <DownloadButton word={word} />
+      <FavoriteButton wordId={word.id} />
       <ShareButton word={word} />
       
-      {word.youtube_url && (
+      {word.youtube_url ? (
         <a 
           href={word.youtube_url} 
           target="_blank" 
@@ -23,9 +24,11 @@ export default function PosterToolbar({ word }) {
         >
           <FaYoutube size={20} color="#FF0000" /> Community
         </a>
+      ) : (
+        <button className={styles.toolbarBtn} disabled title="No Community Video Available">
+          <FaYoutube size={20} /> Community
+        </button>
       )}
-      
-      <FavoriteButton wordId={word.id} />
     </div>
   );
 }
