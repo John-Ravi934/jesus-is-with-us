@@ -1,0 +1,208 @@
+.hero {
+  position: relative;
+  min-height: 40vh;
+  background-image: url('https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--color-white);
+  padding-top: 80px;
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(9, 11, 36, 0.7);
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+}
+
+/* Search and Filters */
+.searchBar {
+  display: flex;
+  background: var(--color-white);
+  padding: 0.5rem;
+  border-radius: 50px;
+  box-shadow: var(--shadow-elegant);
+  align-items: center;
+  max-width: 600px;
+  margin: -3rem auto 3rem;
+  position: relative;
+  z-index: 10;
+}
+
+.searchIcon {
+  color: #888;
+  margin: 0 1rem;
+}
+
+.searchBar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-family: var(--font-body);
+  font-size: 1rem;
+}
+
+.searchBar button {
+  border-radius: 50px;
+}
+
+.categories {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.catBtn {
+  padding: 0.5rem 1.5rem;
+  background: transparent;
+  border: 1px solid #ddd;
+  border-radius: 50px;
+  font-family: var(--font-subheading);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.catBtn:hover, .catBtn.active {
+  background: var(--color-primary-blue);
+  color: var(--color-white);
+  border-color: var(--color-primary-blue);
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: var(--color-dark-bg);
+}
+
+/* Folder Playlist Grid */
+.playlistGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.folderCard {
+  position: relative;
+  width: 100%;
+  padding-top: 15px; /* Space for the tab */
+  transition: transform var(--transition-fast);
+  cursor: pointer;
+}
+
+.folderCard:hover {
+  transform: translateY(-5px);
+}
+
+.folderTab {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 25px;
+  background: #eaeaea;
+  border-radius: 8px 8px 0 0;
+  border: 1px solid #e0e0e0;
+  border-bottom: none;
+  z-index: 1;
+}
+
+/* Add a diagonal cut on the right side of the tab */
+.folderTab::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: -15px;
+  width: 0;
+  height: 0;
+  border-bottom: 25px solid #eaeaea;
+  border-right: 15px solid transparent;
+}
+
+.folderBody {
+  position: relative;
+  background: #fcfcfc;
+  border: 1px solid #e0e0e0;
+  border-radius: 0 8px 8px 8px;
+  padding: 1rem;
+  z-index: 2;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+}
+
+.folderImageWrapper {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+}
+
+.folderImageWrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.folderCard:hover .folderImageWrapper img {
+  transform: scale(1.05);
+}
+
+.folderBody h3 {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+  color: var(--color-dark-bg);
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.viewPlaylist {
+  display: inline-block;
+  font-size: 0.8rem;
+  color: #666;
+  text-decoration: none;
+}
+
+.viewPlaylist:hover {
+  color: var(--color-primary-blue);
+  text-decoration: underline;
+}
+
+.loadMore {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+@media (max-width: 1200px) {
+  .playlistGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .playlistGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .playlistGrid {
+    grid-template-columns: 1fr;
+  }
+}

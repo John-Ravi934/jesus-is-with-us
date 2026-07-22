@@ -1,0 +1,246 @@
+.hero {
+  position: relative;
+  min-height: 50vh;
+  background-image: url('https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--color-white);
+  padding-top: 80px;
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(9, 11, 36, 0.7);
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+}
+
+.introHeader {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 4rem;
+}
+
+.impactGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.impactCard {
+  background: var(--color-white);
+  padding: 3rem 2rem;
+  border-radius: var(--border-radius-card);
+  text-align: center;
+  box-shadow: var(--shadow-elegant);
+  transition: transform var(--transition-smooth);
+}
+
+.impactCard:hover {
+  transform: translateY(-10px);
+}
+
+.impactIcon {
+  color: var(--color-primary-blue);
+  margin-bottom: 1.5rem;
+}
+
+.impactCard h4 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--color-dark-bg);
+}
+
+.impactCard p {
+  color: #666;
+}
+
+/* Donation Form */
+.donationContainer {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.donationFormWrapper {
+  background: var(--color-white);
+  padding: 3rem;
+  border-radius: var(--border-radius-card);
+  box-shadow: var(--shadow-dark);
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.toggleGroup {
+  display: flex;
+  background: var(--color-soft-gray);
+  padding: 0.5rem;
+  border-radius: 50px;
+  margin-bottom: 2.5rem;
+}
+
+.toggleBtn {
+  flex: 1;
+  padding: 1rem;
+  border: none;
+  background: transparent;
+  border-radius: 50px;
+  font-family: var(--font-subheading);
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.toggleBtn.active {
+  background: var(--color-primary-blue);
+  color: var(--color-white);
+  box-shadow: var(--shadow-glow-blue);
+}
+
+.amountGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.amountBtn {
+  padding: 1.2rem;
+  background: var(--color-white);
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #555;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.amountBtn:hover {
+  border-color: var(--color-primary-pink);
+  color: var(--color-primary-pink);
+}
+
+.amountBtn.active {
+  background: rgba(232, 9, 128, 0.05);
+  border-color: var(--color-primary-pink);
+  color: var(--color-primary-pink);
+}
+
+.paymentPlaceholder {
+  background: #fcfcfc;
+  border: 2px dashed #ddd;
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  text-align: center;
+  color: #888;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.secureBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #2e7d32;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  background: rgba(46, 125, 50, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+}
+
+/* Alt Methods */
+.altPaymentMethods h3 {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.methodCard {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--color-white);
+  border-radius: 16px;
+  box-shadow: var(--shadow-elegant);
+}
+
+.methodIcon {
+  color: var(--color-golden-accent);
+  flex-shrink: 0;
+}
+
+.methodCard h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.methodCard p {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 0.2rem;
+}
+
+.qrPlaceholder {
+  width: 80px;
+  height: 80px;
+  background: #ddd;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: #666;
+  flex-shrink: 0;
+}
+
+.transparencyBox {
+  padding: 2rem;
+  margin-top: 3rem;
+  border-radius: 16px;
+}
+
+.transparencyBox h4 {
+  color: var(--color-white);
+  margin-bottom: 1rem;
+}
+
+.transparencyBox p {
+  color: rgba(255,255,255,0.8);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 992px) {
+  .donationContainer {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .impactGrid {
+    grid-template-columns: 1fr;
+  }
+  .amountGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .donationFormWrapper {
+    padding: 2rem;
+  }
+}

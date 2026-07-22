@@ -1,0 +1,298 @@
+/* Shared Admin Styles */
+.loginContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #F1F5F9;
+}
+
+.loginCard {
+  background: #fff;
+  padding: 3rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  width: 100%;
+  max-width: 400px;
+}
+
+.loginHeader {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.loginHeader h2 {
+  font-family: var(--font-heading);
+  color: #0F172A;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.loginHeader p {
+  color: #64748B;
+  font-weight: 500;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.formGroup label {
+  display: block;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 1rem;
+  color: #94A3B8;
+}
+
+.inputWrapper input, .inputWrapper select {
+  width: 100%;
+  padding: 0.8rem 1rem 0.8rem 2.8rem;
+  border: 1px solid #CBD5E1;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: #334155;
+  transition: all 0.2s;
+}
+
+.inputWrapper input:focus, .inputWrapper select:focus {
+  outline: none;
+  border-color: #2E7D32;
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+
+.primaryBtn {
+  width: 100%;
+  background: #2E7D32;
+  color: #fff;
+  border: none;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.primaryBtn:hover {
+  background: #1B5E20;
+}
+
+.primaryBtn:disabled {
+  background: #94A3B8;
+  cursor: not-allowed;
+}
+
+.loginHint {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.8rem;
+  color: #94A3B8;
+}
+
+/* Dashboard Cards */
+.dashboardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.statCard {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.statIcon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F1F5F9;
+  color: #475569;
+}
+
+.statCard.success .statIcon { background: #DCFCE7; color: #16A34A; }
+.statCard.primary .statIcon { background: #DBEAFE; color: #2563EB; }
+.statCard.warning .statIcon { background: #FEF9C3; color: #CA8A04; }
+
+.statInfo h3 {
+  font-size: 1.8rem;
+  color: #0F172A;
+  margin-bottom: 0.2rem;
+}
+
+.statInfo p {
+  color: #64748B;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.sectionBox {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.sectionHeader h3 {
+  font-size: 1.2rem;
+  color: #0F172A;
+}
+
+/* Tables */
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dataTable th, .dataTable td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.dataTable th {
+  font-weight: 600;
+  color: #64748B;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dataTable td {
+  color: #334155;
+  font-size: 0.95rem;
+}
+
+.statusBadge {
+  padding: 0.3rem 0.8rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.statusBadge.published {
+  background: #DCFCE7;
+  color: #16A34A;
+}
+
+.statusBadge.draft {
+  background: #F1F5F9;
+  color: #64748B;
+}
+
+.actionCell {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.iconBtn {
+  background: #F1F5F9;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748B;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.iconBtn:hover {
+  background: #E2E8F0;
+  color: #0F172A;
+}
+
+.iconBtn.delete:hover {
+  background: #FEF2F2;
+  color: #EF4444;
+}
+
+/* Add Rhema Form specific */
+.addGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+.imageUploadArea {
+  border: 2px dashed #CBD5E1;
+  border-radius: 12px;
+  padding: 3rem;
+  text-align: center;
+  background: #F8FAFC;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.imageUploadArea:hover {
+  border-color: #2E7D32;
+  background: #F0FDF4;
+}
+
+.uploadIcon {
+  color: #94A3B8;
+}
+
+.previewImage {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.removeImageBtn {
+  margin-top: 1rem;
+  color: #EF4444;
+  background: transparent;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+  .addGrid {
+    grid-template-columns: 1fr;
+  }
+}

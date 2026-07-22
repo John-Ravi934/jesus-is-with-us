@@ -1,0 +1,281 @@
+.hero {
+  position: relative;
+  min-height: 60vh;
+  background-image: url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--color-white);
+  padding-top: 80px;
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(9, 11, 36, 0.7);
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+}
+
+/* Alternating Blocks - Matching Unique UI */
+.aboutBlock {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  margin-top: 6rem;
+  margin-bottom: 6rem;
+}
+
+.reverseBlock {
+  grid-template-columns: 1fr 1fr;
+  margin-top: 8rem;
+  margin-bottom: 8rem;
+}
+
+.aboutText h2 {
+  margin-bottom: 1rem;
+}
+
+.aboutText p {
+  color: #555;
+  margin-bottom: 1.5rem;
+  font-size: 1.05rem;
+}
+
+.statsRow {
+  display: flex;
+  gap: 3rem;
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.statsRow h3 {
+  font-size: 2rem;
+  color: var(--color-primary-blue);
+  line-height: 1;
+}
+
+.statsRow span {
+  font-family: var(--font-subheading);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-primary-pink);
+  text-transform: uppercase;
+  margin-top: 0.5rem;
+  display: block;
+}
+
+.messageQuote {
+  font-size: 1.3rem;
+  font-style: italic;
+  color: var(--color-primary-blue);
+  border-left: 4px solid var(--color-golden-accent);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+  line-height: 1.5;
+}
+
+.socialLinks {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.socialLinks a {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 50px;
+  text-decoration: none;
+  color: #555;
+  font-size: 0.85rem;
+  transition: all var(--transition-fast);
+}
+
+.socialLinks a:hover {
+  background: var(--color-primary-blue);
+  color: var(--color-white);
+  border-color: var(--color-primary-blue);
+}
+
+.aboutImageRight, .aboutImageLeft {
+  position: relative;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.roundedOrganic {
+  width: 90%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  box-shadow: var(--shadow-elegant);
+  background: #eee;
+}
+
+.roundedOrganicAlt {
+  width: 90%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
+  box-shadow: var(--shadow-elegant);
+  background: #eee;
+}
+
+/* Mission Vision */
+.missionVisionGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  text-align: center;
+}
+
+.mvContent {
+  padding: 2rem;
+}
+
+.mvIcon {
+  color: var(--color-golden-accent);
+  margin-bottom: 1.5rem;
+}
+
+.mvContent h3 {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+}
+
+.mvContent p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+/* Timeline / Milestones */
+.milestoneHeader {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 4rem;
+}
+
+.timeline {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+  padding-left: 2rem;
+  border-left: 3px solid rgba(232, 9, 128, 0.2); /* Pink line */
+}
+
+.timelineItem {
+  position: relative;
+  margin-bottom: 3rem;
+}
+
+.timelineItem:last-child {
+  margin-bottom: 0;
+}
+
+.timelineDot {
+  position: absolute;
+  left: -2rem;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  background: var(--color-primary-pink);
+  border-radius: 50%;
+  transform: translateX(-50%);
+  border: 4px solid var(--color-white);
+  box-shadow: 0 0 0 3px rgba(232, 9, 128, 0.2);
+}
+
+.timelineContent {
+  background: var(--color-white);
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow-elegant);
+  border: 1px solid rgba(0,0,0,0.05);
+  position: relative;
+}
+
+.timelineContent::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: -10px;
+  border-style: solid;
+  border-width: 10px 10px 10px 0;
+  border-color: transparent var(--color-white) transparent transparent;
+}
+
+.timelineContent h3 {
+  color: var(--color-primary-blue);
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.timelineContent h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-dark-bg);
+}
+
+.timelineContent p {
+  color: #666;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+/* CTA */
+.ctaSection {
+  position: relative;
+  background-image: url('https://images.unsplash.com/photo-1529070538774-1843cb3265df?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: var(--color-white);
+  text-align: center;
+  padding: 8rem 0;
+}
+
+.ctaOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(232, 9, 128, 0.85); /* Pink overlay */
+}
+
+.ctaContent {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+  .aboutBlock, .reverseBlock, .missionVisionGrid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .reverseBlock .aboutImageLeft {
+    order: 2;
+  }
+  .reverseBlock .aboutText {
+    order: 1;
+  }
+  .statsRow {
+    flex-wrap: wrap;
+  }
+}
