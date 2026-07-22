@@ -10,6 +10,7 @@
   min-height: 100vh;
   color: #333;
   transition: all var(--transition-smooth);
+  padding-bottom: 100px;
 }
 
 .rhemaApp.darkTheme {
@@ -71,10 +72,9 @@
 }
 
 
-/* Hero Section */
 .rhemaHero {
   position: relative;
-  min-height: 60vh;
+  min-height: 600px;
   background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
   background-size: cover;
   background-position: center;
@@ -84,7 +84,7 @@
   justify-content: center;
   text-align: center;
   color: #fff;
-  padding-top: 80px;
+  padding-bottom: 10px;
 }
 
 .heroOverlay {
@@ -284,7 +284,34 @@
 
 /* Main App Area */
 .mainAppArea {
-  padding: 4rem 0;
+  position: relative;
+  z-index: 10;
+  padding-top: 50px;
+  padding-bottom: 100px;
+}
+
+@media (max-width: 1024px) {
+  .mainAppArea {
+    padding-top: 40px;
+    padding-bottom: 80px;
+  }
+}
+
+@media (max-width: 768px) {
+  .mainAppArea {
+    padding-top: 30px;
+    padding-bottom: 60px;
+  }
+}
+
+/* Tab Transition Animation */
+@keyframes fadeInTab {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.tabTransition {
+  animation: fadeInTab 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 

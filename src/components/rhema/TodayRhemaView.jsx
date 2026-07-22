@@ -55,19 +55,25 @@ export default function TodayRhemaView({
         posterUrl={featuredWord.poster_url} 
       />
 
-      <div className={styles.showcaseCard}>
-        <TodayPoster 
-          posterUrl={featuredWord.poster_url} 
-          onClick={openLightbox} 
-        />
+      <div className={styles.galleryContainer}>
+        {/* LEFT COLUMN: POSTER */}
+        <div className={styles.posterColumn} onClick={openLightbox}>
+          <TodayPoster posterUrl={featuredWord.poster_url} />
+        </div>
 
-        <div className={styles.showcaseBody}>
+        {/* RIGHT COLUMN: INFORMATION PANEL */}
+        <div className={styles.infoColumn}>
           <PosterMetadata word={featuredWord} />
+          
+          <div className={styles.divider}></div>
+          
           <PosterToolbar word={featuredWord} />
+          
+          <div className={styles.divider}></div>
 
           <div className={styles.segmentedNav}>
             <button 
-              className={`${styles.segBtn} ${featuredIndex < rhemaDatabase.length - 1 ? '' : styles.disabled}`} 
+              className={styles.segBtn} 
               onClick={handlePrev} 
               disabled={featuredIndex === rhemaDatabase.length - 1}
             >
@@ -83,7 +89,7 @@ export default function TodayRhemaView({
               Today's Rhema
             </button>
             <button 
-              className={`${styles.segBtn} ${featuredIndex > 0 ? '' : styles.disabled}`} 
+              className={styles.segBtn} 
               onClick={handleNext} 
               disabled={featuredIndex === 0}
             >
