@@ -8,6 +8,7 @@ import { FaYoutube } from 'react-icons/fa';
 import styles from './RhemaWords.module.css';
 import { getRhemaWords, incrementViews, incrementDownloads } from '../services/rhemaService';
 import { getCategories } from '../services/categoryService';
+import TodayRhemaView from '../components/rhema/TodayRhemaView';
 
 const popularTags = ["Faith", "Healing", "Grace", "Peace", "Love"];
 
@@ -23,7 +24,6 @@ export default function RhemaWords() {
   
   const [favorites, setFavorites] = useState([]); 
   const [featuredIndex, setFeaturedIndex] = useState(0);
-  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   useEffect(() => {
     // Fetch live data from Supabase
@@ -60,47 +60,6 @@ export default function RhemaWords() {
     localStorage.setItem('rhema_favs', JSON.stringify(newFavs));
   };
 
-  const handlePrev = () => {
-    if (featuredIndex < rhemaDatabase.length - 1) {
-      setFeaturedIndex(featuredIndex + 1); 
-    }
-  };
-
-  const handleNext = () => {
-    if (featuredIndex > 0) {
-      setFeaturedIndex(featuredIndex - 1);
-    }
-  };
-
-  const openLightbox = async () => {
-    setLightboxOpen(true);
-    // Increment view count in Supabase silently
-    if (featuredWord) {
-      await incrementViews(featuredWord.id).catch(console.error);
-    }
-  };
-
-  const handleDownload = async (word) => {
-    if (!word) return;
-    try {
-      // Trigger a download
-      const response = await fetch(word.poster_url);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `Rhema-${word.date}.jpg`;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      
-      // Increment download count in Supabase
-      await incrementDownloads(word.id).catch(console.error);
-    } catch (e) {
-      console.error("Download failed", e);
-    }
-  };
-
   const filteredArchive = rhemaDatabase.filter(word => {
     const searchString = searchQuery.toLowerCase();
     const matchesSearch = 
@@ -115,20 +74,6 @@ export default function RhemaWords() {
   return (
     <div className={`${styles.rhemaApp} ${darkMode ? styles.darkTheme : ''}`}>
       
-      {/* Lightbox Modal */}
-      {lightboxOpen && featuredWord && (
-        <div className={styles.lightboxOverlay} onClick={() => setLightboxOpen(false)}>
-          <button className={styles.lightboxClose} onClick={() => setLightboxOpen(false)}>
-            <X size={32} />
-          </button>
-          <img src={featuredWord.poster_url} alt="Fullscreen Rhema" className={styles.lightboxImg} onClick={(e) => e.stopPropagation()} />
-          <div className={styles.lightboxActions} onClick={(e) => e.stopPropagation()}>
-            <button className={styles.posterBtn} title="Download" onClick={() => handleDownload(featuredWord)}><Download size={24}/></button>
-            <button className={styles.posterBtn} title="Share" onClick={() => navigator.clipboard.writeText(window.location.href)}><Share2 size={24}/></button>
-          </div>
-        </div>
-      )}
-
       {/* Hero Section */}
       <section className={styles.rhemaHero}>
         <div className={styles.heroOverlay}></div>
@@ -206,82 +151,11 @@ export default function RhemaWords() {
         {/* TODAY'S POSTER GALLERY VIEW */}
         {!loading && activeTab === 'today' && featuredWord && (
           <div className={styles.gallerySection}>
-            <div className={styles.showcaseCard}>
-              
-              <div className={styles.showcaseImageWrapper} onClick={openLightbox}>
-                <img src={featuredWord.poster_url} alt="Today's Rhema Poster" className={styles.showcaseImg} />
-                <div className={styles.zoomHint}>
-                  <Maximize2 size={24} />
-                  <span>Click to Expand</span>
-                </div>
-              </div>
-
-              <div className={styles.showcaseBody}>
-                <div className={styles.showcaseMeta}>
-                  <div className={styles.metaLeft}>
-                    <span className={styles.metaBadge}><CalendarIcon size={14}/> {new Date(featuredWord.date).toLocaleDateString()}</span>
-                    <span className={styles.metaBadge}>{featuredWord.category}</span>
-                    <span className={styles.metaBadge}>{featuredWord.language}</span>
-                  </div>
-                  <div className={styles.metaRight}>
-                    <span className={styles.metaStat}><Eye size={16}/> {featuredWord.views}</span>
-                    <span className={styles.metaStat}><Download size={16}/> {featuredWord.downloads}</span>
-                  </div>
-                </div>
-
-                <div className={styles.showcaseActions}>
-                  <button className={styles.actionPill} onClick={() => handleDownload(featuredWord)}><Download size={18}/> Download</button>
-                  <button className={styles.actionPill} onClick={() => navigator.clipboard.writeText(window.location.href)}><Share2 size={18}/> Share</button>
-                  {featuredWord.youtube_url && (
-                    <a href={featuredWord.youtube_url} target="_blank" rel="noreferrer" className={styles.actionPill} style={{textDecoration: 'none'}}>
-                      <FaYoutube size={18}/> Community
-                    </a>
-                  )}
-                  <button 
-                    className={`${styles.actionIcon} ${favorites.includes(featuredWord.id) ? styles.favorited : ''}`} 
-                    onClick={() => toggleFavorite(featuredWord.id)}
-                    title="Bookmark"
-                  >
-                    <Bookmark size={20} fill={favorites.includes(featuredWord.id) ? "currentColor" : "none"}/>
-                  </button>
-                  <button className={styles.actionIcon} title="Mark as Read"><CheckCircle size={20}/></button>
-                </div>
-
-                <div className={styles.galleryNav}>
-                  <button className={styles.navBtn} onClick={handlePrev} disabled={featuredIndex === rhemaDatabase.length - 1}>
-                    <ChevronLeft size={20} /> Previous
-                  </button>
-                  <button className={styles.navBtnPrimary} onClick={() => {
-                    const idx = rhemaDatabase.findIndex(d => d.featured);
-                    setFeaturedIndex(idx !== -1 ? idx : 0);
-                  }}>
-                    Today's Rhema
-                  </button>
-                  <button className={styles.navBtn} onClick={handleNext} disabled={featuredIndex === 0}>
-                    Next <ChevronRight size={20} />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Horizontal Related Row */}
-            <div className={styles.relatedRowContainer}>
-              <h3 className={styles.relatedRowTitle}>Previous Rhema Words</h3>
-              <div className={styles.relatedRow}>
-                {rhemaDatabase.filter((_, idx) => idx !== featuredIndex).map((word) => {
-                  const originalIndex = rhemaDatabase.findIndex(w => w.id === word.id);
-                  return (
-                    <div key={word.id} className={styles.relatedCard} onClick={() => setFeaturedIndex(originalIndex)}>
-                      <img src={word.poster_url} alt="Thumbnail" className={styles.relatedThumb} />
-                      <div className={styles.relatedCardInfo}>
-                        <span>{new Date(word.date).toLocaleDateString()}</span>
-                        <h4>{word.bible_reference}</h4>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+            <TodayRhemaView 
+              rhemaDatabase={rhemaDatabase}
+              featuredIndex={featuredIndex}
+              setFeaturedIndex={setFeaturedIndex}
+            />
           </div>
         )}
 
