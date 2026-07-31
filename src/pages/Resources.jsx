@@ -1,19 +1,50 @@
-import { Search, FolderOpen } from 'lucide-react';
+import { useState, useEffect, useMemo } from 'react';
+import { Search, FolderOpen, AlertCircle } from 'lucide-react';
+import { getPlaylists } from '../services/playlistService';
 import styles from './Resources.module.css';
 
 export default function Resources() {
-  const categories = ["All", "Sermons", "Bible Studies", "Devotionals", "Worship", "E-Books"];
+  const [playlists, setPlaylists] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   
-  const playlists = [
-    { title: 'MESSAGE - JOHNSAM JOYSON', image: 'https://images.unsplash.com/photo-1529070538774-1843cb3265df?ixlib=rb-4.0.3&w=400&q=80' },
-    { title: 'MESSAGE - DAVIDSAM JOYSON', image: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?ixlib=rb-4.0.3&w=400&q=80' },
-    { title: 'MONTHLY PROMISE WORD - 2026', image: 'https://images.unsplash.com/photo-1438232992991-995b7058bbb3?ixlib=rb-4.0.3&w=400&q=80' },
-    { title: 'BIBLE STUDY - 2026', image: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-4.0.3&w=400&q=80' },
-    { title: 'AUGUST PRAYER MESSAGE - 2026', image: 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-4.0.3&w=400&q=80' },
-    { title: 'PRAISE AND WORSHIP - 2026', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&w=400&q=80' },
-    { title: 'MONTHLY PROMISE WORD - 2025', image: 'https://images.unsplash.com/photo-1511632765486-a01c80cb8ee5?ixlib=rb-4.0.3&w=400&q=80' },
-    { title: 'BIBLE STUDY - 2025', image: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&w=400&q=80' },
-  ];
+  // Filtering and Search state
+  const [activeTab, setActiveTab] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [displayCount, setDisplayCount] = useState(8);
+
+  const categories = ["All", "Sermons", "Bible Studies", "Devotionals", "Worship", "E-Books"];
+
+  useEffect(() => {
+    async function loadPlaylists() {
+      try {
+        const data = await getPlaylists();
+        setPlaylists(data || []);
+      } catch (err) {
+        console.error("Failed to load playlists:", err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadPlaylists();
+  }, []);
+
+  const filteredPlaylists = useMemo(() => {
+    return playlists.filter(pl => {
+      const matchesTab = activeTab === "All" || pl.category === activeTab;
+      const matchesSearch = pl.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                            (pl.category && pl.category.toLowerCase().includes(searchQuery.toLowerCase()));
+      return matchesTab && matchesSearch;
+    });
+  }, [playlists, activeTab, searchQuery]);
+
+  const visiblePlaylists = filteredPlaylists.slice(0, displayCount);
+  const hasMore = displayCount < filteredPlaylists.length;
+
+  const handleLoadMore = () => {
+    setDisplayCount(prev => prev + 8);
+  };
 
   return (
     <>
@@ -29,40 +60,88 @@ export default function Resources() {
         <div className="container">
           <div className={styles.searchBar}>
             <Search className={styles.searchIcon} size={20} />
-            <input type="text" placeholder="Search playlists, sermons, topics..." />
+            <input 
+              type="text" 
+              placeholder="Search playlists, sermons, topics..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
             <button className="btn btn-primary">Search</button>
           </div>
 
           <div className={styles.categories}>
             {categories.map((cat, idx) => (
-              <button key={idx} className={`${styles.catBtn} ${idx === 0 ? styles.active : ''}`}>{cat}</button>
+              <button 
+                key={idx} 
+                className={`${styles.catBtn} ${activeTab === cat ? styles.active : ''}`}
+                onClick={() => {
+                  setActiveTab(cat);
+                  setDisplayCount(8); // Reset pagination on tab change
+                }}
+              >
+                {cat}
+              </button>
             ))}
           </div>
 
-          <h2 className={styles.sectionTitle}>Playlists</h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+            <h2 className={styles.sectionTitle} style={{ marginBottom: 0 }}>Playlists</h2>
+            {!loading && !error && (
+              <span style={{ color: '#64748b', fontSize: '0.9rem' }}>
+                Showing {visiblePlaylists.length} of {filteredPlaylists.length}
+              </span>
+            )}
+          </div>
 
-          <div className={styles.playlistGrid}>
-            {playlists.map((pl, idx) => (
-              <div key={idx} className={styles.folderCard}>
-                <div className={styles.folderTab}></div>
-                <div className={styles.folderBody}>
-                  <div className={styles.folderImageWrapper}>
-                    <img src={pl.image} alt={pl.title} />
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '4rem', color: '#64748b' }}>
+              <div className="spinner" style={{ margin: '0 auto 1rem', width: '40px', height: '40px', border: '3px solid #f3f4f6', borderTopColor: '#f59e0b', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+              Loading resources...
+            </div>
+          ) : error ? (
+             <div style={{ textAlign: 'center', padding: '4rem', color: '#ef4444', background: '#fef2f2', borderRadius: '12px' }}>
+              <AlertCircle size={48} style={{ margin: '0 auto 1rem' }} />
+              <h3>Database Setup Required</h3>
+              <p>The Playlists table hasn't been created yet. Please run the SQL script in your Supabase dashboard.</p>
+            </div>
+          ) : visiblePlaylists.length === 0 ? (
+             <div style={{ textAlign: 'center', padding: '4rem', color: '#64748b', background: '#f8fafc', borderRadius: '12px', border: '2px dashed #e2e8f0' }}>
+              <FolderOpen size={48} color="#cbd5e1" style={{ margin: '0 auto 1rem' }} />
+              <h3>No Playlists Found</h3>
+              <p>Try adjusting your search or category filters.</p>
+            </div>
+          ) : (
+            <div className={styles.playlistGrid}>
+              {visiblePlaylists.map((pl) => (
+                <div key={pl.id} className={styles.folderCard}>
+                  <div className={styles.folderTab}></div>
+                  <div className={styles.folderBody}>
+                    <div className={styles.folderImageWrapper}>
+                      <img src={pl.image_url || 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&w=400&q=80'} alt={pl.title} />
+                    </div>
+                    <h3>{pl.title}</h3>
+                    <a href={pl.link_url || '#'} target={pl.link_url ? "_blank" : "_self"} rel="noreferrer" className={styles.viewPlaylist}>
+                      View full playlist
+                    </a>
                   </div>
-                  <h3>{pl.title}</h3>
-                  <a href="#" className={styles.viewPlaylist}>
-                    View full playlist
-                  </a>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
           
-          <div className={styles.loadMore}>
-            <button className="btn btn-secondary">Load More Playlists</button>
-          </div>
+          {!loading && !error && hasMore && (
+            <div className={styles.loadMore}>
+              <button className="btn btn-secondary" onClick={handleLoadMore}>Load More Playlists</button>
+            </div>
+          )}
         </div>
       </section>
+      <style>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
     </>
   );
 }

@@ -1,7 +1,7 @@
 import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, PlusCircle, Library, Tags, 
-  Image as ImageIcon, Settings, LogOut, Menu, X, User
+  Image as ImageIcon, Settings, LogOut, Menu, X, User, Calendar, Bell, Users, PlaySquare
 } from 'lucide-react';
 import { useState } from 'react';
 import { Toaster } from 'react-hot-toast';
@@ -57,8 +57,23 @@ export default function AdminLayout() {
           <NavLink to="/admin/categories" className={({isActive}) => isActive ? `${styles.navItem} ${styles.active}` : styles.navItem} onClick={() => setSidebarOpen(false)}>
             <Tags size={20} /> Categories
           </NavLink>
-          <NavLink to="/admin/media" className={({isActive}) => isActive ? `${styles.navItem} ${styles.active}` : styles.navItem} onClick={() => setSidebarOpen(false)}>
+          <NavLink to="/admin/popups" className={({isActive}) => `${styles.navItem} ${isActive ? styles.active : ''}`} onClick={() => setSidebarOpen(false)}>
+            <Bell size={20} /> Announcement Popups
+          </NavLink>
+          <NavLink to="/admin/gallery" className={({isActive}) => `${styles.navItem} ${isActive ? styles.active : ''}`} onClick={() => setSidebarOpen(false)}>
+            <ImageIcon size={20} /> Photo Gallery
+          </NavLink>
+          <NavLink to="/admin/playlists" className={({isActive}) => `${styles.navItem} ${isActive ? styles.active : ''}`} onClick={() => setSidebarOpen(false)}>
+            <PlaySquare size={20} /> Media & Playlists
+          </NavLink>
+          <NavLink to="/admin/subscribers" className={({isActive}) => `${styles.navItem} ${isActive ? styles.active : ''}`} onClick={() => setSidebarOpen(false)}>
+            <Users size={20} /> Subscribers
+          </NavLink>
+          <NavLink to="/admin/media" className={({isActive}) => `${styles.navItem} ${isActive ? styles.active : ''}`} onClick={() => setSidebarOpen(false)}>
             <ImageIcon size={20} /> Media Library
+          </NavLink>
+          <NavLink to="/admin/events" className={({isActive}) => isActive ? `${styles.navItem} ${styles.active}` : styles.navItem} onClick={() => setSidebarOpen(false)}>
+            <Calendar size={20} /> Upcoming Events
           </NavLink>
 
           <p className={styles.navLabel} style={{marginTop: '2rem'}}>SYSTEM</p>

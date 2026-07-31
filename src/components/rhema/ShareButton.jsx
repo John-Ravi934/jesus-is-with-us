@@ -10,6 +10,7 @@ export default function ShareButton({ word }) {
   const handleShareClick = async () => {
     if (!word) return;
     
+    // Fallback share data (text only)
     const shareData = {
       title: `Daily Rhema: ${word.title || word.bible_reference}`,
       text: `"${word.bible_verse}" - ${word.bible_reference}`,
@@ -18,6 +19,41 @@ export default function ShareButton({ word }) {
 
     try {
       if (navigator.share) {
+        
+        let filesArray = [];
+        try {
+          // Attempt to fetch the image and convert it to a JPEG File object
+          const response = await fetch(word.poster_url);
+          const blob = await response.blob();
+          
+          // Convert WebP/PNG to JPEG using Canvas to ensure WhatsApp treats it as an image
+          const imageBitmap = await createImageBitmap(blob);
+          const canvas = document.createElement('canvas');
+          canvas.width = imageBitmap.width;
+          canvas.height = imageBitmap.height;
+          const ctx = canvas.getContext('2d');
+          
+          // Fill white background in case of transparency
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(imageBitmap, 0, 0);
+          
+          const jpgBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.9));
+          const file = new File([jpgBlob], `Rhema-${word.bible_reference.replace(/[^a-zA-Z0-9]/g, '_')}.jpg`, { type: 'image/jpeg' });
+          
+          // Check if the browser can share this file
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            filesArray = [file];
+          }
+        } catch (fetchErr) {
+          console.warn("Failed to fetch image for sharing, falling back to text only.", fetchErr);
+        }
+
+        // Attach files if we successfully created them and the browser allows it
+        if (filesArray.length > 0) {
+          shareData.files = filesArray;
+        }
+
         await navigator.share(shareData);
         toast.success("Shared successfully!");
       } else {
