@@ -1,10 +1,12 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Menu, Search, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import styles from './Header.module.css';
 import logo from '../assets/logo.png';
 
 export default function Header() {
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -17,7 +19,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''}`}>
+    <header className={`${styles.header} ${(isScrolled || !isHomePage) ? styles.scrolled : ''}`}>
       <div className={`container ${styles.headerContainer}`}>
         <Link to="/" className={styles.logo}>
           <img src={logo} alt="Jesus is with us Logo" className={styles.logoImg} />

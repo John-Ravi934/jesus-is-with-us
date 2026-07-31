@@ -1,9 +1,36 @@
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { MapPin, Phone, Mail, CheckCircle2 } from 'lucide-react';
 import { FaFacebook, FaInstagram, FaYoutube, FaTwitter } from 'react-icons/fa';
+import { useState } from 'react';
+import { subscribeEmail } from '../services/subscriberService';
 import styles from './Footer.module.css';
 
 export default function Footer() {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState('idle'); // idle, loading, success, error
+  const [message, setMessage] = useState('');
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    if (!email) return;
+
+    try {
+      setStatus('loading');
+      await subscribeEmail(email);
+      setStatus('success');
+      setMessage('Thank you for subscribing!');
+      setEmail('');
+      
+      setTimeout(() => {
+        setStatus('idle');
+        setMessage('');
+      }, 5000);
+    } catch (err) {
+      setStatus('error');
+      setMessage(err.message || 'Failed to subscribe. Please try again.');
+    }
+  };
+
   return (
     <footer className={styles.footer}>
       <div className={`container ${styles.footerGrid}`}>
@@ -41,10 +68,32 @@ export default function Footer() {
         <div className={styles.newsletterCol}>
           <h3>Stay Connected</h3>
           <p>Subscribe to our newsletter for updates and daily devotions.</p>
-          <form className={styles.newsletterForm} onSubmit={(e) => e.preventDefault()}>
-            <input type="email" placeholder="Your Email Address" required />
-            <button type="submit" className="btn btn-primary">Subscribe</button>
+          <form onSubmit={handleSubscribe} className={styles.newsletterForm}>
+            <input 
+              type="email" 
+              placeholder="Your Email Address" 
+              className={styles.input}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={status === 'loading'}
+              required
+            />
+            <button 
+              type="submit" 
+              className={styles.subscribeBtn}
+              disabled={status === 'loading'}
+            >
+              {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
+            </button>
           </form>
+          {status === 'success' && (
+            <p style={{ color: '#22c55e', fontSize: '0.85rem', marginTop: '0.5rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <CheckCircle2 size={14} /> {message}
+            </p>
+          )}
+          {status === 'error' && (
+            <p style={{ color: '#ef4444', fontSize: '0.85rem', marginTop: '0.5rem' }}>{message}</p>
+          )}
         </div>
       </div>
       
