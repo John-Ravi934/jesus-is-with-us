@@ -422,3 +422,17 @@
   font-size: 1rem;
   text-align: right;
 }
+/* Added Mobile Responsiveness */
+@media (max-width: 768px) {
+  .hero { padding: 6rem 5% 3rem 5%; }
+  .hero h1 { font-size: 2.2rem; }
+  .whyGiveSection { padding: 3rem 5%; }
+  .whyGiveSection h2 { font-size: 2rem; }
+  .impactGrid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .impactCard { padding: 1.5rem; }
+  .methodsSection { padding: 2rem 5%; }
+  .methodsGrid { grid-template-columns: 1fr; gap: 2rem; }
+  .upiCard, .bankCard { padding: 1.5rem; }
+  .bankGrid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .upiAppIcons { flex-wrap: wrap; justify-content: center; }
+}

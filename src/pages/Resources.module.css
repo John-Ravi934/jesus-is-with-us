@@ -206,3 +206,13 @@
     grid-template-columns: 1fr;
   }
 }
+/* Added Mobile Responsiveness */
+@media (max-width: 768px) {
+  .hero { padding: 6rem 5% 3rem 5%; }
+  .hero h1 { font-size: 2.2rem; }
+  .resourcesSection { padding: 2rem 5%; }
+  .tabsContainer { flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
+  .tabBtn { width: 100%; padding: 0.8rem; }
+  .booksGrid, .mediaGrid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .bookCard, .mediaCard { padding: 1.5rem; }
+}

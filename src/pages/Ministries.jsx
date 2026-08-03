@@ -17,11 +17,11 @@ export default function Ministries() {
 
   return (
     <>
-      <section className={styles.hero}>
+      <section className={styles.hero} data-aos="fade-in">
         <div className={styles.heroOverlay}></div>
         <div className={`container ${styles.heroContent}`}>
           <span className="subheading animate-fade-up">Get Involved</span>
-          <h1 className="animate-fade-up delay-100">Our <span className="script-accent">Ministries</span></h1>
+          <h1 data-aos="fade-up" className="animate-fade-up delay-100">Our <span className="script-accent">Ministries</span></h1>
         </div>
       </section>
 
@@ -29,20 +29,20 @@ export default function Ministries() {
         <div className="container">
           <div className={styles.intro}>
             <span className="subheading">Serving Together</span>
-            <h2>Find Your <span className="script-accent">Calling</span></h2>
-            <p>God has given each of us unique gifts to serve His kingdom. Explore our various ministries and find where you belong. We believe that everyone has a role to play in the body of Christ.</p>
+            <h2 data-aos="fade-up">Find Your <span className="script-accent">Calling</span></h2>
+            <p data-aos="fade-up">God has given each of us unique gifts to serve His kingdom. Explore our various ministries and find where you belong. We believe that everyone has a role to play in the body of Christ.</p>
           </div>
 
-          <div className={styles.ministriesGrid}>
+          <div className={styles.ministriesGrid} data-aos="fade-up">
             {ministries.map((min, idx) => (
-              <div key={idx} className={styles.ministryCard}>
-                <div className={styles.cardImgWrapper}>
-                  <img src={min.img} alt={min.title} />
+              <div data-aos="fade-up" key={idx} className={styles.ministryCard}>
+                <div data-aos="fade-up" className={styles.cardImgWrapper}>
+                  <img data-aos="fade-up" src={min.img} alt={min.title} />
                   <div className={styles.iconOverlay}>{min.icon}</div>
                 </div>
-                <div className={styles.cardContent}>
-                  <h3>{min.title}</h3>
-                  <p>{min.desc}</p>
+                <div data-aos="fade-up" className={styles.cardContent}>
+                  <h3 data-aos="fade-up">{min.title}</h3>
+                  <p data-aos="fade-up">{min.desc}</p>
                   <a href="#" className={styles.learnMore} onClick={(e) => {
                     e.preventDefault();
                     setSelectedMinistry(min);
@@ -58,26 +58,26 @@ export default function Ministries() {
         <div className={`container ${styles.impactContainer}`}>
           <div className={styles.impactText}>
             <span className="subheading">Our Impact</span>
-            <h2>Changing Lives <span className="script-accent">Globally</span></h2>
-            <p>Through our various ministries, we have seen incredible testimonies of healing, restoration, and salvation. Your participation makes this possible.</p>
+            <h2 data-aos="fade-up">Changing Lives <span className="script-accent">Globally</span></h2>
+            <p data-aos="fade-up">Through our various ministries, we have seen incredible testimonies of healing, restoration, and salvation. Your participation makes this possible.</p>
             <Link to="/fellowship#form" className="btn btn-primary" style={{marginTop: '2rem', textDecoration: 'none'}}>Volunteer With Us</Link>
           </div>
           <div className={styles.impactStats}>
             <div className={`glass-dark ${styles.statBox}`}>
-              <h3>10K+</h3>
-              <p>Lives Touched</p>
+              <h3 data-aos="fade-up">10K+</h3>
+              <p data-aos="fade-up">Lives Touched</p>
             </div>
             <div className={`glass-dark ${styles.statBox}`}>
-              <h3>200+</h3>
-              <p>Active Volunteers</p>
+              <h3 data-aos="fade-up">200+</h3>
+              <p data-aos="fade-up">Active Volunteers</p>
             </div>
             <div className={`glass-dark ${styles.statBox}`}>
-              <h3>12</h3>
-              <p>Global Outreach Trips</p>
+              <h3 data-aos="fade-up">12</h3>
+              <p data-aos="fade-up">Global Outreach Trips</p>
             </div>
             <div className={`glass-dark ${styles.statBox}`}>
-              <h3>24/7</h3>
-              <p>Prayer Chain</p>
+              <h3 data-aos="fade-up">24/7</h3>
+              <p data-aos="fade-up">Prayer Chain</p>
             </div>
           </div>
         </div>
@@ -107,22 +107,22 @@ export default function Ministries() {
               <X size={18} />
             </button>
             <div style={{ flex: '1', borderRadius: '12px', overflow: 'hidden', minHeight: '350px' }}>
-              <img src={selectedMinistry.img} alt={selectedMinistry.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+              <img data-aos="fade-up" src={selectedMinistry.img} alt={selectedMinistry.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
             </div>
             <div style={{ flex: '1', display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingRight: '20px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
                 <div style={{ color: '#f43f5e', background: '#fff1f2', padding: '8px', borderRadius: '50%', display: 'flex' }}>
                   {selectedMinistry.icon}
                 </div>
-                <h2 style={{ margin: 0, color: '#0f172a', fontSize: '1.8rem' }}>{selectedMinistry.title}</h2>
+                <h2 data-aos="fade-up" style={{ margin: 0, color: '#0f172a', fontSize: '1.8rem' }}>{selectedMinistry.title}</h2>
               </div>
               
               <div style={{ marginBottom: '16px', fontSize: '0.95rem', color: '#475569' }}>
-                <p style={{ margin: '0 0 8px 0' }}><strong>Time:</strong> Weekly Meetings</p>
-                <p style={{ margin: '0' }}><strong>Place:</strong> Main Church Campus</p>
+                <p data-aos="fade-up" style={{ margin: '0 0 8px 0' }}><strong>Time:</strong> Weekly Meetings</p>
+                <p data-aos="fade-up" style={{ margin: '0' }}><strong>Place:</strong> Main Church Campus</p>
               </div>
 
-              <p style={{ color: '#475569', fontSize: '1rem', lineHeight: 1.6, marginBottom: '24px' }}>
+              <p data-aos="fade-up" style={{ color: '#475569', fontSize: '1rem', lineHeight: 1.6, marginBottom: '24px' }}>
                 {selectedMinistry.desc} Join us in making a difference and discovering your God-given purpose. Everyone is welcome to participate and serve.
               </p>
               

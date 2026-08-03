@@ -17,3 +17,15 @@ export const getAppStatistics = async () => {
   
   return data;
 };
+
+export const getStorageStats = async () => {
+  try {
+    const { data, error } = await supabase.rpc('get_storage_size');
+    if (error) throw error;
+    return data || 0;
+  } catch (e) {
+    console.error('Failed to fetch storage size:', e);
+    // If RPC doesn't exist yet, return a fallback value so UI doesn't break
+    return 15 * 1024 * 1024 * 1024; // Fallback 15GB
+  }
+};

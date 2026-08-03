@@ -4,17 +4,21 @@ import {
   Image as ImageIcon, Settings, LogOut, Menu, X, User, Calendar, Bell, Users, PlaySquare
 } from 'lucide-react';
 import { useState } from 'react';
-import { Toaster } from 'react-hot-toast';
 import styles from './AdminLayout.module.css';
 
 import { adminLogout } from '../services/authService';
 
 export default function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleLogout = async () => {
+  const handleLogoutClick = () => {
+    setShowLogoutModal(true);
+  };
+
+  const confirmLogout = async () => {
     try {
       await adminLogout();
       navigate('/admin/login');
@@ -23,13 +27,33 @@ export default function AdminLayout() {
     }
   };
 
+  const cancelLogout = () => {
+    setShowLogoutModal(false);
+  };
+
   return (
     <div className={styles.adminContainer}>
-      <Toaster position="top-right" />
       
       {/* Mobile Overlay */}
       {sidebarOpen && (
         <div className={styles.overlay} onClick={() => setSidebarOpen(false)}></div>
+      )}
+
+      {/* Logout Modal Overlay */}
+      {showLogoutModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalContent}>
+            <div className={styles.modalIcon}>
+              <LogOut size={32} />
+            </div>
+            <h3 className={styles.modalTitle}>Confirm Logout</h3>
+            <p className={styles.modalText}>Are you sure you want to end your session?</p>
+            <div className={styles.modalActions}>
+              <button className={styles.cancelBtn} onClick={cancelLogout}>Cancel</button>
+              <button className={styles.confirmBtn} onClick={confirmLogout}>Logout</button>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Sidebar */}
@@ -83,7 +107,7 @@ export default function AdminLayout() {
         </nav>
 
         <div className={styles.sidebarFooter}>
-          <button className={styles.logoutBtn} onClick={handleLogout}>
+          <button className={styles.logoutBtn} onClick={handleLogoutClick}>
             <LogOut size={20} /> Logout
           </button>
         </div>

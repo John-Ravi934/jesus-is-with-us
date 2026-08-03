@@ -29,11 +29,11 @@ export default function Gallery() {
       <div style={{ paddingTop: '120px', minHeight: '80vh', backgroundColor: '#F8F8FA' }}>
         <div className="container" style={{ paddingBottom: '4rem' }}>
           
-          <div style={{ textAlign: 'center', marginBottom: '3rem', paddingTop: '2rem' }}>
-            <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', color: '#090b24', margin: 0 }}>
+          <div style={{ textAlign: "center", marginBottom: "3rem", paddingTop: "2rem" }} data-aos="fade-up">
+            <h1 data-aos="fade-up" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', color: '#090b24', margin: 0 }}>
               Photo <span className="script-accent" style={{ display: 'inline' }}>Gallery</span>
             </h1>
-            <p style={{ color: '#64748b', fontSize: '1.1rem', marginTop: '1rem' }}>
+            <p data-aos="fade-up" style={{ color: '#64748b', fontSize: '1.1rem', marginTop: '1rem' }}>
               Get a glimpse of the vibrant life, worship, and fellowship at our church.
             </p>
           </div>
@@ -43,7 +43,7 @@ export default function Gallery() {
           ) : images.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '4rem', color: '#64748b' }}>
               <ImageIcon size={48} style={{ opacity: 0.3, marginBottom: '1rem' }} />
-              <p>No photos have been added to the gallery yet.</p>
+              <p data-aos="fade-up">No photos have been added to the gallery yet.</p>
             </div>
           ) : (
             <div style={{
@@ -65,7 +65,7 @@ export default function Gallery() {
                   onClick={() => setSelectedImage(img)}
                   className="gallery-item"
                 >
-                  <img 
+                  <img data-aos="fade-up" 
                     src={img.image_url} 
                     alt={img.title || "Gallery image"} 
                     style={{
@@ -111,7 +111,7 @@ export default function Gallery() {
           }}
           onClick={() => setSelectedImage(null)}
         >
-          <img 
+          <img data-aos="fade-up" 
             src={selectedImage.image_url} 
             alt="Fullscreen View" 
             style={{

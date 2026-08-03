@@ -54,8 +54,11 @@ export default function MediaLibrary() {
 
   return (
     <div className={styles.sectionBox}>
-      <div className={styles.sectionHeader}>
-        <h3>Storage Bucket: rhema-posters</h3>
+      <div className={styles.adminPageHeader}>
+        <div className={styles.adminPageTitle}>
+          <h2>Media Library</h2>
+          <p>Storage Bucket: rhema-posters</p>
+        </div>
       </div>
       
       {loading ? (
@@ -88,7 +91,7 @@ export default function MediaLibrary() {
                 {!f.publicUrl && <ImageIcon size={32} color="#CBD5E1" />}
               </div>
               <div style={{padding: '0.75rem'}}>
-                <p style={{fontSize: '0.8rem', color: '#64748B', margin: '0 0 0.5rem 0', wordBreak: 'break-all'}}>
+                <p style={{fontSize: '0.8rem', color: '#64748B', margin: '0 0 0.5rem 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
                   {f.name}
                 </p>
                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>

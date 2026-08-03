@@ -116,8 +116,8 @@ export default function RhemaWords() {
       <section className={styles.rhemaHero}>
         <div className={styles.heroOverlay}></div>
         <div className={`container ${styles.heroContent}`}>
-          <h1 className="animate-fade-up">Daily Rhema Words</h1>
-          <p className={`${styles.tagline} animate-fade-up delay-100`}>"Receive God's Word Every Day"</p>
+          <h1 data-aos="fade-up" className="animate-fade-up">Daily Rhema Words</h1>
+          <p data-aos="fade-up" className={`${styles.tagline} animate-fade-up delay-100`}>"Receive God's Word Every Day"</p>
           
           <div className={`${styles.heroSearch} animate-fade-up delay-200`}>
             <Search size={20} className={styles.searchIcon} />
@@ -146,19 +146,19 @@ export default function RhemaWords() {
 
       {/* Statistics Strip */}
       <div className={styles.statsStrip}>
-        <div className="container">
+        <div className="container" data-aos="fade-up">
           <div className={styles.statsGrid}>
             <div className={styles.statItem}>
-              <h3>{loading ? '...' : rhemaDatabase.length}+</h3>
-              <p>Rhema Words</p>
+              <h3 data-aos="fade-up">{loading ? '...' : rhemaDatabase.length}+</h3>
+              <p data-aos="fade-up">Rhema Words</p>
             </div>
             <div className={styles.statItem}>
-              <h3>2</h3>
-              <p>Languages</p>
+              <h3 data-aos="fade-up">2</h3>
+              <p data-aos="fade-up">Languages</p>
             </div>
             <div className={styles.statItem}>
-              <h3>45K+</h3>
-              <p>Lives Touched</p>
+              <h3 data-aos="fade-up">45K+</h3>
+              <p data-aos="fade-up">Lives Touched</p>
             </div>
             <div className={styles.themeToggle}>
               <button onClick={() => setDarkMode(!darkMode)} className={styles.toggleBtn}>
@@ -186,8 +186,8 @@ export default function RhemaWords() {
 
         {!loading && rhemaDatabase.length === 0 && (
           <div style={{textAlign: 'center', padding: '4rem', color: '#64748B'}}>
-            <h3>No Rhema Words Published Yet</h3>
-            <p>Please log in to the admin dashboard and publish a Rhema word.</p>
+            <h3 data-aos="fade-up">No Rhema Words Published Yet</h3>
+            <p data-aos="fade-up">Please log in to the admin dashboard and publish a Rhema word.</p>
           </div>
         )}
 
@@ -229,9 +229,9 @@ export default function RhemaWords() {
               {filteredArchive.map((word) => {
                 const originalIndex = rhemaDatabase.findIndex(w => w.id === word.id);
                 return (
-                  <div key={word.id} className={styles.archiveCard} onClick={() => { setFeaturedIndex(originalIndex); handleTabChange('today'); }}>
+                  <div data-aos="fade-up" key={word.id} className={styles.archiveCard} onClick={() => { setFeaturedIndex(originalIndex); handleTabChange('today'); }}>
                     <div className={styles.archivePoster}>
-                      <img src={word.poster_url} alt={word.bible_reference} loading="lazy" />
+                      <img data-aos="fade-up" src={word.poster_url} alt={word.bible_reference} loading="lazy" />
                       <div className={styles.archiveBadges}>
                         <span className={styles.badgeSmall}>{word.category}</span>
                       </div>
@@ -241,7 +241,7 @@ export default function RhemaWords() {
                         <span className={styles.archiveDate}>{new Date(word.date).toLocaleDateString()}</span>
                         {favorites.includes(word.id) && <Heart size={14} fill="#C8A646" color="#C8A646" />}
                       </div>
-                      <h4>{word.bible_reference}</h4>
+                      <h4 data-aos="fade-up">{word.bible_reference}</h4>
                     </div>
                   </div>
                 );
@@ -253,7 +253,7 @@ export default function RhemaWords() {
         {/* TIMELINE VIEW */}
         {!loading && activeTab === 'timeline' && (
           <div className={styles.timelineSection}>
-            <h2 className={styles.timelineTitle}>Devotional History</h2>
+            <h2 data-aos="fade-up" className={styles.timelineTitle}>Devotional History</h2>
             <div className={styles.timelineContainer}>
               {filteredArchive.map((word) => {
                 const originalIndex = rhemaDatabase.findIndex(w => w.id === word.id);
@@ -263,11 +263,11 @@ export default function RhemaWords() {
                     <div className={styles.timelineDate}>{new Date(word.date).toLocaleDateString('en-US', {month: 'short', day: 'numeric'})}</div>
                     <div className={styles.timelineContent} onClick={() => { setFeaturedIndex(originalIndex); handleTabChange('today'); }}>
                       <div className={styles.timelineThumb}>
-                        <img src={word.poster_url} alt="thumb" loading="lazy" />
+                        <img data-aos="fade-up" src={word.poster_url} alt="thumb" loading="lazy" />
                       </div>
                       <div className={styles.timelineText}>
-                        <h4>{word.bible_reference}</h4>
-                        <p>"{word.bible_verse.substring(0, 60)}..."</p>
+                        <h4 data-aos="fade-up">{word.bible_reference}</h4>
+                        <p data-aos="fade-up">"{word.bible_verse.substring(0, 60)}..."</p>
                       </div>
                     </div>
                   </div>
@@ -288,26 +288,26 @@ export default function RhemaWords() {
         {/* FAVORITES VIEW */}
         {!loading && activeTab === 'favorites' && (
           <div className={styles.archiveSection}>
-            <h2 className={styles.timelineTitle}>Your Favorite Collections</h2>
+            <h2 data-aos="fade-up" className={styles.timelineTitle}>Your Favorite Collections</h2>
             <div className={styles.archiveGrid}>
               {filteredArchive.filter(w => favorites.includes(w.id)).map(word => {
                 const originalIndex = rhemaDatabase.findIndex(w => w.id === word.id);
                 return (
-                  <div key={word.id} className={styles.archiveCard} onClick={() => { setFeaturedIndex(originalIndex); handleTabChange('today'); }}>
+                  <div data-aos="fade-up" key={word.id} className={styles.archiveCard} onClick={() => { setFeaturedIndex(originalIndex); handleTabChange('today'); }}>
                     <div className={styles.archivePoster}>
-                      <img src={word.poster_url} alt={word.bible_reference} loading="lazy" />
+                      <img data-aos="fade-up" src={word.poster_url} alt={word.bible_reference} loading="lazy" />
                     </div>
                     <div className={styles.archiveBody}>
                       <div className={styles.archiveMeta}>
                         <span className={styles.archiveDate}>{new Date(word.date).toLocaleDateString()}</span>
                         <Heart size={14} fill="#C8A646" color="#C8A646" />
                       </div>
-                      <h4>{word.bible_reference}</h4>
+                      <h4 data-aos="fade-up">{word.bible_reference}</h4>
                     </div>
                   </div>
                 );
               })}
-              {filteredArchive.filter(w => favorites.includes(w.id)).length === 0 && <p style={{color: '#64748B', width: '100%', textAlign: 'center'}}>No favorites found matching your filters.</p>}
+              {filteredArchive.filter(w => favorites.includes(w.id)).length === 0 && <p data-aos="fade-up" style={{color: '#64748B', width: '100%', textAlign: 'center'}}>No favorites found matching your filters.</p>}
             </div>
           </div>
         )}

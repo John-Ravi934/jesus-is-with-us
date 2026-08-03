@@ -23,11 +23,11 @@ export default function Contact() {
   }, []);
   return (
     <>
-      <section className={styles.hero}>
+      <section className={styles.hero} data-aos="fade-in">
         <div className={styles.heroOverlay}></div>
         <div className={`container ${styles.heroContent}`}>
           <span className="subheading animate-fade-up">Get In Touch</span>
-          <h1 className="animate-fade-up delay-100">Contact <span className="script-accent">Us</span></h1>
+          <h1 data-aos="fade-up" className="animate-fade-up delay-100">Contact <span className="script-accent">Us</span></h1>
         </div>
       </section>
 
@@ -35,38 +35,38 @@ export default function Contact() {
         <div className={`container ${styles.contactGrid}`}>
           <div className={styles.contactInfo}>
             <span className="subheading">We'd Love To Hear From You</span>
-            <h2>Reach Out To Our <span className="script-accent">Team</span></h2>
-            <p className={styles.introText}>Whether you have a question, a prayer request, or you're planning a visit, we are here for you.</p>
+            <h2 data-aos="fade-up">Reach Out To Our <span className="script-accent">Team</span></h2>
+            <p data-aos="fade-up" className={styles.introText}>Whether you have a question, a prayer request, or you're planning a visit, we are here for you.</p>
 
-            <div className={styles.infoCards}>
-              <div className={styles.infoCard}>
+            <div data-aos="fade-up" className={styles.infoCards}>
+              <div data-aos="fade-up" className={styles.infoCard}>
                 <MapPin className={styles.icon} size={32} />
                 <div>
-                  <h4>Visit Us</h4>
-                  <p>Jesus Is With Us Church
+                  <h4 data-aos="fade-up">Visit Us</h4>
+                  <p data-aos="fade-up">Jesus Is With Us Church
                     M3FC+8C9, Kollapatty,
                     Salem, <br></br>Tamil Nadu 636030</p>
                 </div>
               </div>
-              <div className={styles.infoCard}>
+              <div data-aos="fade-up" className={styles.infoCard}>
                 <Phone className={styles.icon} size={32} />
                 <div>
-                  <h4>Call Us</h4>
-                  <p>+1 (234) 567-8900<br />+1 (987) 654-3210</p>
+                  <h4 data-aos="fade-up">Call Us</h4>
+                  <p data-aos="fade-up">+1 (234) 567-8900<br />+1 (987) 654-3210</p>
                 </div>
               </div>
-              <div className={styles.infoCard}>
+              <div data-aos="fade-up" className={styles.infoCard}>
                 <Mail className={styles.icon} size={32} />
                 <div>
-                  <h4>Email Us</h4>
-                  <p>contact@jesusiswithus.org<br />prayer@jesusiswithus.org</p>
+                  <h4 data-aos="fade-up">Email Us</h4>
+                  <p data-aos="fade-up">contact@jesusiswithus.org<br />prayer@jesusiswithus.org</p>
                 </div>
               </div>
-              <div className={styles.infoCard}>
+              <div data-aos="fade-up" className={styles.infoCard}>
                 <Clock className={styles.icon} size={32} />
                 <div>
-                  <h4>Office Hours</h4>
-                  <p>Mon-Fri: 9:00 AM - 5:00 PM<br />Sun: 8:00 AM - 2:00 PM</p>
+                  <h4 data-aos="fade-up">Office Hours</h4>
+                  <p data-aos="fade-up">Mon-Fri: 9:00 AM - 5:00 PM<br />Sun: 8:00 AM - 2:00 PM</p>
                 </div>
               </div>
             </div>
@@ -149,7 +149,7 @@ export default function Contact() {
             </form>
 
             <div style={{ marginTop: '3rem', textAlign: 'center', borderTop: '1px solid #eee', paddingTop: '2rem' }}>
-              <h4 style={{ marginBottom: '1.5rem', color: '#666', fontSize: '1.1rem' }}>Connect With Us</h4>
+              <h4 data-aos="fade-up" style={{ marginBottom: '1.5rem', color: '#666', fontSize: '1.1rem' }}>Connect With Us</h4>
               <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
                 <a href="#" className={styles.socialIcon} style={{ padding: '0.8rem', background: '#f5f5f5', borderRadius: '50%', color: 'var(--color-primary-blue)', display: 'inline-flex', transition: 'all 0.3s ease' }}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>

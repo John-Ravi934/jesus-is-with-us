@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { getAppStatistics } from '../../services/statisticsService';
+import { getAppStatistics, getStorageStats } from '../../services/statisticsService';
 import { getLiveStreamSettings, updateLiveStreamSettings, getDonationSettings, updateDonationSettings } from '../../services/settingsService';
 import { uploadImage } from '../../services/storageService';
 import { Settings as SettingsIcon, Database, Activity, ShieldCheck, Video, Save, Check, Copy, CreditCard, Upload } from 'lucide-react';
@@ -42,6 +42,7 @@ ON CONFLICT (setting_key) DO NOTHING;
 
 export default function Settings() {
   const [stats, setStats] = useState(null);
+  const [storageBytes, setStorageBytes] = useState(0);
   const [loading, setLoading] = useState(true);
   // Live Stream Settings
   const [liveActive, setLiveActive] = useState(false);
@@ -82,6 +83,9 @@ export default function Settings() {
     try {
       const statData = await getAppStatistics();
       setStats(statData);
+      
+      const storageUsed = await getStorageStats();
+      setStorageBytes(storageUsed);
       
       const liveData = await getLiveStreamSettings();
       setLiveActive(liveData.is_active || false);
@@ -279,7 +283,7 @@ export default function Settings() {
           <button 
             onClick={copySql} 
             style={{ position: 'absolute', top: '10px', right: '10px', display: 'flex', alignItems: 'center', gap: '4px' }} 
-            className="btn btn-secondary btn-sm"
+            className={styles.secondaryBtn}
           >
             {copied ? <Check size={16}/> : <Copy size={16}/>} {copied ? 'Copied' : 'Copy SQL'}
           </button>
@@ -294,28 +298,28 @@ export default function Settings() {
   return (
     <div style={{ maxWidth: '1000px', margin: '0 auto', width: '100%' }}>
       {/* Tab Navigation */}
-      <div style={{ display: 'flex', borderBottom: '1px solid #e2e8f0', marginBottom: '2rem', overflowX: 'auto', gap: '1rem' }}>
+      <div className={styles.tabsContainer}>
         <button 
           onClick={() => setActiveTab('live')}
-          style={{ padding: '1rem 1.5rem', background: 'none', border: 'none', borderBottom: activeTab === 'live' ? '3px solid #e33b70' : '3px solid transparent', color: activeTab === 'live' ? '#0f172a' : '#64748b', fontWeight: activeTab === 'live' ? '700' : '500', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', transition: 'all 0.2s', whiteSpace: 'nowrap' }}
+          style={{ padding: '1rem 1.5rem', background: 'none', border: 'none', borderBottom: activeTab === 'live' ? '3px solid #2e7d32' : '3px solid transparent', color: activeTab === 'live' ? '#0f172a' : '#64748b', fontWeight: activeTab === 'live' ? '700' : '500', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', transition: 'all 0.2s', whiteSpace: 'nowrap' }}
         >
           <Video size={18} /> Live Stream
         </button>
         <button 
           onClick={() => setActiveTab('donation')}
-          style={{ padding: '1rem 1.5rem', background: 'none', border: 'none', borderBottom: activeTab === 'donation' ? '3px solid #e33b70' : '3px solid transparent', color: activeTab === 'donation' ? '#0f172a' : '#64748b', fontWeight: activeTab === 'donation' ? '700' : '500', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', transition: 'all 0.2s', whiteSpace: 'nowrap' }}
+          style={{ padding: '1rem 1.5rem', background: 'none', border: 'none', borderBottom: activeTab === 'donation' ? '3px solid #2e7d32' : '3px solid transparent', color: activeTab === 'donation' ? '#0f172a' : '#64748b', fontWeight: activeTab === 'donation' ? '700' : '500', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', transition: 'all 0.2s', whiteSpace: 'nowrap' }}
         >
           <CreditCard size={18} /> Donation Page
         </button>
         <button 
           onClick={() => setActiveTab('analytics')}
-          style={{ padding: '1rem 1.5rem', background: 'none', border: 'none', borderBottom: activeTab === 'analytics' ? '3px solid #e33b70' : '3px solid transparent', color: activeTab === 'analytics' ? '#0f172a' : '#64748b', fontWeight: activeTab === 'analytics' ? '700' : '500', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', transition: 'all 0.2s', whiteSpace: 'nowrap' }}
+          style={{ padding: '1rem 1.5rem', background: 'none', border: 'none', borderBottom: activeTab === 'analytics' ? '3px solid #2e7d32' : '3px solid transparent', color: activeTab === 'analytics' ? '#0f172a' : '#64748b', fontWeight: activeTab === 'analytics' ? '700' : '500', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', transition: 'all 0.2s', whiteSpace: 'nowrap' }}
         >
           <Activity size={18} /> Analytics
         </button>
         <button 
           onClick={() => setActiveTab('system')}
-          style={{ padding: '1rem 1.5rem', background: 'none', border: 'none', borderBottom: activeTab === 'system' ? '3px solid #e33b70' : '3px solid transparent', color: activeTab === 'system' ? '#0f172a' : '#64748b', fontWeight: activeTab === 'system' ? '700' : '500', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', transition: 'all 0.2s', whiteSpace: 'nowrap' }}
+          style={{ padding: '1rem 1.5rem', background: 'none', border: 'none', borderBottom: activeTab === 'system' ? '3px solid #2e7d32' : '3px solid transparent', color: activeTab === 'system' ? '#0f172a' : '#64748b', fontWeight: activeTab === 'system' ? '700' : '500', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', transition: 'all 0.2s', whiteSpace: 'nowrap' }}
         >
           <SettingsIcon size={18} /> System
         </button>
@@ -337,7 +341,7 @@ export default function Settings() {
           >
             <div style={{
               width: '48px', height: '26px', 
-              backgroundColor: liveActive ? '#f43f5e' : '#cbd5e1', 
+              backgroundColor: liveActive ? '#2e7d32' : '#cbd5e1', 
               borderRadius: '24px', position: 'relative', 
               transition: 'background-color 0.2s'
             }}>
@@ -348,7 +352,7 @@ export default function Settings() {
                 boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
               }} />
             </div>
-            <span style={{ fontWeight: 700, fontSize: '1.1rem', color: liveActive ? '#f43f5e' : '#64748b' }}>
+            <span style={{ fontWeight: 700, fontSize: '1.1rem', color: liveActive ? '#2e7d32' : '#64748b' }}>
               {liveActive ? 'Live Stream is ON' : 'Live Stream is OFF'}
             </span>
           </div>
@@ -382,7 +386,7 @@ export default function Settings() {
         </div>
 
         <button 
-          className="btn btn-primary" 
+          className={styles.primaryBtn} 
           onClick={handleSaveLiveSettings} 
           disabled={savingLive}
           style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}
@@ -402,14 +406,14 @@ export default function Settings() {
             <div style={{ marginBottom: '2rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                 <h4 style={{ margin: 0, color: '#1E293B' }}>Scan to Pay (UPI)</h4>
-                <button className="btn btn-secondary btn-sm" onClick={addUpiSection}>+ Add UPI Account</button>
+                <button className={styles.secondaryBtn} onClick={addUpiSection}>+ Add UPI Account</button>
               </div>
 
               {donationSettings.upiSections && donationSettings.upiSections.map((section, index) => (
                 <div key={index} style={{ marginBottom: '2rem', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)' }}>
                   
                   {/* Card Header */}
-                  <div style={{ padding: '1rem 1.5rem', background: '#f8fafc', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div className={styles.cardHeaderFlex}>
                     <h5 style={{ margin: 0, color: '#334155', fontSize: '0.95rem', fontWeight: 600 }}>UPI Account {index + 1}</h5>
                     {donationSettings.upiSections.length > 1 && (
                       <button 
@@ -442,10 +446,10 @@ export default function Settings() {
                             style={{ display: 'none' }} 
                           />
                           <button 
-                            className="btn btn-secondary btn-sm" 
+                            className={styles.secondaryBtn} 
                             onClick={() => document.getElementById(`qr-upload-${index}`).click()}
                             disabled={uploadingQr}
-                            style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#fff', border: '1px solid #3b82f6', color: '#3b82f6' }}
+                            className={styles.secondaryBtn}
                           >
                             <Upload size={16} /> {uploadingQr ? 'Uploading...' : 'Upload New QR Code'}
                           </button>
@@ -481,10 +485,10 @@ export default function Settings() {
               ))}
               
               <button 
-                className="btn btn-primary" 
+                className={styles.primaryBtn} 
                 onClick={handleSaveDonationSettings} 
                 disabled={savingDonation}
-                style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', background: 'linear-gradient(90deg, #ff416c, #ff4b2b)', border: 'none', padding: '1rem', borderRadius: '30px', fontWeight: 700 }}
+                style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', padding: '1rem', borderRadius: '8px', fontWeight: 700 }}
               >
                 <Save size={18} /> {savingDonation ? 'Saving...' : 'Save UPI Settings'}
               </button>
@@ -493,14 +497,14 @@ export default function Settings() {
             <div style={{ marginBottom: '2rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                 <h4 style={{ margin: 0, color: '#1E293B' }}>Bank Transfer Details</h4>
-                <button className="btn btn-secondary btn-sm" onClick={addBankSection}>+ Add Bank Account</button>
+                <button className={styles.secondaryBtn} onClick={addBankSection}>+ Add Bank Account</button>
               </div>
 
               {donationSettings.bankTransferSections && donationSettings.bankTransferSections.map((section, sIndex) => (
                 <div key={sIndex} style={{ marginBottom: '2rem', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)' }}>
                   
                   {/* Card Header */}
-                  <div style={{ padding: '1rem 1.5rem', background: '#f8fafc', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div className={styles.cardHeaderFlex}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <h5 style={{ margin: 0, color: '#334155', fontSize: '0.95rem', fontWeight: 600 }}>Title:</h5>
                       <input 
@@ -513,9 +517,9 @@ export default function Settings() {
                     </div>
                     <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                       <button 
-                        className="btn btn-secondary btn-sm"
+                        className={styles.secondaryBtn}
                         onClick={() => addBankField(sIndex)}
-                        style={{ display: 'flex', alignItems: 'center', gap: '4px', background: '#fff', border: '1px solid #3b82f6', color: '#3b82f6', padding: '4px 10px', fontSize: '0.75rem' }}
+                        className={styles.secondaryBtn} style={{ fontSize: "0.85rem", padding: "0.4rem 0.8rem" }}
                       >
                         + Add Field
                       </button>
@@ -533,7 +537,7 @@ export default function Settings() {
                   {/* Card Body */}
                   <div style={{ padding: '1.5rem' }}>
                     {section.bankDetails && section.bankDetails.map((detail, fIndex) => (
-                      <div key={fIndex} style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', alignItems: 'center' }}>
+                      <div key={fIndex} className={styles.bankFieldRow}>
                         <div style={{ flex: '1' }}>
                           <input 
                             type="text" 
@@ -566,10 +570,10 @@ export default function Settings() {
               ))}
 
               <button 
-                className="btn btn-primary" 
+                className={styles.primaryBtn} 
                 onClick={handleSaveDonationSettings} 
                 disabled={savingDonation}
-                style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', background: 'linear-gradient(90deg, #ff416c, #ff4b2b)', border: 'none', padding: '1rem', borderRadius: '30px', fontWeight: 700 }}
+                style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', padding: '1rem', borderRadius: '8px', fontWeight: 700 }}
               >
                 <Save size={18} /> {savingDonation ? 'Saving...' : 'Save Bank Settings'}
               </button>
@@ -641,6 +645,51 @@ export default function Settings() {
               <p style={{fontSize: '0.8rem', color: '#94A3B8', textAlign: 'center', marginTop: '1rem'}}>
                 Analytics are tracked securely in the PostgreSQL database.
               </p>
+
+            <div style={{ padding: '1.5rem', background: '#F1F5F9', borderRadius: '8px', marginTop: '1rem', display: 'flex', gap: '2rem', alignItems: 'center', flexWrap: 'wrap' }}>
+              <div style={{ flex: '1', minWidth: '250px' }}>
+                <h4 style={{ margin: '0 0 1.5rem 0', color: '#1E293B', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.1rem' }}>
+                  <Database size={18} /> Storage Disk Space
+                </h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ color: '#475569', display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 500 }}>
+                      <span style={{ width: '14px', height: '14px', borderRadius: '4px', background: '#2e7d32', display: 'inline-block' }}></span>
+                      Used Space ({((storageBytes || 0) / (1024 * 1024 * 1024)).toFixed(2)}GB)
+                    </span>
+                    <span style={{ fontWeight: 700, color: '#0F172A' }}>{Math.round(((storageBytes || 0) / (2 * 1024 * 1024 * 1024)) * 100)}%</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ color: '#475569', display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 500 }}>
+                      <span style={{ width: '14px', height: '14px', borderRadius: '4px', background: '#CBD5E1', display: 'inline-block' }}></span>
+                      Free Space ({((2 * 1024 * 1024 * 1024 - (storageBytes || 0)) / (1024 * 1024 * 1024)).toFixed(2)}GB)
+                    </span>
+                    <span style={{ fontWeight: 700, color: '#0F172A' }}>{100 - Math.round(((storageBytes || 0) / (2 * 1024 * 1024 * 1024)) * 100)}%</span>
+                  </div>
+                  <div style={{ borderTop: '2px dashed #CBD5E1', margin: '0.5rem 0', paddingTop: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ color: '#0F172A', fontWeight: 700 }}>Total Capacity</span>
+                    <span style={{ fontWeight: 800, fontSize: '1.1rem', color: '#0F172A' }}>2.00GB</span>
+                  </div>
+                </div>
+              </div>
+              <div style={{ 
+                width: '160px', 
+                height: '160px', 
+                borderRadius: '50%', 
+                background: `conic-gradient(#2e7d32 0% ${Math.round(((storageBytes || 0) / (2 * 1024 * 1024 * 1024)) * 100)}%, #CBD5E1 ${Math.round(((storageBytes || 0) / (2 * 1024 * 1024 * 1024)) * 100)}% 100%)`,
+                boxShadow: '0 10px 25px rgba(0,0,0,0.05)',
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto'
+              }}>
+                <div style={{ width: '110px', height: '110px', background: '#F1F5F9', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', boxShadow: 'inset 0 2px 10px rgba(0,0,0,0.05)' }}>
+                  <span style={{ fontSize: '0.75rem', color: '#64748B', fontWeight: 700, letterSpacing: '1px' }}>USED</span>
+                  <span style={{ fontSize: '1.5rem', color: '#2e7d32', fontWeight: 900, lineHeight: 1 }}>{Math.round(((storageBytes || 0) / (2 * 1024 * 1024 * 1024)) * 100)}%</span>
+                </div>
+              </div>
+            </div>
             </div>
           )}
           </div>

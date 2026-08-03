@@ -168,3 +168,17 @@
     grid-template-columns: 1fr;
   }
 }
+/* Added Mobile Responsiveness */
+@media (max-width: 768px) {
+  .hero { padding: 6rem 5% 3rem 5%; }
+  .hero h1 { font-size: 2.2rem; }
+  .introBlock { padding: 3rem 5%; }
+  .introBlock h2 { font-size: 2rem; }
+  .ministriesGrid { grid-template-columns: 1fr; padding: 2rem 5%; gap: 2rem; }
+  .ministryCard { margin-bottom: 1rem; }
+  .impactSection { padding: 3rem 5%; }
+  .impactGrid { grid-template-columns: 1fr; gap: 2rem; }
+  .impactLeft h2 { font-size: 2rem; }
+  .statsGrid { grid-template-columns: 1fr; gap: 1rem; }
+  .statCard { padding: 1.5rem; }
+}

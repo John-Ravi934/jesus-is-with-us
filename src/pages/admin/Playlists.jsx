@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../../lib/supabase';
 import { getPlaylists, createPlaylist, updatePlaylist, deletePlaylist } from '../../services/playlistService';
 import { Plus, Edit2, Trash2, X, Image as ImageIcon, Check, Copy } from 'lucide-react';
+import styles from './AdminStyles.module.css';
 import toast from 'react-hot-toast';
 
 const SQL_SCRIPT = `
@@ -240,12 +241,12 @@ export default function Playlists() {
 
   return (
     <div style={{ background: '#fff', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', padding: '2rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <div>
-          <h1 style={{ fontSize: '1.5rem', color: '#0f172a', marginBottom: '0.5rem' }}>Media & Playlists</h1>
-          <p style={{ color: '#64748b', fontSize: '0.95rem' }}>Manage your sermons, devotionals, and resources.</p>
+      <div className={styles.adminPageHeader}>
+        <div className={styles.adminPageTitle}>
+          <h2>Media & Playlists</h2>
+          <p>Manage your sermons, devotionals, and resources.</p>
         </div>
-        <button className="btn btn-primary" onClick={openModalForNew} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <button className={`${styles.primaryBtn} ${styles.headerBtn}`} onClick={openModalForNew}>
           <Plus size={18} /> Add Playlist
         </button>
       </div>
@@ -257,7 +258,7 @@ export default function Playlists() {
           <ImageIcon size={48} color="#94a3b8" style={{ margin: '0 auto 1rem' }} />
           <h3 style={{ fontSize: '1.2rem', color: '#334155', marginBottom: '0.5rem' }}>No Playlists Yet</h3>
           <p style={{ color: '#64748b', marginBottom: '1.5rem' }}>Add your first playlist to display on the Resources page.</p>
-          <button className="btn btn-primary" onClick={openModalForNew}>Add Playlist</button>
+          <button className={styles.primaryBtn} onClick={openModalForNew}>Add Playlist</button>
         </div>
       ) : (
         <div style={{ overflowX: 'auto' }}>
@@ -284,7 +285,7 @@ export default function Playlists() {
                       )}
                       <div>
                         <strong>{pl.title}</strong>
-                        <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Added {new Date(pl.created_at).toLocaleDateString()}</div>
+                        <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Added {new Date(pl.created_at).toLocaleDateString('en-GB')}</div>
                       </div>
                     </div>
                   </td>
@@ -431,7 +432,7 @@ export default function Playlists() {
                 <button type="button" onClick={() => setIsModalOpen(false)} className="btn btn-secondary" disabled={isSubmitting}>
                   Cancel
                 </button>
-                <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+                <button type="submit" className={styles.primaryBtn} disabled={isSubmitting}>
                   {isSubmitting ? 'Saving...' : (editingPlaylist ? 'Update Playlist' : 'Save Playlist')}
                 </button>
               </div>

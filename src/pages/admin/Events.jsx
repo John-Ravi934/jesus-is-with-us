@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../../lib/supabase';
 import { getEvents, createEvent, updateEvent, deleteEvent } from '../../services/eventService';
 import { Plus, Edit2, Trash2, Calendar, MapPin, X, Copy, Check } from 'lucide-react';
+import styles from './AdminStyles.module.css';
 import toast from 'react-hot-toast';
 
 const SQL_SCRIPT = `
@@ -252,7 +253,7 @@ export default function Events() {
             {SQL_SCRIPT}
           </pre>
         </div>
-        <button className="btn btn-primary" onClick={fetchEvents} style={{ marginTop: '1.5rem' }}>
+        <button className={styles.primaryBtn} onClick={fetchEvents} style={{ marginTop: '1.5rem' }}>
           I have run the script, try again
         </button>
       </div>
@@ -261,12 +262,12 @@ export default function Events() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <div>
+      <div className={styles.adminPageHeader}>
+        <div className={styles.adminPageTitle}>
           <h2>Manage Upcoming Events</h2>
-          <p style={{ color: '#64748b' }}>Create upcoming events for the Home page.</p>
+          <p>Create upcoming events for the Home page.</p>
         </div>
-        <button className="btn btn-primary" onClick={openModalForCreate} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <button className={`${styles.primaryBtn} ${styles.headerBtn}`} onClick={openModalForCreate}>
           <Plus size={18} /> Add Event
         </button>
       </div>
@@ -303,7 +304,7 @@ export default function Events() {
                   </td>
                   <td style={{ padding: '1rem', color: '#64748b' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <Calendar size={14}/> {new Date(event.event_date).toLocaleDateString()}
+                      <Calendar size={14}/> {new Date(event.event_date).toLocaleDateString('en-GB')}
                     </div>
                     {event.event_time && <div style={{ fontSize: '0.8rem' }}>{event.event_time}</div>}
                   </td>
@@ -391,7 +392,7 @@ export default function Events() {
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1.5rem' }}>
                 <button type="button" className="btn btn-secondary" onClick={() => setIsModalOpen(false)}>Cancel</button>
-                <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+                <button type="submit" className={styles.primaryBtn} disabled={isSubmitting}>
                   {isSubmitting ? 'Saving...' : 'Save Event'}
                 </button>
               </div>

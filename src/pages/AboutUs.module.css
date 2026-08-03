@@ -335,3 +335,16 @@
     flex-wrap: wrap;
   }
 }
+/* Added Mobile Responsiveness */
+@media (max-width: 768px) {
+  .hero { padding: 6rem 5% 3rem 5%; }
+  .hero h1 { font-size: 2.2rem; }
+  .aboutBlock, .reverseBlock, .missionVisionGrid { grid-template-columns: 1fr; gap: 2rem; }
+  .aboutText h2 { font-size: 2rem; }
+  .timeline { padding: 2rem 5%; }
+  .timelineContent h3 { font-size: 1.8rem; }
+  .statsRow { flex-direction: column; gap: 1.5rem; }
+  .statBox { width: 100%; padding: 1.5rem; }
+  .ctaSection { padding: 4rem 5%; }
+  .ctaContent h2 { font-size: 1.8rem; }
+}

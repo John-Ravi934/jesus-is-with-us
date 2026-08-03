@@ -76,13 +76,14 @@ export default function Categories() {
           </div>
           <div className={styles.formGroup}>
             <label>Badge Color</label>
-            <div className={styles.inputWrapper}>
+            <div className={styles.colorPickerWrapper}>
               <input 
                 type="color" 
                 value={newCat.color} 
                 onChange={e => setNewCat({...newCat, color: e.target.value})} 
-                style={{height: '40px', padding: '0.2rem'}}
+                className={styles.colorInput}
               />
+              <span className={styles.colorHex}>{newCat.color}</span>
             </div>
           </div>
           <button type="submit" className={styles.primaryBtn} disabled={submitting}>

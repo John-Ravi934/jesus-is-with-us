@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../../lib/supabase';
 import { getGalleryImages, addGalleryImage, deleteGalleryImage } from '../../services/galleryService';
 import { Plus, Trash2, X, Image as ImageIcon } from 'lucide-react';
+import styles from './AdminStyles.module.css';
 
 export default function GalleryAdmin() {
   const [images, setImages] = useState([]);
@@ -97,11 +98,11 @@ export default function GalleryAdmin() {
   };
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <div>
-          <h1 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#0f172a' }}>Photo Gallery</h1>
-          <p style={{ color: '#64748b' }}>Manage images for your public photo gallery.</p>
+    <div style={{ padding: '2rem' }}>
+      <div className={styles.adminPageHeader}>
+        <div className={styles.adminPageTitle}>
+          <h2>Photo Gallery</h2>
+          <p>Manage images for your public photo gallery.</p>
         </div>
         <button 
           onClick={() => {
@@ -110,7 +111,7 @@ export default function GalleryAdmin() {
             setImagePreview('');
             setTitle('');
           }} 
-          className="btn btn-primary"
+          className={`${styles.primaryBtn} ${styles.headerBtn}`}
         >
           <Plus size={20} /> Add Photo
         </button>
@@ -201,7 +202,7 @@ export default function GalleryAdmin() {
 
               <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
                 <button type="button" onClick={() => setIsModalOpen(false)} className="btn btn-outline">Cancel</button>
-                <button type="submit" className="btn btn-primary" disabled={uploading || !imageFile}>
+                <button type="submit" className={styles.primaryBtn} disabled={uploading || !imageFile}>
                   {uploading ? 'Uploading...' : 'Save Photo'}
                 </button>
               </div>
