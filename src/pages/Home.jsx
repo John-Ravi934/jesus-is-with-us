@@ -87,7 +87,7 @@ export default function Home() {
           <h1 className="animate-fade-up">Jesus is <span className="script-accent">with us Church </span>, Salem</h1>
           <p className={`${styles.heroText} animate-fade-up delay-100`}>Together we build the kingdom of God through prayer, worship, and fellowship.</p>
           <div className={`${styles.heroActions} animate-fade-up delay-200`}>
-            <Link to="/fellowship" className="btn btn-primary" style={{ textDecoration: 'none' }}>Join Us Sunday</Link>
+            <Link to="/fellowship#form" className="btn btn-primary" style={{ textDecoration: 'none' }}>Join Us Sunday</Link>
             <a 
               href={liveSettings.is_active && liveSettings.link ? liveSettings.link : "#"}
               target={liveSettings.is_active && liveSettings.link ? "_blank" : "_self"}
@@ -111,8 +111,8 @@ export default function Home() {
               <h2>Jesus is <span className="script-accent">with us Church</span></h2>
               <p>The ministry began in 1970 under Pastor Israel Raj. In 2021, Pastor Yoseppu took over the leadership of the ministry, with strong faith and commitment. We warmly welcome you to join us for worship, fellowship, and Biblical teaching.</p>
               <div className={styles.aboutActions}>
-                <button className="btn btn-secondary"><MapPin size={16} className={styles.btnIcon}/> Location</button>
-                <button className="btn btn-secondary"><Phone size={16} className={styles.btnIcon}/> Contact</button>
+                <Link to="/contact#map" className="btn btn-secondary" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}><MapPin size={16} className={styles.btnIcon}/> Location</Link>
+                <Link to="/contact#contact-form" className="btn btn-secondary" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}><Phone size={16} className={styles.btnIcon}/> Contact</Link>
               </div>
               <div className={styles.locationCard}>
                 <div className={styles.locItem}>

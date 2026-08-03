@@ -139,7 +139,8 @@
   padding: 1rem 1.5rem;
   border-radius: 50px;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin: 0 auto 1.5rem auto;
+  max-width: 600px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   transition: all var(--transition-fast);
 }
@@ -773,6 +774,7 @@
   font-size: 2rem;
   color: #2E7D32;
   margin-bottom: 3rem;
+  padding-top: 3rem;
 }
 
 .darkTheme .timelineTitle {
@@ -874,8 +876,8 @@
   border-radius: 30px;
   padding: 4rem;
   box-shadow: 0 20px 40px rgba(0,0,0,0.05);
-  max-width: 900px;
-  margin: 0 auto;
+  max-width: 700px;
+  margin: 8rem auto 0 auto;
 }
 
 .darkTheme .calendarSection {

@@ -29,6 +29,31 @@ export const uploadPoster = async (file) => {
   };
 };
 
+export const uploadImage = async (file, folder = 'images') => {
+  if (!file) throw new Error("No file provided");
+
+  const fileExt = file.name.split('.').pop();
+  const fileName = `${crypto.randomUUID()}.${fileExt}`;
+  const filePath = `${folder}/${fileName}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from('rhema-posters')
+    .upload(filePath, file, {
+      cacheControl: '3600',
+      upsert: false
+    });
+
+  if (uploadError) {
+    throw new Error(uploadError.message);
+  }
+
+  const { data } = supabase.storage
+    .from('rhema-posters')
+    .getPublicUrl(filePath);
+
+  return data.publicUrl;
+};
+
 export const listPosters = async () => {
   const { data, error } = await supabase.storage
     .from('rhema-posters')

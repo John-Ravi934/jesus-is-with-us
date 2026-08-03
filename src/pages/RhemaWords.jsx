@@ -22,7 +22,7 @@ export default function RhemaWords() {
   const [dbCategories, setDbCategories] = useState(["All"]);
   const [loading, setLoading] = useState(true);
 
-  const [activeTab, setActiveTab] = useState('today'); 
+  const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'today'); 
   const contentRef = useRef(null);
 
   const handleTabChange = (tab) => {
@@ -41,11 +41,17 @@ export default function RhemaWords() {
 
   useEffect(() => {
     // Sync to URL whenever state changes
-    const params = new URLSearchParams();
+    const params = new URLSearchParams(searchParams);
     if (searchQuery) params.set('search', searchQuery);
+    else params.delete('search');
+    
     if (selectedCategory && selectedCategory !== 'All') params.set('category', selectedCategory);
+    else params.delete('category');
+    
+    params.set('tab', activeTab);
+    
     setSearchParams(params, { replace: true });
-  }, [searchQuery, selectedCategory, setSearchParams]);
+  }, [searchQuery, selectedCategory, activeTab, setSearchParams]);
 
   useEffect(() => {
     // Fetch live data from Supabase
