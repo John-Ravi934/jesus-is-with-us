@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import ScrollToTop from './components/ScrollToTop';
 
 // Public Layout & Pages
 import MainLayout from './layouts/MainLayout';
@@ -14,6 +15,7 @@ import Gallery from './pages/Gallery';
 import Resources from './pages/Resources';
 import Contact from './pages/Contact';
 import Donate from './pages/Donate';
+import NotFound from './pages/NotFound';
 
 // Admin Layout & Pages
 import AdminLayout from './layouts/AdminLayout';
@@ -35,7 +37,7 @@ function App() {
     <AuthProvider>
       <Toaster position="top-center" />
       <Router>
-        <Routes>
+                <Routes>
           
           {/* Public Website Routes */}
           <Route path="/" element={<MainLayout />}>
@@ -48,6 +50,7 @@ function App() {
             <Route path="resources" element={<Resources />} />
             <Route path="contact" element={<Contact />} />
             <Route path="donate" element={<Donate />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
 
           {/* Admin Login Route (Unprotected) */}

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../../lib/supabase';
 import { getEvents, createEvent, updateEvent, deleteEvent } from '../../services/eventService';
 import { Plus, Edit2, Trash2, X, Bell, Copy, Check } from 'lucide-react';
+import styles from './AdminStyles.module.css';
 import toast from 'react-hot-toast';
 
 const SQL_SCRIPT = `
@@ -254,7 +255,7 @@ export default function Popups() {
             {SQL_SCRIPT}
           </pre>
         </div>
-        <button className="btn btn-primary" onClick={fetchPopups} style={{ marginTop: '1.5rem' }}>
+        <button className={styles.primaryBtn} onClick={fetchPopups} style={{ marginTop: '1.5rem' }}>
           I have run the script, try again
         </button>
       </div>
@@ -263,12 +264,12 @@ export default function Popups() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem' }}>
-        <div>
+      <div className={styles.adminPageHeader}>
+        <div className={styles.adminPageTitle}>
           <h2>Manage Popups</h2>
-          <p style={{ color: '#64748b' }}>Create and toggle announcements that pop up on the home page.</p>
+          <p>Create and toggle announcements that pop up on the home page.</p>
         </div>
-        <button className="btn btn-primary" onClick={openModalForCreate} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <button className={`${styles.primaryBtn} ${styles.headerBtn}`} onClick={openModalForCreate}>
           <Plus size={18} /> Add Popup
         </button>
       </div>
@@ -279,7 +280,7 @@ export default function Popups() {
         ) : popups.length === 0 ? (
           <p style={{ textAlign: 'center', padding: '2rem', color: '#64748b' }}>No popups found.</p>
         ) : (
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <div style={{overflowX: "auto"}}><table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ borderBottom: '2px solid #e2e8f0', textAlign: 'left' }}>
                 <th style={{ padding: '1rem' }}>Popup Content</th>
@@ -336,6 +337,7 @@ export default function Popups() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
 
@@ -435,7 +437,7 @@ export default function Popups() {
               
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1.5rem' }}>
                 <button type="button" className="btn btn-secondary" onClick={() => setIsModalOpen(false)}>Cancel</button>
-                <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+                <button type="submit" className={styles.primaryBtn} disabled={isSubmitting}>
                   {isSubmitting ? 'Saving...' : 'Save Popup'}
                 </button>
               </div>

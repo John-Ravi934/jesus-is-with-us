@@ -69,7 +69,7 @@ export default function RhemaLibrary() {
         {loading ? (
           <p style={{textAlign: 'center', padding: '2rem'}}>Loading library from Supabase...</p>
         ) : (
-          <table className={styles.dataTable}>
+          <div style={{overflowX: "auto"}}><table className={styles.dataTable}>
             <thead>
               <tr>
                 <th>Poster</th>
@@ -92,7 +92,7 @@ export default function RhemaLibrary() {
                     <div style={{fontSize: '0.8rem', color: '#64748B'}}>{r.title}</div>
                   </td>
                   <td>{r.category}</td>
-                  <td>{new Date(r.date).toLocaleDateString()}</td>
+                  <td>{new Date(r.date).toLocaleDateString('en-GB')}</td>
                   <td>{r.views}</td>
                   <td><span className={`${styles.statusBadge} ${styles[r.status]}`}>{r.status}</span></td>
                   <td>
@@ -110,7 +110,7 @@ export default function RhemaLibrary() {
               ))}
               {filteredData.length === 0 && <tr><td colSpan="7" style={{textAlign: 'center', padding: '2rem'}}>No Rhema words found in Database.</td></tr>}
             </tbody>
-          </table>
+          </table></div>
         )}
       </div>
     </div>

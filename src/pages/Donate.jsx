@@ -57,11 +57,11 @@ export default function Donate() {
   }, []);
   return (
     <>
-      <section className={styles.hero}>
+      <section className={styles.hero} data-aos="fade-in">
         <div className={styles.heroOverlay}></div>
         <div className={`container ${styles.heroContent}`}>
           <span className="subheading animate-fade-up">Partner With Us</span>
-          <h1 className="animate-fade-up delay-100">Make An <span className="script-accent">Impact</span></h1>
+          <h1 data-aos="fade-up" className="animate-fade-up delay-100">Make An <span className="script-accent">Impact</span></h1>
         </div>
       </section>
 
@@ -69,25 +69,25 @@ export default function Donate() {
         <div className="container">
           <div className={styles.introHeader}>
             <span className="subheading">Why Give?</span>
-            <h2>Your Giving Changes <span className="script-accent">Lives</span></h2>
-            <p>Every seed you sow goes directly towards advancing the Gospel, helping those in need, and supporting our various outreach programs. Together, we can make a difference.</p>
+            <h2 data-aos="fade-up">Your Giving Changes <span className="script-accent">Lives</span></h2>
+            <p data-aos="fade-up">Every seed you sow goes directly towards advancing the Gospel, helping those in need, and supporting our various outreach programs. Together, we can make a difference.</p>
           </div>
 
           <div className={styles.impactGrid}>
-            <div className={styles.impactCard}>
+            <div data-aos="fade-up" className={styles.impactCard}>
               <Globe size={40} className={styles.impactIcon} />
-              <h4>Global Missions</h4>
-              <p>Funding crusades and church planting in remote areas.</p>
+              <h4 data-aos="fade-up">Global Missions</h4>
+              <p data-aos="fade-up">Funding crusades and church planting in remote areas.</p>
             </div>
-            <div className={styles.impactCard}>
+            <div data-aos="fade-up" className={styles.impactCard}>
               <Heart size={40} className={styles.impactIcon} />
-              <h4>Community Outreach</h4>
-              <p>Feeding the hungry and providing shelter for the homeless.</p>
+              <h4 data-aos="fade-up">Community Outreach</h4>
+              <p data-aos="fade-up">Feeding the hungry and providing shelter for the homeless.</p>
             </div>
-            <div className={styles.impactCard}>
+            <div data-aos="fade-up" className={styles.impactCard}>
               <BookOpen size={40} className={styles.impactIcon} />
-              <h4>Next Generation</h4>
-              <p>Equipping youth and children with educational resources.</p>
+              <h4 data-aos="fade-up">Next Generation</h4>
+              <p data-aos="fade-up">Equipping youth and children with educational resources.</p>
             </div>
           </div>
         </div>
@@ -100,14 +100,14 @@ export default function Donate() {
             {/* Left Column: Scan to Pay */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
               {settings.upiSections && settings.upiSections.map((section, idx) => (
-                <div key={idx} className={styles.premiumCard}>
+                <div data-aos="fade-up" key={idx} className={styles.premiumCard}>
                   
                   <div className={styles.shieldIconContainer}>
                     <ShieldCheck size={28} color="#fff" />
                   </div>
                   
-                  <h3 className={styles.cardTitle}>Scan to Pay</h3>
-                  <p className={styles.cardSubtitle}>
+                  <h3 data-aos="fade-up" className={styles.cardTitle}>Scan to Pay</h3>
+                  <p data-aos="fade-up" className={styles.cardSubtitle}>
                     <span style={{ color: '#00B9F1' }}>Fast.</span>{' '}
                     <span style={{ color: '#10B981' }}>Secure.</span>{' '}
                     <span style={{ color: '#5f259f' }}>Instant.</span>
@@ -125,7 +125,7 @@ export default function Donate() {
                   <div className={styles.qrContainerWrapper}>
                     <div className={styles.qrContainer}>
                       {section.qrCodeUrl ? (
-                        <img src={section.qrCodeUrl} alt="QR Code" style={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: '12px', position: 'relative', zIndex: 1 }} />
+                        <img data-aos="fade-up" src={section.qrCodeUrl} alt="QR Code" style={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: '12px', position: 'relative', zIndex: 1 }} />
                       ) : (
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', color: '#94a3b8', zIndex: 1 }}>
                           <QrCode size={40} />
@@ -177,13 +177,13 @@ export default function Donate() {
 
             {/* Right Column: Bank Transfer */}
             <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-              <h3 style={{ marginBottom: '2rem', color: 'var(--color-dark-bg)', textAlign: 'center', fontSize: '1.8rem', fontWeight: 800 }}>Other Ways To Give</h3>
+              <h3 data-aos="fade-up" style={{ marginBottom: '2rem', color: 'var(--color-dark-bg)', textAlign: 'center', fontSize: '1.8rem', fontWeight: 800 }}>Other Ways To Give</h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', flex: 1 }}>
                 {settings.bankTransferSections && settings.bankTransferSections.map((section, idx) => (
-                  <div key={idx} className={styles.bankCard}>
+                  <div data-aos="fade-up" key={idx} className={styles.bankCard}>
                     <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
                       <Landmark size={32} color="#ff8c42" />
-                      <h4 style={{ margin: '0 0 0 12px', fontSize: '1.4rem', color: '#fff' }}>
+                      <h4 data-aos="fade-up" style={{ margin: '0 0 0 12px', fontSize: '1.4rem', color: '#fff' }}>
                         {section.title || `Bank Transfer ${settings.bankTransferSections.length > 1 ? `#${idx + 1}` : ''}`}
                       </h4>
                     </div>

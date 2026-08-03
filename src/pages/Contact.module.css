@@ -164,4 +164,12 @@
     padding: 2rem;
   }
 }
-.socialIcon:hover { transform: scale(1.15) translateY(-2px); box-shadow: 0 10px 15px rgba(0,0,0,0.1); background-color: var(--color-dark-bg) !important; color: var(--color-white) !important; }
+.socialIcon:hover { transform: scale(1.15) translateY(-2px); box-shadow: 0 10px 15px rgba(0,0,0,0.1); background-color: var(--color-dark-bg) !important; color: var(--color-white) !important; }/* Added Mobile Responsiveness */
+@media (max-width: 768px) {
+  .hero { padding: 6rem 5% 3rem 5%; }
+  .hero h1 { font-size: 2.2rem; }
+  .contactSection { padding: 3rem 5%; }
+  .contactGrid { grid-template-columns: 1fr; gap: 2rem; }
+  .infoCard, .formCard { padding: 1.5rem; }
+  .mapContainer { height: 300px; }
+}

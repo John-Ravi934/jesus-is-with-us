@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getSubscribers, deleteSubscriber } from '../../services/subscriberService';
 import { Copy, Trash2, Mail } from 'lucide-react';
+import styles from './AdminStyles.module.css';
 
 export default function Subscribers() {
   const [subscribers, setSubscribers] = useState([]);
@@ -41,15 +42,14 @@ export default function Subscribers() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <div>
-          <h1 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#0f172a' }}>Subscribers</h1>
-          <p style={{ color: '#64748b' }}>People who have subscribed to your newsletter via the footer.</p>
+      <div className={styles.adminPageHeader}>
+        <div className={styles.adminPageTitle}>
+          <h2>Subscribers</h2>
+          <p>People who have subscribed to your newsletter via the footer.</p>
         </div>
         <button 
           onClick={handleCopyAll}
-          className="btn btn-primary"
-          style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+          className={`${styles.primaryBtn} ${styles.headerBtn}`}
           disabled={subscribers.length === 0}
         >
           <Copy size={18} /> Copy All Emails

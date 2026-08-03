@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getRhemaWords } from '../../services/rhemaService';
-import { FileText, Eye, Download } from 'lucide-react';
+import { FileText, Eye, Download, PlusCircle, Tags, Settings } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import styles from './AdminStyles.module.css';
 import toast from 'react-hot-toast';
 
@@ -61,39 +62,75 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className={styles.sectionBox}>
-        <div className={styles.sectionHeader}>
-          <h3>Recent Rhema Words</h3>
+      <div className={styles.dashboardLayout}>
+        <div className={styles.dashboardMain}>
+          <div className={styles.sectionBox}>
+            <div className={styles.sectionHeader}>
+              <h3>Recent Rhema Words</h3>
+              <Link to="/admin/rhema/library" className={styles.viewAllBtn}>View All</Link>
+            </div>
+            
+            <div style={{overflowX: 'auto'}}>
+              {loading ? <p style={{padding: '1rem'}}>Loading...</p> : (
+                <table className={styles.dataTable}>
+                  <thead>
+                    <tr>
+                      <th>Poster</th>
+                      <th>Bible Reference</th>
+                      <th>Category</th>
+                      <th>Date</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {recent.map(r => (
+                      <tr key={r.id}>
+                        <td>
+                          <img src={r.poster_url} alt="thumb" style={{width: 50, height: 50, objectFit: 'cover', borderRadius: 6}} />
+                        </td>
+                        <td><strong>{r.bible_reference}</strong></td>
+                        <td>{r.category}</td>
+                        <td>{new Date(r.date).toLocaleDateString('en-GB')}</td>
+                        <td><span className={`${styles.statusBadge} ${styles[r.status]}`}>{r.status}</span></td>
+                      </tr>
+                    ))}
+                    {recent.length === 0 && <tr><td colSpan="5">No data available in Supabase</td></tr>}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </div>
         </div>
         
-        <div style={{overflowX: 'auto'}}>
-          {loading ? <p>Loading...</p> : (
-            <table className={styles.dataTable}>
-              <thead>
-                <tr>
-                  <th>Poster</th>
-                  <th>Bible Reference</th>
-                  <th>Category</th>
-                  <th>Date</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recent.map(r => (
-                  <tr key={r.id}>
-                    <td>
-                      <img src={r.poster_url} alt="thumb" style={{width: 50, height: 50, objectFit: 'cover', borderRadius: 6}} />
-                    </td>
-                    <td><strong>{r.bible_reference}</strong></td>
-                    <td>{r.category}</td>
-                    <td>{new Date(r.date).toLocaleDateString()}</td>
-                    <td><span className={`${styles.statusBadge} ${styles[r.status]}`}>{r.status}</span></td>
-                  </tr>
-                ))}
-                {recent.length === 0 && <tr><td colSpan="5">No data available in Supabase</td></tr>}
-              </tbody>
-            </table>
-          )}
+        <div className={styles.dashboardSidebar}>
+          <div className={styles.sectionBox}>
+            <div className={styles.sectionHeader}>
+              <h3>Quick Actions</h3>
+            </div>
+            <div className={styles.actionList}>
+              <Link to="/admin/rhema/add" className={styles.actionItem}>
+                <div className={styles.actionIcon} style={{background: '#dcfce7', color: '#16a34a'}}><PlusCircle size={20} /></div>
+                <div className={styles.actionText}>
+                  <h4>Publish New Rhema</h4>
+                  <p>Create a new daily word</p>
+                </div>
+              </Link>
+              <Link to="/admin/categories" className={styles.actionItem}>
+                <div className={styles.actionIcon} style={{background: '#fef9c3', color: '#ca8a04'}}><Tags size={20} /></div>
+                <div className={styles.actionText}>
+                  <h4>Manage Categories</h4>
+                  <p>Add or edit tags</p>
+                </div>
+              </Link>
+              <Link to="/admin/settings" className={styles.actionItem}>
+                <div className={styles.actionIcon} style={{background: '#e0e7ff', color: '#4f46e5'}}><Settings size={20} /></div>
+                <div className={styles.actionText}>
+                  <h4>System Settings</h4>
+                  <p>Configure platform</p>
+                </div>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </div>

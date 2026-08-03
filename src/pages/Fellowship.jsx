@@ -31,7 +31,7 @@ export default function Fellowship() {
         <div className={styles.heroOverlay}></div>
         <div className={`container ${styles.heroContent}`}>
           <span className="subheading animate-fade-up">Do Life Together</span>
-          <h1 className="animate-fade-up delay-100">Our <span className="script-accent">Fellowship</span></h1>
+          <h1 data-aos="fade-up" className="animate-fade-up delay-100">Our <span className="script-accent">Fellowship</span></h1>
         </div>
       </section>
 
@@ -39,20 +39,20 @@ export default function Fellowship() {
         <div className="container">
           <div className={styles.headerText}>
             <span className="subheading">Community Groups</span>
-            <h2>Grow In <span className="script-accent">Faith</span> Together</h2>
-            <p>We were not meant to walk this journey alone. Join a fellowship group to connect with others, study the Word, and experience authentic community.</p>
+            <h2 data-aos="fade-up">Grow In <span className="script-accent">Faith</span> Together</h2>
+            <p data-aos="fade-up">We were not meant to walk this journey alone. Join a fellowship group to connect with others, study the Word, and experience authentic community.</p>
           </div>
 
-          <div className={styles.groupsGrid}>
+          <div className={styles.groupsGrid} data-aos="fade-up">
             {groups.map((group, idx) => (
-              <div key={idx} className={styles.groupCard}>
-                <div className={styles.cardHeader}>
+              <div data-aos="fade-up" key={idx} className={styles.groupCard}>
+                <div data-aos="fade-up" className={styles.cardHeader}>
                   <div className={styles.iconWrapper}>
                     <Users size={32} className={styles.groupIcon} />
                   </div>
-                  <h3>{group.title}</h3>
+                  <h3 data-aos="fade-up">{group.title}</h3>
                 </div>
-                <p className={styles.groupDesc}>{group.desc}</p>
+                <p data-aos="fade-up" className={styles.groupDesc}>{group.desc}</p>
                 <div className={styles.groupMeta}>
                   <span><Clock size={16} /> {group.time}</span>
                   <span><MapPin size={16} /> {group.location}</span>
@@ -78,8 +78,8 @@ export default function Fellowship() {
       <section className="gray-section">
         <div className={`container ${styles.joinContainer}`} id="form">
           <div className={styles.joinForm}>
-            <h3>Join A Fellowship</h3>
-            <p>Fill out the form below and our team will connect you with a group.</p>
+            <h3 data-aos="fade-up">Join A Fellowship</h3>
+            <p data-aos="fade-up">Fill out the form below and our team will connect you with a group.</p>
             <form
               onSubmit={async (e) => {
                 e.preventDefault();
@@ -131,10 +131,10 @@ export default function Fellowship() {
               </button>
             </form>
           </div>
-          <div className={styles.whatsappCard} id="whatsapp">
+          <div data-aos="fade-up" className={styles.whatsappCard} id="whatsapp">
             <Heart size={48} color="#fff" style={{ marginBottom: '1rem', position: 'relative', zIndex: 2 }} />
-            <h3>Join Our WhatsApp Community</h3>
-            <p>Get daily encouragements, prayer points, and stay updated with fellowship activities directly on your phone.</p>
+            <h3 data-aos="fade-up">Join Our WhatsApp Community</h3>
+            <p data-aos="fade-up">Get daily encouragements, prayer points, and stay updated with fellowship activities directly on your phone.</p>
             <a href="https://chat.whatsapp.com/your-invite-link" target="_blank" rel="noreferrer" className={styles.whatsappBtn}>
               Join WhatsApp Group
             </a>
