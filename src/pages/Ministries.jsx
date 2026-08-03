@@ -1,15 +1,19 @@
-import { ArrowRight, Users, Heart, BookOpen, Music, Home, Globe } from 'lucide-react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, Users, Heart, BookOpen, Music, Home, Globe, X } from 'lucide-react';
 import styles from './Ministries.module.css';
 
 export default function Ministries() {
   const ministries = [
-    { title: 'Gospel Outreach', icon: <Globe size={40} />, img: 'https://images.unsplash.com/photo-1529070538774-1843cb3265df?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', desc: 'Taking the message of hope across nations through mass crusades.' },
-    { title: 'Village Ministries', icon: <Home size={40} />, img: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', desc: 'Supporting and uplifting remote communities with the love of Christ.' },
-    { title: 'Children Ministries', icon: <Heart size={40} />, img: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', desc: 'Nurturing the faith of the next generation through Sunday School.' },
-    { title: 'Youth Ministries', icon: <Users size={40} />, img: 'https://images.unsplash.com/photo-1511632765486-a01c80cb8ee5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', desc: 'Empowering young adults to live passionately for Jesus.' },
-    { title: 'Family Ministries', icon: <Users size={40} />, img: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', desc: 'Building strong, Christ-centered homes and marriages.' },
-    { title: 'Worship Ministries', icon: <Music size={40} />, img: 'https://images.unsplash.com/photo-1438232992991-995b7058bbb3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', desc: 'Creating an atmosphere for the Holy Spirit to move.' }
+    { title: 'Gospel Outreach', icon: <Globe size={40} />, img: 'src/assets/Gospel Outreach.png', desc: 'Taking the message of hope across nations through mass crusades.' },
+    { title: 'Village Ministries', icon: <Home size={40} />, img: 'src/assets/Village Ministries.png', desc: 'Supporting and uplifting remote communities with the love of Christ.' },
+    { title: 'Children Ministries', icon: <Heart size={40} />, img: 'src/assets/Children Ministries.png', desc: 'Nurturing the faith of the next generation through Sunday School.' },
+    { title: 'Youth Ministries', icon: <Users size={40} />, img: 'src/assets/Youth Meeting.png', desc: 'Empowering young adults to live passionately for Jesus.' },
+    { title: 'Family Ministries', icon: <Users size={40} />, img: 'src/assets/Family Ministries.png', desc: 'Building strong, Christ-centered homes and marriages.' },
+    { title: 'Worship Ministries', icon: <Music size={40} />, img: 'src/assets/Worship Ministries.png', desc: 'Creating an atmosphere for the Holy Spirit to move.' }
   ];
+
+  const [selectedMinistry, setSelectedMinistry] = useState(null);
 
   return (
     <>
@@ -39,7 +43,10 @@ export default function Ministries() {
                 <div className={styles.cardContent}>
                   <h3>{min.title}</h3>
                   <p>{min.desc}</p>
-                  <a href="#" className={styles.learnMore}>Learn More <ArrowRight size={16} /></a>
+                  <a href="#" className={styles.learnMore} onClick={(e) => {
+                    e.preventDefault();
+                    setSelectedMinistry(min);
+                  }}>Learn More <ArrowRight size={16} /></a>
                 </div>
               </div>
             ))}
@@ -53,7 +60,7 @@ export default function Ministries() {
             <span className="subheading">Our Impact</span>
             <h2>Changing Lives <span className="script-accent">Globally</span></h2>
             <p>Through our various ministries, we have seen incredible testimonies of healing, restoration, and salvation. Your participation makes this possible.</p>
-            <button className="btn btn-primary" style={{marginTop: '2rem'}}>Volunteer With Us</button>
+            <Link to="/fellowship#form" className="btn btn-primary" style={{marginTop: '2rem', textDecoration: 'none'}}>Volunteer With Us</Link>
           </div>
           <div className={styles.impactStats}>
             <div className={`glass-dark ${styles.statBox}`}>
@@ -61,7 +68,7 @@ export default function Ministries() {
               <p>Lives Touched</p>
             </div>
             <div className={`glass-dark ${styles.statBox}`}>
-              <h3>500+</h3>
+              <h3>200+</h3>
               <p>Active Volunteers</p>
             </div>
             <div className={`glass-dark ${styles.statBox}`}>
@@ -75,6 +82,57 @@ export default function Ministries() {
           </div>
         </div>
       </section>
+
+      {/* Ministry Popup Modal */}
+      {selectedMinistry && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', 
+          backgroundColor: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: '20px'
+        }} onClick={() => setSelectedMinistry(null)}>
+          <div style={{
+            background: '#fff', borderRadius: '16px', maxWidth: '850px', width: '100%',
+            position: 'relative', animation: 'fadeIn 0.3s ease-out',
+            boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)',
+            display: 'flex', flexDirection: 'row', padding: '24px', gap: '32px'
+          }} onClick={e => e.stopPropagation()} className={styles.popupModal}>
+            <button 
+              onClick={() => setSelectedMinistry(null)}
+              style={{
+                position: 'absolute', top: '16px', right: '16px', zIndex: 10,
+                background: '#f1f5f9', color: '#475569', border: 'none',
+                width: '32px', height: '32px', borderRadius: '50%',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'
+              }}>
+              <X size={18} />
+            </button>
+            <div style={{ flex: '1', borderRadius: '12px', overflow: 'hidden', minHeight: '350px' }}>
+              <img src={selectedMinistry.img} alt={selectedMinistry.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+            </div>
+            <div style={{ flex: '1', display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingRight: '20px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                <div style={{ color: '#f43f5e', background: '#fff1f2', padding: '8px', borderRadius: '50%', display: 'flex' }}>
+                  {selectedMinistry.icon}
+                </div>
+                <h2 style={{ margin: 0, color: '#0f172a', fontSize: '1.8rem' }}>{selectedMinistry.title}</h2>
+              </div>
+              
+              <div style={{ marginBottom: '16px', fontSize: '0.95rem', color: '#475569' }}>
+                <p style={{ margin: '0 0 8px 0' }}><strong>Time:</strong> Weekly Meetings</p>
+                <p style={{ margin: '0' }}><strong>Place:</strong> Main Church Campus</p>
+              </div>
+
+              <p style={{ color: '#475569', fontSize: '1rem', lineHeight: 1.6, marginBottom: '24px' }}>
+                {selectedMinistry.desc} Join us in making a difference and discovering your God-given purpose. Everyone is welcome to participate and serve.
+              </p>
+              
+              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                <Link to="/fellowship#whatsapp" className="btn btn-primary" style={{ textDecoration: 'none', padding: '10px 20px' }}>Get Involved Today</Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

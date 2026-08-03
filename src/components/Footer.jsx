@@ -4,6 +4,7 @@ import { FaFacebook, FaInstagram, FaYoutube, FaTwitter } from 'react-icons/fa';
 import { useState } from 'react';
 import { subscribeEmail } from '../services/subscriberService';
 import styles from './Footer.module.css';
+import logo from '../assets/logo.png';
 
 export default function Footer() {
   const [email, setEmail] = useState('');
@@ -35,9 +36,12 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={`container ${styles.footerGrid}`}>
         <div className={styles.brandCol}>
-          <h2 className={styles.logo}>Jesus Is With Us</h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', marginTop: '-5px' }}>
+            <img src={logo} alt="Jesus Is With Us Logo" style={{ height: '110px', objectFit: 'contain' }} />
+            <h2 className={styles.logoText} style={{ margin: 0, color: '#fff', fontSize: '1.6rem', fontWeight: 'bold', lineHeight: '1.2' }}>Jesus Is With Us<br/><span className="script-accent" style={{ color: 'var(--color-golden-accent)', fontSize: '1.8rem', fontWeight: 'normal' }}>Church</span></h2>
+          </div>
           <p className={styles.tagline}>Transforming Lives Through Worship, Prayer & Gospel Outreach</p>
-          <div className={styles.socials}>
+          <div className={styles.socials} style={{ paddingBottom: '5px' }}>
             <a href="#" className={styles.socialIcon}><FaFacebook size={20} /></a>
             <a href="#" className={styles.socialIcon}><FaInstagram size={20} /></a>
             <a href="#" className={styles.socialIcon}><FaYoutube size={20} /></a>

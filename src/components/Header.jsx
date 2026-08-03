@@ -31,13 +31,13 @@ export default function Header() {
           <Link to="/ministries" onClick={() => setMobileMenuOpen(false)}>Ministries</Link>
           <Link to="/fellowship" onClick={() => setMobileMenuOpen(false)}>Fellowship</Link>
           <Link to="/rhema" onClick={() => setMobileMenuOpen(false)}>Rhema Words</Link>
+          <Link to="/gallery" onClick={() => setMobileMenuOpen(false)}>Gallery</Link>
           <Link to="/resources" onClick={() => setMobileMenuOpen(false)}>Resources</Link>
           <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
           <Link to="/donate" className="btn btn-primary" onClick={() => setMobileMenuOpen(false)}>Donate</Link>
         </nav>
 
         <div className={styles.actions}>
-          <button className={styles.iconBtn}><Search size={24} /></button>
           <button className={styles.mobileToggle} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>

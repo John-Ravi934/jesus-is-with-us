@@ -1,6 +1,6 @@
 .hero {
   position: relative;
-  min-height: 50vh;
+  height: 500px;
   background-image: url('https://images.unsplash.com/photo-1529070538774-1843cb3265df?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
   background-size: cover;
   background-position: center;
@@ -146,8 +146,23 @@
 }
 
 @media (max-width: 768px) {
+  .hero {
+    min-height: 40vh;
+  }
+
   .ministriesGrid {
     grid-template-columns: 1fr;
+  }
+  
+  .impactStats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .popupModal {
+    flex-direction: column !important;
+  }
+  .popupModal > div {
+    min-height: 250px !important;
   }
   .impactContainer {
     grid-template-columns: 1fr;

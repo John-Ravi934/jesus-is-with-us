@@ -1,6 +1,6 @@
 .hero {
   position: relative;
-  min-height: 50vh;
+  height: 500px;
   background-image: url('https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
   background-size: cover;
   background-position: center;
@@ -164,3 +164,4 @@
     padding: 2rem;
   }
 }
+.socialIcon:hover { transform: scale(1.15) translateY(-2px); box-shadow: 0 10px 15px rgba(0,0,0,0.1); background-color: var(--color-dark-bg) !important; color: var(--color-white) !important; }
