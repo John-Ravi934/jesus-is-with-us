@@ -1,5 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { useEffect } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import ScrollToTop from './components/ScrollToTop';
@@ -33,11 +36,19 @@ import Subscribers from './pages/admin/Subscribers';
 import Playlists from './pages/admin/Playlists';
 
 function App() {
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      once: true,
+    });
+  }, []);
+
   return (
     <AuthProvider>
       <Toaster position="top-center" />
       <Router>
-                <Routes>
+        <ScrollToTop />
+        <Routes>
           
           {/* Public Website Routes */}
           <Route path="/" element={<MainLayout />}>

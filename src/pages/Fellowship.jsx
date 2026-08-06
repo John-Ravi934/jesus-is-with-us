@@ -27,7 +27,7 @@ export default function Fellowship() {
 
   return (
     <>
-      <section className={styles.hero} style={{ backgroundImage: `url("${heroBg}")` }}>
+      <section data-aos="fade-up" className={styles.hero} style={{ backgroundImage: `url("${heroBg}")` }}>
         <div className={styles.heroOverlay}></div>
         <div className={`container ${styles.heroContent}`}>
           <span className="subheading animate-fade-up">Do Life Together</span>
@@ -35,7 +35,7 @@ export default function Fellowship() {
         </div>
       </section>
 
-      <section className="light-section">
+      <section data-aos="fade-up" className="light-section">
         <div className="container">
           <div className={styles.headerText}>
             <span className="subheading">Community Groups</span>
@@ -75,7 +75,7 @@ export default function Fellowship() {
         </div>
       </section>
 
-      <section className="gray-section">
+      <section data-aos="fade-up" className="gray-section">
         <div className={`container ${styles.joinContainer}`} id="form">
           <div className={styles.joinForm}>
             <h3 data-aos="fade-up">Join A Fellowship</h3>
@@ -126,7 +126,7 @@ export default function Fellowship() {
                 <option value="sunday">Join as sunday</option>
               </select>
               <textarea placeholder="Your Message (Optional)" rows="4" style={{ width: '100%', marginBottom: '1.5rem', padding: '1rem', borderRadius: '8px', border: '1px solid #e2e8f0', fontFamily: 'inherit', resize: 'vertical' }}></textarea>
-              <button type="submit" className="btn btn-primary" style={{ width: '100%' }} disabled={isSubmitting}>
+              <button data-aos="fade-up" type="submit" className="btn btn-primary" style={{ width: '100%' }} disabled={isSubmitting}>
                 {isSubmitting ? 'Submitting...' : 'Submit Request'}
               </button>
             </form>
@@ -135,7 +135,7 @@ export default function Fellowship() {
             <Heart size={48} color="#fff" style={{ marginBottom: '1rem', position: 'relative', zIndex: 2 }} />
             <h3 data-aos="fade-up">Join Our WhatsApp Community</h3>
             <p data-aos="fade-up">Get daily encouragements, prayer points, and stay updated with fellowship activities directly on your phone.</p>
-            <a href="https://chat.whatsapp.com/your-invite-link" target="_blank" rel="noreferrer" className={styles.whatsappBtn}>
+            <a data-aos="fade-up" href="https://chat.whatsapp.com/your-invite-link" target="_blank" rel="noreferrer" className={styles.whatsappBtn}>
               Join WhatsApp Group
             </a>
           </div>

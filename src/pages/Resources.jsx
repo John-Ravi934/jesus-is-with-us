@@ -56,7 +56,7 @@ export default function Resources() {
         </div>
       </section>
 
-      <section className="light-section">
+      <section data-aos="fade-up" className="light-section">
         <div className="container">
           <div className={styles.searchBar}>
             <Search className={styles.searchIcon} size={20} />
@@ -66,12 +66,12 @@ export default function Resources() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <button className="btn btn-primary">Search</button>
+            <button data-aos="fade-up" className="btn btn-primary">Search</button>
           </div>
 
           <div className={styles.categories}>
             {categories.map((cat, idx) => (
-              <button 
+              <button data-aos="fade-up" 
                 key={idx} 
                 className={`${styles.catBtn} ${activeTab === cat ? styles.active : ''}`}
                 onClick={() => {
@@ -120,7 +120,7 @@ export default function Resources() {
                       <img data-aos="fade-up" src={pl.image_url || 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&w=400&q=80'} alt={pl.title} />
                     </div>
                     <h3 data-aos="fade-up">{pl.title}</h3>
-                    <a href={pl.link_url || '#'} target={pl.link_url ? "_blank" : "_self"} rel="noreferrer" className={styles.viewPlaylist}>
+                    <a data-aos="fade-up" href={pl.link_url || '#'} target={pl.link_url ? "_blank" : "_self"} rel="noreferrer" className={styles.viewPlaylist}>
                       View full playlist
                     </a>
                   </div>
@@ -131,7 +131,7 @@ export default function Resources() {
           
           {!loading && !error && hasMore && (
             <div className={styles.loadMore}>
-              <button className="btn btn-secondary" onClick={handleLoadMore}>Load More Playlists</button>
+              <button data-aos="fade-up" className="btn btn-secondary" onClick={handleLoadMore}>Load More Playlists</button>
             </div>
           )}
         </div>
