@@ -14,7 +14,7 @@ export default function AboutUs() {
       </section>
 
       {/* Alternating About Sections matching the Unique UI Design */}
-      <section style={{ display: 'flex', flexDirection: 'column' }}>
+      <section data-aos="fade-up" style={{ display: 'flex', flexDirection: 'column' }}>
         
         {/* Block 1: Our Story */}
         <div style={{ background: '#ffffff', padding: '4rem 0' }}>
@@ -45,9 +45,9 @@ export default function AboutUs() {
               <p data-aos="fade-up">Welcome to our family. We believe that no matter where you are in life, God has a unique purpose for you. Let's walk this journey of faith together.</p>
               
               <div className={styles.socialLinks}>
-                <a href="#">YouTube</a>
-                <a href="#">Instagram</a>
-                <a href="#">Facebook</a>
+                <a data-aos="fade-up" href="#">YouTube</a>
+                <a data-aos="fade-up" href="#">Instagram</a>
+                <a data-aos="fade-up" href="#">Facebook</a>
               </div>
             </div>
           </div>
@@ -56,7 +56,7 @@ export default function AboutUs() {
       </section>
 
       {/* Block 3: Mission & Vision (Dark Section) */}
-      <section className="dark-section" style={{ padding: '6rem 0' }}>
+      <section data-aos="fade-up" className="dark-section" style={{ padding: '6rem 0' }}>
         <div className="container">
           <div className={styles.missionVisionGrid}>
             <div className={styles.mvContent}>
@@ -75,7 +75,7 @@ export default function AboutUs() {
       </section>
 
       {/* Block 4: Milestones of Faith - Our Church Journey */}
-      <section className="light-section" style={{ padding: '6rem 0' }}>
+      <section data-aos="fade-up" className="light-section" style={{ padding: '6rem 0' }}>
         <div className="container">
           <div className={styles.milestoneHeader}>
             <span className="subheading">Our Church Journey</span>
@@ -148,7 +148,7 @@ export default function AboutUs() {
         <div className={`container ${styles.ctaContent}`}>
           <h2 data-aos="fade-up">Need <span className="script-accent">Prayer?</span></h2>
           <p data-aos="fade-up">Our intercessory team is standing by to pray with you.</p>
-          <Link to="/contact#prayer" className="btn btn-primary" style={{marginTop: '2rem', textDecoration: 'none'}}>Submit Prayer Request</Link>
+          <Link data-aos="fade-up" to="/contact#prayer" className="btn btn-primary" style={{marginTop: '2rem', textDecoration: 'none'}}>Submit Prayer Request</Link>
         </div>
       </section>
     </>

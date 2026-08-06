@@ -25,7 +25,7 @@ export default function Ministries() {
         </div>
       </section>
 
-      <section className="gray-section">
+      <section data-aos="fade-up" className="gray-section">
         <div className="container">
           <div className={styles.intro}>
             <span className="subheading">Serving Together</span>
@@ -43,7 +43,7 @@ export default function Ministries() {
                 <div data-aos="fade-up" className={styles.cardContent}>
                   <h3 data-aos="fade-up">{min.title}</h3>
                   <p data-aos="fade-up">{min.desc}</p>
-                  <a href="#" className={styles.learnMore} onClick={(e) => {
+                  <a data-aos="fade-up" href="#" className={styles.learnMore} onClick={(e) => {
                     e.preventDefault();
                     setSelectedMinistry(min);
                   }}>Learn More <ArrowRight size={16} /></a>
@@ -54,13 +54,13 @@ export default function Ministries() {
         </div>
       </section>
       
-      <section className="dark-section">
+      <section data-aos="fade-up" className="dark-section">
         <div className={`container ${styles.impactContainer}`}>
           <div className={styles.impactText}>
             <span className="subheading">Our Impact</span>
             <h2 data-aos="fade-up">Changing Lives <span className="script-accent">Globally</span></h2>
             <p data-aos="fade-up">Through our various ministries, we have seen incredible testimonies of healing, restoration, and salvation. Your participation makes this possible.</p>
-            <Link to="/fellowship#form" className="btn btn-primary" style={{marginTop: '2rem', textDecoration: 'none'}}>Volunteer With Us</Link>
+            <Link data-aos="fade-up" to="/fellowship#form" className="btn btn-primary" style={{marginTop: '2rem', textDecoration: 'none'}}>Volunteer With Us</Link>
           </div>
           <div className={styles.impactStats}>
             <div className={`glass-dark ${styles.statBox}`}>
@@ -96,7 +96,7 @@ export default function Ministries() {
             boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)',
             display: 'flex', flexDirection: 'row', padding: '24px', gap: '32px'
           }} onClick={e => e.stopPropagation()} className={styles.popupModal}>
-            <button 
+            <button data-aos="fade-up" 
               onClick={() => setSelectedMinistry(null)}
               style={{
                 position: 'absolute', top: '16px', right: '16px', zIndex: 10,
@@ -127,7 +127,7 @@ export default function Ministries() {
               </p>
               
               <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                <Link to="/fellowship#whatsapp" className="btn btn-primary" style={{ textDecoration: 'none', padding: '10px 20px' }}>Get Involved Today</Link>
+                <Link data-aos="fade-up" to="/fellowship#whatsapp" className="btn btn-primary" style={{ textDecoration: 'none', padding: '10px 20px' }}>Get Involved Today</Link>
               </div>
             </div>
           </div>

@@ -65,7 +65,7 @@ export default function Donate() {
         </div>
       </section>
 
-      <section className="gray-section">
+      <section data-aos="fade-up" className="gray-section">
         <div className="container">
           <div className={styles.introHeader}>
             <span className="subheading">Why Give?</span>
@@ -93,7 +93,7 @@ export default function Donate() {
         </div>
       </section>
 
-      <section className="light-section" style={{ background: '#f8fafc' }}>
+      <section data-aos="fade-up" className="light-section" style={{ background: '#f8fafc' }}>
         <div className="container">
           <div style={{ display: 'grid', gap: '3rem', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', alignItems: 'stretch' }}>
             
@@ -147,7 +147,7 @@ export default function Donate() {
                         <span className={styles.detailLabel}>UPI ID</span>
                         <span className={styles.detailValue}>{section.upiId}</span>
                       </div>
-                      <button className={styles.copyBtn} onClick={() => handleCopy(section.upiId, 'UPI ID')}>
+                      <button data-aos="fade-up" className={styles.copyBtn} onClick={() => handleCopy(section.upiId, 'UPI ID')}>
                         <Copy size={16} />
                       </button>
                     </div>
@@ -160,7 +160,7 @@ export default function Donate() {
                         <span className={styles.detailLabel}>UPI NUMBER</span>
                         <span className={styles.detailValue}>{section.upiNumber}</span>
                       </div>
-                      <button className={styles.copyBtn} onClick={() => handleCopy(section.upiNumber, 'UPI Number')}>
+                      <button data-aos="fade-up" className={styles.copyBtn} onClick={() => handleCopy(section.upiNumber, 'UPI Number')}>
                         <Copy size={16} />
                       </button>
                     </div>

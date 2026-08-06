@@ -113,7 +113,7 @@ export default function RhemaWords() {
     <div className={`${styles.rhemaApp} ${darkMode ? styles.darkTheme : ''}`}>
       
       {/* Hero Section */}
-      <section className={styles.rhemaHero}>
+      <section data-aos="fade-up" className={styles.rhemaHero}>
         <div className={styles.heroOverlay}></div>
         <div className={`container ${styles.heroContent}`}>
           <h1 data-aos="fade-up" className="animate-fade-up">Daily Rhema Words</h1>
@@ -135,11 +135,11 @@ export default function RhemaWords() {
           </div>
 
           <div className={`${styles.heroTabs} animate-fade-up delay-300`}>
-            <button className={`${styles.tabBtn} ${activeTab === 'today' ? styles.activeTab : ''}`} onClick={() => handleTabChange('today')}>Today's Word</button>
-            <button className={`${styles.tabBtn} ${activeTab === 'archive' ? styles.activeTab : ''}`} onClick={() => handleTabChange('archive')}>Archive</button>
-            <button className={`${styles.tabBtn} ${activeTab === 'timeline' ? styles.activeTab : ''}`} onClick={() => handleTabChange('timeline')}>Timeline</button>
-            <button className={`${styles.tabBtn} ${activeTab === 'calendar' ? styles.activeTab : ''}`} onClick={() => handleTabChange('calendar')}>Calendar</button>
-            <button className={`${styles.tabBtn} ${activeTab === 'favorites' ? styles.activeTab : ''}`} onClick={() => handleTabChange('favorites')}><Heart size={16}/> Favorites</button>
+            <button data-aos="fade-up" className={`${styles.tabBtn} ${activeTab === 'today' ? styles.activeTab : ''}`} onClick={() => handleTabChange('today')}>Today's Word</button>
+            <button data-aos="fade-up" className={`${styles.tabBtn} ${activeTab === 'archive' ? styles.activeTab : ''}`} onClick={() => handleTabChange('archive')}>Archive</button>
+            <button data-aos="fade-up" className={`${styles.tabBtn} ${activeTab === 'timeline' ? styles.activeTab : ''}`} onClick={() => handleTabChange('timeline')}>Timeline</button>
+            <button data-aos="fade-up" className={`${styles.tabBtn} ${activeTab === 'calendar' ? styles.activeTab : ''}`} onClick={() => handleTabChange('calendar')}>Calendar</button>
+            <button data-aos="fade-up" className={`${styles.tabBtn} ${activeTab === 'favorites' ? styles.activeTab : ''}`} onClick={() => handleTabChange('favorites')}><Heart size={16}/> Favorites</button>
           </div>
         </div>
       </section>
@@ -161,7 +161,7 @@ export default function RhemaWords() {
               <p data-aos="fade-up">Lives Touched</p>
             </div>
             <div className={styles.themeToggle}>
-              <button onClick={() => setDarkMode(!darkMode)} className={styles.toggleBtn}>
+              <button data-aos="fade-up" onClick={() => setDarkMode(!darkMode)} className={styles.toggleBtn}>
                 {darkMode ? '☀️ Light Mode' : '🌙 Dark Mode'}
               </button>
             </div>
@@ -193,7 +193,7 @@ export default function RhemaWords() {
 
         {/* TODAY'S POSTER GALLERY VIEW */}
         {!loading && activeTab === 'today' && featuredWord && (
-          <div className={styles.gallerySection}>
+          <div data-aos="fade-up" className={styles.gallerySection}>
             <TodayRhemaView 
               rhemaDatabase={filteredArchive} // Pass filtered to keep previous/next within the filter!
               featuredIndex={filteredArchive.findIndex(w => w.id === featuredWord.id) >= 0 ? filteredArchive.findIndex(w => w.id === featuredWord.id) : 0}
@@ -220,7 +220,7 @@ export default function RhemaWords() {
 
         {/* ARCHIVE VIEW */}
         {!loading && activeTab === 'archive' && (
-          <div className={styles.archiveSection}>
+          <div data-aos="fade-up" className={styles.archiveSection}>
             <div className={styles.resultsCount}>
               Showing {filteredArchive.length} results
             </div>
@@ -252,7 +252,7 @@ export default function RhemaWords() {
 
         {/* TIMELINE VIEW */}
         {!loading && activeTab === 'timeline' && (
-          <div className={styles.timelineSection}>
+          <div data-aos="fade-up" className={styles.timelineSection}>
             <h2 data-aos="fade-up" className={styles.timelineTitle}>Devotional History</h2>
             <div className={styles.timelineContainer}>
               {filteredArchive.map((word) => {
@@ -287,7 +287,7 @@ export default function RhemaWords() {
 
         {/* FAVORITES VIEW */}
         {!loading && activeTab === 'favorites' && (
-          <div className={styles.archiveSection}>
+          <div data-aos="fade-up" className={styles.archiveSection}>
             <h2 data-aos="fade-up" className={styles.timelineTitle}>Your Favorite Collections</h2>
             <div className={styles.archiveGrid}>
               {filteredArchive.filter(w => favorites.includes(w.id)).map(word => {

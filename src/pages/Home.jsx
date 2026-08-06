@@ -87,8 +87,8 @@ export default function Home() {
           <h1 data-aos="fade-up" className="animate-fade-up">Jesus is <span className="script-accent">with us Church </span>, Salem</h1>
           <p data-aos="fade-up" className={`${styles.heroText} animate-fade-up delay-100`}>Together we build the kingdom of God through prayer, worship, and fellowship.</p>
           <div className={`${styles.heroActions} animate-fade-up delay-200`}>
-            <Link to="/fellowship#form" className="btn btn-primary" style={{ textDecoration: 'none' }}>Join Us Sunday</Link>
-            <a 
+            <Link data-aos="fade-up" to="/fellowship#form" className="btn btn-primary" style={{ textDecoration: 'none' }}>Join Us Sunday</Link>
+            <a data-aos="fade-up" 
               href={liveSettings.is_active && liveSettings.link ? liveSettings.link : "#"}
               target={liveSettings.is_active && liveSettings.link ? "_blank" : "_self"}
               rel="noreferrer"
@@ -103,7 +103,7 @@ export default function Home() {
       </section>
 
       {/* 2. Alternating About Sections */}
-      <section className="light-section" style={{ display: 'flex', flexDirection: 'column' }}>
+      <section data-aos="fade-up" className="light-section" style={{ display: 'flex', flexDirection: 'column' }}>
         {/* Block 1 */}
         <div style={{ background: '#ffffff', padding: '4rem 0' }}>
           <div className={`container ${styles.aboutBlock}`} style={{ margin: '0 auto', paddingTop: 0, paddingBottom: 0 }}>
@@ -111,8 +111,8 @@ export default function Home() {
               <h2 data-aos="fade-up">Jesus is <span className="script-accent">with us Church</span></h2>
               <p data-aos="fade-up">The ministry began in 1970 under Pastor Israel Raj. In 2021, Pastor Yoseppu took over the leadership of the ministry, with strong faith and commitment. We warmly welcome you to join us for worship, fellowship, and Biblical teaching.</p>
               <div className={styles.aboutActions}>
-                <Link to="/contact#map" className="btn btn-secondary" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}><MapPin size={16} className={styles.btnIcon}/> Location</Link>
-                <Link to="/contact#contact-form" className="btn btn-secondary" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}><Phone size={16} className={styles.btnIcon}/> Contact</Link>
+                <Link data-aos="fade-up" to="/contact#map" className="btn btn-secondary" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}><MapPin size={16} className={styles.btnIcon}/> Location</Link>
+                <Link data-aos="fade-up" to="/contact#contact-form" className="btn btn-secondary" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}><Phone size={16} className={styles.btnIcon}/> Contact</Link>
               </div>
               <div data-aos="fade-up" className={styles.locationCard}>
                 <div className={styles.locItem}>
@@ -149,9 +149,9 @@ export default function Home() {
                 ))}
               </div>
               <div className={styles.socialLinks}>
-                <a href="#">YouTube</a>
-                <a href="#">Instagram</a>
-                <a href="#">Facebook</a>
+                <a data-aos="fade-up" href="#">YouTube</a>
+                <a data-aos="fade-up" href="#">Instagram</a>
+                <a data-aos="fade-up" href="#">Facebook</a>
               </div>
             </div>
           </div>
@@ -201,7 +201,7 @@ export default function Home() {
       </section>
 
       {/* 4. Next Upcoming */}
-      <section className="light-section">
+      <section data-aos="fade-up" className="light-section">
         <div className={`container ${styles.upcomingGrid}`}>
           <div className={styles.upcomingHeaderFull}>
             <h2 data-aos="fade-up">Next <span className="script-accent">Upcoming</span></h2>
@@ -232,7 +232,7 @@ export default function Home() {
                     <div className={styles.posterCaption}>
                       <h4 data-aos="fade-up">{featuredEvent.title}</h4>
                       {featuredEvent.learn_more_url && (
-                        <a href={featuredEvent.learn_more_url} target="_blank" rel="noreferrer" className="btn btn-primary btn-sm" style={{textDecoration: 'none'}}>
+                        <a data-aos="fade-up" href={featuredEvent.learn_more_url} target="_blank" rel="noreferrer" className="btn btn-primary btn-sm" style={{textDecoration: 'none'}}>
                           <PlayCircle size={16} /> Learn More
                         </a>
                       )}
@@ -293,7 +293,7 @@ export default function Home() {
       </section>
 
       {/* 5. Sermons & Gallery Split */}
-      <section className="gray-section">
+      <section data-aos="fade-up" className="gray-section">
         <div className={`container ${styles.splitGrid}`}>
           <div className={styles.splitColumn}>
             <h2 data-aos="fade-up"><span className="script-accent">Latest</span> Sermons</h2>
@@ -303,7 +303,7 @@ export default function Home() {
               <img data-aos="fade-up" src="https://images.unsplash.com/photo-1438232992991-995b7058bbb3?ixlib=rb-4.0.3&w=400&q=80" alt="Sermon 3" className={styles.stackItem3} />
             </div>
             <p data-aos="fade-up" className={styles.splitDesc}>Explore a collection of life-changing messages from our Sunday services and special events.</p>
-            <Link to="/resources" className={styles.viewAll}>View All Sermons <ArrowRight size={16} /></Link>
+            <Link data-aos="fade-up" to="/resources" className={styles.viewAll}>View All Sermons <ArrowRight size={16} /></Link>
           </div>
 
           <div className={styles.splitColumn}>
@@ -316,7 +316,7 @@ export default function Home() {
               <p data-aos="fade-up" className={styles.splitDesc}>
                 Get a glimpse of the vibrant life, worship, and fellowship at our church.
               </p>
-              <Link to="/gallery" className={styles.viewAll}>
+              <Link data-aos="fade-up" to="/gallery" className={styles.viewAll}>
                 View Full Gallery <ArrowRight size={16} />
               </Link>
           </div>
