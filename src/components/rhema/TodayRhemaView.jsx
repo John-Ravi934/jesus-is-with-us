@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import styles from './RhemaComponents.module.css';
 import { incrementViews } from '../../services/rhemaService';
@@ -14,7 +14,13 @@ export default function TodayRhemaView({
   setFeaturedIndex 
 }) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [activeLangIndex, setActiveLangIndex] = useState(0);
   const featuredWord = rhemaDatabase[featuredIndex] || null;
+
+  // Reset language index when featured word changes
+  useEffect(() => {
+    setActiveLangIndex(0);
+  }, [featuredIndex]);
 
   const handlePrev = () => {
     if (featuredIndex < rhemaDatabase.length - 1) {
@@ -44,6 +50,13 @@ export default function TodayRhemaView({
 
   if (!featuredWord) return null;
 
+  const isValidUrl = (url) => url && typeof url === 'string' && url.startsWith('http');
+
+  const posters = [];
+  if (isValidUrl(featuredWord.tamil_poster_url)) posters.push(featuredWord.tamil_poster_url);
+  if (isValidUrl(featuredWord.poster_url)) posters.push(featuredWord.poster_url);
+  const currentPosterUrl = posters[activeLangIndex] || posters[0];
+
   // Filter out the currently featured word for the "Previous" grid
   const previousWords = rhemaDatabase.filter((_, idx) => idx !== featuredIndex);
 
@@ -52,13 +65,19 @@ export default function TodayRhemaView({
       <PosterModal 
         open={lightboxOpen} 
         setOpen={setLightboxOpen} 
-        posterUrl={featuredWord.poster_url} 
+        posterUrl={currentPosterUrl} 
       />
 
       <div className={styles.galleryContainer}>
         {/* LEFT COLUMN: POSTER */}
         <div className={styles.posterColumn} onClick={openLightbox}>
-          <TodayPoster posterUrl={featuredWord.poster_url} />
+          <TodayPoster 
+            posters={posters} 
+            activeIndex={activeLangIndex}
+            onChangeIndex={(idx) => {
+              setActiveLangIndex(idx);
+            }}
+          />
         </div>
 
         {/* RIGHT COLUMN: INFORMATION PANEL */}

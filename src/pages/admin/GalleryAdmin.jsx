@@ -3,10 +3,12 @@ import { supabase } from '../../lib/supabase';
 import { getGalleryImages, addGalleryImage, deleteGalleryImage } from '../../services/galleryService';
 import { Plus, Trash2, X, Image as ImageIcon } from 'lucide-react';
 import styles from './AdminStyles.module.css';
+import ConfirmModal from '../../components/admin/ConfirmModal';
 
 export default function GalleryAdmin() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [deleteId, setDeleteId] = useState(null);
   
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -86,18 +88,20 @@ export default function GalleryAdmin() {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to remove this image from the gallery?')) {
-      try {
-        await deleteGalleryImage(id);
-        fetchImages();
-      } catch (err) {
-        console.error("Error deleting image", err);
-      }
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    try {
+      await deleteGalleryImage(deleteId);
+      fetchImages();
+    } catch (err) {
+      console.error("Error deleting image", err);
+    } finally {
+      setDeleteId(null);
     }
   };
 
   return (
+    <>
     <div style={{ padding: '2rem' }}>
       <div className={styles.adminPageHeader}>
         <div className={styles.adminPageTitle}>
@@ -137,7 +141,7 @@ export default function GalleryAdmin() {
                   {img.title || 'Untitled'}
                 </span>
                 <button 
-                  onClick={() => handleDelete(img.id)}
+                  onClick={() => setDeleteId(img.id)}
                   style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '4px' }}
                   title="Delete Image"
                 >
@@ -211,5 +215,13 @@ export default function GalleryAdmin() {
         </div>
       )}
     </div>
+    <ConfirmModal 
+      isOpen={!!deleteId}
+      title="Delete Photo"
+      message="Are you sure you want to remove this image from the gallery?"
+      onConfirm={confirmDelete}
+      onCancel={() => setDeleteId(null)}
+    />
+    </>
   );
 }

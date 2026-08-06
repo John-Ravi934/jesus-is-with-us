@@ -4,6 +4,7 @@ import { getEvents, createEvent, updateEvent, deleteEvent } from '../../services
 import { Plus, Edit2, Trash2, Calendar, MapPin, X, Copy, Check } from 'lucide-react';
 import styles from './AdminStyles.module.css';
 import toast from 'react-hot-toast';
+import ConfirmModal from '../../components/admin/ConfirmModal';
 
 const SQL_SCRIPT = `
 CREATE TABLE IF NOT EXISTS public.events (
@@ -65,6 +66,7 @@ export default function Events() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
 
   // Form State
   const [title, setTitle] = useState('');
@@ -220,16 +222,17 @@ export default function Events() {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this event?")) {
-      try {
-        await deleteEvent(id);
-        toast.success("Event deleted");
-        fetchEvents();
-      } catch (err) {
-        toast.error(err.message || "Failed to delete");
-        console.error(err);
-      }
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    try {
+      await deleteEvent(deleteId);
+      toast.success("Event deleted");
+      fetchEvents();
+    } catch (err) {
+      toast.error(err.message || "Failed to delete");
+      console.error(err);
+    } finally {
+      setDeleteId(null);
     }
   };
 
@@ -261,6 +264,7 @@ export default function Events() {
   }
 
   return (
+    <>
     <div>
       <div className={styles.adminPageHeader}>
         <div className={styles.adminPageTitle}>
@@ -312,7 +316,7 @@ export default function Events() {
                     <button onClick={() => openModalForEdit(event)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#3b82f6', marginRight: '1rem' }}>
                       <Edit2 size={18} />
                     </button>
-                    <button onClick={() => handleDelete(event.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444' }}>
+                    <button onClick={() => setDeleteId(event.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444' }}>
                       <Trash2 size={18} />
                     </button>
                   </td>
@@ -401,5 +405,13 @@ export default function Events() {
         </div>
       )}
     </div>
+    <ConfirmModal 
+      isOpen={!!deleteId}
+      title="Delete Event"
+      message="Are you sure you want to delete this event?"
+      onConfirm={confirmDelete}
+      onCancel={() => setDeleteId(null)}
+    />
+    </>
   );
 }

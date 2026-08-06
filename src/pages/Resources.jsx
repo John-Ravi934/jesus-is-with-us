@@ -71,7 +71,7 @@ export default function Resources() {
 
           <div className={styles.categories}>
             {categories.map((cat, idx) => (
-              <button data-aos="fade-up" 
+              <button
                 key={idx} 
                 className={`${styles.catBtn} ${activeTab === cat ? styles.active : ''}`}
                 onClick={() => {
@@ -101,26 +101,26 @@ export default function Resources() {
           ) : error ? (
              <div style={{ textAlign: 'center', padding: '4rem', color: '#ef4444', background: '#fef2f2', borderRadius: '12px' }}>
               <AlertCircle size={48} style={{ margin: '0 auto 1rem' }} />
-              <h3 data-aos="fade-up">Database Setup Required</h3>
-              <p data-aos="fade-up">The Playlists table hasn't been created yet. Please run the SQL script in your Supabase dashboard.</p>
+              <h3>Database Setup Required</h3>
+              <p>The Playlists table hasn't been created yet. Please run the SQL script in your Supabase dashboard.</p>
             </div>
           ) : visiblePlaylists.length === 0 ? (
              <div style={{ textAlign: 'center', padding: '4rem', color: '#64748b', background: '#f8fafc', borderRadius: '12px', border: '2px dashed #e2e8f0' }}>
               <FolderOpen size={48} color="#cbd5e1" style={{ margin: '0 auto 1rem' }} />
-              <h3 data-aos="fade-up">No Playlists Found</h3>
-              <p data-aos="fade-up">Try adjusting your search or category filters.</p>
+              <h3>No Playlists Found</h3>
+              <p>Try adjusting your search or category filters.</p>
             </div>
           ) : (
             <div className={styles.playlistGrid}>
               {visiblePlaylists.map((pl) => (
-                <div data-aos="fade-up" key={pl.id} className={styles.folderCard}>
+                <div key={pl.id} className={styles.folderCard}>
                   <div className={styles.folderTab}></div>
                   <div className={styles.folderBody}>
                     <div className={styles.folderImageWrapper}>
-                      <img data-aos="fade-up" src={pl.image_url || 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&w=400&q=80'} alt={pl.title} />
+                      <img src={pl.image_url || 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&w=400&q=80'} alt={pl.title} />
                     </div>
-                    <h3 data-aos="fade-up">{pl.title}</h3>
-                    <a data-aos="fade-up" href={pl.link_url || '#'} target={pl.link_url ? "_blank" : "_self"} rel="noreferrer" className={styles.viewPlaylist}>
+                    <h3>{pl.title}</h3>
+                    <a href={pl.link_url || '#'} target={pl.link_url ? "_blank" : "_self"} rel="noreferrer" className={styles.viewPlaylist}>
                       View full playlist
                     </a>
                   </div>

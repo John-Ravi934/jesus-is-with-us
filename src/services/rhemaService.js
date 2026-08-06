@@ -51,7 +51,7 @@ export const deleteRhema = async (id) => {
   // 1. Fetch the record first to get the poster URL
   const { data: record } = await supabase
     .from('rhema_words')
-    .select('poster_url')
+    .select('poster_url, tamil_poster_url')
     .eq('id', id)
     .single();
 
@@ -67,6 +67,14 @@ export const deleteRhema = async (id) => {
   if (record && record.poster_url) {
     // Extract the file path (e.g. 'posters/filename.jpg') from the full public URL
     const urlParts = record.poster_url.split('rhema-posters/');
+    if (urlParts.length > 1) {
+      const filePath = urlParts[1];
+      await supabase.storage.from('rhema-posters').remove([filePath]);
+    }
+  }
+
+  if (record && record.tamil_poster_url) {
+    const urlParts = record.tamil_poster_url.split('rhema-posters/');
     if (urlParts.length > 1) {
       const filePath = urlParts[1];
       await supabase.storage.from('rhema-posters').remove([filePath]);

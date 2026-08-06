@@ -3,12 +3,14 @@ import { getCategories, addCategory, deleteCategory } from '../../services/categ
 import { Plus, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import styles from './AdminStyles.module.css';
+import ConfirmModal from '../../components/admin/ConfirmModal';
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [newCat, setNewCat] = useState({ name: '', color: '#2E7D32' });
+  const [deleteId, setDeleteId] = useState(null);
 
   useEffect(() => {
     loadCategories();
@@ -43,19 +45,21 @@ export default function Categories() {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this category?")) {
-      try {
-        await deleteCategory(id);
-        toast.success("Category deleted");
-        loadCategories();
-      } catch (e) {
-        toast.error(e.message || "Failed to delete");
-      }
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    try {
+      await deleteCategory(deleteId);
+      toast.success("Category deleted");
+      loadCategories();
+    } catch (e) {
+      toast.error(e.message || "Failed to delete");
+    } finally {
+      setDeleteId(null);
     }
   };
 
   return (
+    <>
     <div style={{display: 'flex', gap: '2rem', flexWrap: 'wrap'}}>
       <div className={styles.sectionBox} style={{flex: '1 1 300px'}}>
         <div className={styles.sectionHeader}>
@@ -115,7 +119,7 @@ export default function Categories() {
                   <td><strong>{c.name}</strong></td>
                   <td>{c.slug}</td>
                   <td style={{textAlign: 'right'}}>
-                    <button className={`${styles.iconBtn} ${styles.delete}`} onClick={() => handleDelete(c.id)} title="Delete">
+                    <button className={`${styles.iconBtn} ${styles.delete}`} onClick={() => setDeleteId(c.id)} title="Delete">
                       <Trash2 size={16}/>
                     </button>
                   </td>
@@ -127,5 +131,13 @@ export default function Categories() {
         )}
       </div>
     </div>
+    <ConfirmModal 
+      isOpen={!!deleteId}
+      title="Delete Category"
+      message="Are you sure you want to delete this category? Any rhema words assigned to this category will keep their label."
+      onConfirm={confirmDelete}
+      onCancel={() => setDeleteId(null)}
+    />
+    </>
   );
 }

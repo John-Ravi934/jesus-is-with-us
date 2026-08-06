@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { AuthProvider } from './contexts/AuthContext';
@@ -36,15 +36,37 @@ import Subscribers from './pages/admin/Subscribers';
 import Playlists from './pages/admin/Playlists';
 
 function App() {
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
   useEffect(() => {
     AOS.init({
       duration: 800,
       once: true,
     });
+
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
   }, []);
 
   return (
     <AuthProvider>
+      {!isOnline && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, zIndex: 99999,
+          backgroundColor: '#ef4444', color: 'white', textAlign: 'center', padding: '0.75rem',
+          fontWeight: '600', fontSize: '0.95rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+        }}>
+          ⚠️ You have a slow or disconnected internet connection. Some features may be unavailable.
+        </div>
+      )}
       <Toaster position="top-center" />
       <Router>
         <ScrollToTop />

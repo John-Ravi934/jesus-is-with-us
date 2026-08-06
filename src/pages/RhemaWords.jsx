@@ -15,6 +15,9 @@ import DynamicCalendar from '../components/rhema/DynamicCalendar';
 
 const popularTags = ["Faith", "Healing", "Grace", "Peace", "Love"];
 
+const isValidUrl = (url) => url && typeof url === 'string' && url.startsWith('http');
+const getThumb = (word) => isValidUrl(word.tamil_poster_url) ? word.tamil_poster_url : (isValidUrl(word.poster_url) ? word.poster_url : '');
+
 export default function RhemaWords() {
   const [searchParams, setSearchParams] = useSearchParams();
   
@@ -90,16 +93,33 @@ export default function RhemaWords() {
   // Memoize filtered archive to prevent unnecessary recalculations
   const filteredArchive = useMemo(() => {
     return rhemaDatabase.filter(word => {
+      // Only apply filters (search and category) when on the Archive tab
+      if (activeTab !== 'archive') {
+        return true;
+      }
+
       const searchString = searchQuery.toLowerCase();
+      
+      // Format date like '06/08/2026' or '6/8/2026' or 'Aug 6, 2026' for search matching
+      const dateObj = new Date(word.date);
+      const dateStr1 = dateObj.toLocaleDateString(); // e.g. 8/6/2026
+      const dateStr2 = dateObj.toLocaleDateString('en-GB'); // e.g. 06/08/2026
+      const dateStr3 = dateObj.toLocaleDateString('en-GB', {month: 'long', day: 'numeric', year: 'numeric'});
+
       const matchesSearch = 
         word.bible_verse?.toLowerCase().includes(searchString) || 
         word.bible_reference?.toLowerCase().includes(searchString) ||
-        word.title?.toLowerCase().includes(searchString);
+        word.title?.toLowerCase().includes(searchString) ||
+        word.tamil_title?.toLowerCase().includes(searchString) ||
+        word.category?.toLowerCase().includes(searchString) ||
+        dateStr1.includes(searchString) ||
+        dateStr2.includes(searchString) ||
+        dateStr3.toLowerCase().includes(searchString);
         
       const matchesCat = selectedCategory === 'All' || word.category === selectedCategory;
       return matchesSearch && matchesCat;
     });
-  }, [rhemaDatabase, searchQuery, selectedCategory]);
+  }, [rhemaDatabase, searchQuery, selectedCategory, activeTab]);
 
   const handleSelectDateFromCalendar = (word) => {
     const idx = rhemaDatabase.findIndex(w => w.id === word.id);
@@ -135,11 +155,11 @@ export default function RhemaWords() {
           </div>
 
           <div className={`${styles.heroTabs} animate-fade-up delay-300`}>
-            <button data-aos="fade-up" className={`${styles.tabBtn} ${activeTab === 'today' ? styles.activeTab : ''}`} onClick={() => handleTabChange('today')}>Today's Word</button>
-            <button data-aos="fade-up" className={`${styles.tabBtn} ${activeTab === 'archive' ? styles.activeTab : ''}`} onClick={() => handleTabChange('archive')}>Archive</button>
-            <button data-aos="fade-up" className={`${styles.tabBtn} ${activeTab === 'timeline' ? styles.activeTab : ''}`} onClick={() => handleTabChange('timeline')}>Timeline</button>
-            <button data-aos="fade-up" className={`${styles.tabBtn} ${activeTab === 'calendar' ? styles.activeTab : ''}`} onClick={() => handleTabChange('calendar')}>Calendar</button>
-            <button data-aos="fade-up" className={`${styles.tabBtn} ${activeTab === 'favorites' ? styles.activeTab : ''}`} onClick={() => handleTabChange('favorites')}><Heart size={16}/> Favorites</button>
+            <button className={`${styles.tabBtn} ${activeTab === 'today' ? styles.activeTab : ''}`} onClick={() => handleTabChange('today')}>Today's Word</button>
+            <button className={`${styles.tabBtn} ${activeTab === 'archive' ? styles.activeTab : ''}`} onClick={() => handleTabChange('archive')}>Archive</button>
+            <button className={`${styles.tabBtn} ${activeTab === 'timeline' ? styles.activeTab : ''}`} onClick={() => handleTabChange('timeline')}>Timeline</button>
+            <button className={`${styles.tabBtn} ${activeTab === 'calendar' ? styles.activeTab : ''}`} onClick={() => handleTabChange('calendar')}>Calendar</button>
+            <button className={`${styles.tabBtn} ${activeTab === 'favorites' ? styles.activeTab : ''}`} onClick={() => handleTabChange('favorites')}><Heart size={16}/> Favorites</button>
           </div>
         </div>
       </section>
@@ -231,14 +251,14 @@ export default function RhemaWords() {
                 return (
                   <div data-aos="fade-up" key={word.id} className={styles.archiveCard} onClick={() => { setFeaturedIndex(originalIndex); handleTabChange('today'); }}>
                     <div className={styles.archivePoster}>
-                      <img data-aos="fade-up" src={word.poster_url} alt={word.bible_reference} loading="lazy" />
+                      <img data-aos="fade-up" src={getThumb(word)} alt={word.bible_reference} loading="lazy" />
                       <div className={styles.archiveBadges}>
                         <span className={styles.badgeSmall}>{word.category}</span>
                       </div>
                     </div>
                     <div className={styles.archiveBody}>
                       <div className={styles.archiveMeta}>
-                        <span className={styles.archiveDate}>{new Date(word.date).toLocaleDateString()}</span>
+                        <span className={styles.archiveDate}>{new Date(word.date).toLocaleDateString('en-GB')}</span>
                         {favorites.includes(word.id) && <Heart size={14} fill="#C8A646" color="#C8A646" />}
                       </div>
                       <h4 data-aos="fade-up">{word.bible_reference}</h4>
@@ -260,10 +280,10 @@ export default function RhemaWords() {
                 return (
                   <div key={word.id} className={styles.timelineItem}>
                     <div className={styles.timelineDot}></div>
-                    <div className={styles.timelineDate}>{new Date(word.date).toLocaleDateString('en-US', {month: 'short', day: 'numeric'})}</div>
+                    <div className={styles.timelineDate}>{new Date(word.date).toLocaleDateString('en-GB', {month: 'short', day: 'numeric'})}</div>
                     <div className={styles.timelineContent} onClick={() => { setFeaturedIndex(originalIndex); handleTabChange('today'); }}>
                       <div className={styles.timelineThumb}>
-                        <img data-aos="fade-up" src={word.poster_url} alt="thumb" loading="lazy" />
+                        <img data-aos="fade-up" src={getThumb(word)} alt="thumb" loading="lazy" />
                       </div>
                       <div className={styles.timelineText}>
                         <h4 data-aos="fade-up">{word.bible_reference}</h4>
@@ -295,11 +315,11 @@ export default function RhemaWords() {
                 return (
                   <div data-aos="fade-up" key={word.id} className={styles.archiveCard} onClick={() => { setFeaturedIndex(originalIndex); handleTabChange('today'); }}>
                     <div className={styles.archivePoster}>
-                      <img data-aos="fade-up" src={word.poster_url} alt={word.bible_reference} loading="lazy" />
+                      <img data-aos="fade-up" src={getThumb(word)} alt={word.bible_reference} loading="lazy" />
                     </div>
                     <div className={styles.archiveBody}>
                       <div className={styles.archiveMeta}>
-                        <span className={styles.archiveDate}>{new Date(word.date).toLocaleDateString()}</span>
+                        <span className={styles.archiveDate}>{new Date(word.date).toLocaleDateString('en-GB')}</span>
                         <Heart size={14} fill="#C8A646" color="#C8A646" />
                       </div>
                       <h4 data-aos="fade-up">{word.bible_reference}</h4>

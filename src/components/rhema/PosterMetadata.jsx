@@ -4,12 +4,14 @@ import styles from './RhemaComponents.module.css';
 export default function PosterMetadata({ word }) {
   if (!word) return null;
 
+  const isValidUrl = (url) => url && typeof url === 'string' && url.startsWith('http');
+
   return (
     <div className={styles.infoHeader}>
       <div className={styles.infoEyebrow}>
         <span>Today's Rhema</span>
         <span className={styles.infoDate}>
-          {new Date(word.date).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })}
+          {new Date(word.date).toLocaleDateString('en-GB', { month: 'long', day: 'numeric', year: 'numeric' })}
         </span>
       </div>
       
@@ -19,9 +21,21 @@ export default function PosterMetadata({ word }) {
         <span className={styles.badgeItem} title="Category">
           <Tag size={14} className={styles.badgeIcon} /> {word.category}
         </span>
-        <span className={styles.badgeItem} title="Language">
-          <Globe size={14} className={styles.badgeIcon} /> {word.language}
-        </span>
+        {isValidUrl(word.tamil_poster_url) && (
+          <span className={styles.badgeItem} title="Language">
+            <Globe size={14} className={styles.badgeIcon} /> Tamil
+          </span>
+        )}
+        {isValidUrl(word.poster_url) && (
+          <span className={styles.badgeItem} title="Language">
+            <Globe size={14} className={styles.badgeIcon} /> English
+          </span>
+        )}
+        {!isValidUrl(word.tamil_poster_url) && !isValidUrl(word.poster_url) && (
+          <span className={styles.badgeItem} title="Language">
+            <Globe size={14} className={styles.badgeIcon} /> {word.language}
+          </span>
+        )}
         <span className={styles.badgeItem} title="Total Views">
           <Eye size={14} className={styles.badgeIcon} /> {word.views?.toLocaleString() || 0}
         </span>
