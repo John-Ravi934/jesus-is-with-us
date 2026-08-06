@@ -4,6 +4,7 @@ import { getPlaylists, createPlaylist, updatePlaylist, deletePlaylist } from '..
 import { Plus, Edit2, Trash2, X, Image as ImageIcon, Check, Copy } from 'lucide-react';
 import styles from './AdminStyles.module.css';
 import toast from 'react-hot-toast';
+import ConfirmModal from '../../components/admin/ConfirmModal';
 
 const SQL_SCRIPT = `
 -- Copy and paste this into your Supabase SQL Editor to run it
@@ -62,6 +63,7 @@ export default function Playlists() {
   // Form State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingPlaylist, setEditingPopup] = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
   
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('Sermons');
@@ -202,16 +204,17 @@ export default function Playlists() {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this playlist?")) {
-      try {
-        await deletePlaylist(id);
-        toast.success("Deleted successfully");
-        fetchPlaylists();
-      } catch (err) {
-        toast.error(err.message || "Failed to delete");
-        console.error(err);
-      }
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    try {
+      await deletePlaylist(deleteId);
+      toast.success("Deleted successfully");
+      fetchPlaylists();
+    } catch (err) {
+      toast.error(err.message || "Failed to delete");
+      console.error(err);
+    } finally {
+      setDeleteId(null);
     }
   };
 
@@ -240,6 +243,7 @@ export default function Playlists() {
   }
 
   return (
+    <>
     <div style={{ background: '#fff', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', padding: '2rem' }}>
       <div className={styles.adminPageHeader}>
         <div className={styles.adminPageTitle}>
@@ -312,7 +316,7 @@ export default function Playlists() {
                       <Edit2 size={18} />
                     </button>
                     <button 
-                      onClick={() => handleDelete(pl.id)}
+                      onClick={() => setDeleteId(pl.id)}
                       style={{ background: 'transparent', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '8px' }}
                       title="Delete"
                     >
@@ -441,5 +445,13 @@ export default function Playlists() {
         </div>
       )}
     </div>
+    <ConfirmModal 
+      isOpen={!!deleteId}
+      title="Delete Playlist"
+      message="Are you sure you want to delete this playlist?"
+      onConfirm={confirmDelete}
+      onCancel={() => setDeleteId(null)}
+    />
+    </>
   );
 }

@@ -4,6 +4,7 @@ import { getEvents, createEvent, updateEvent, deleteEvent } from '../../services
 import { Plus, Edit2, Trash2, X, Bell, Copy, Check } from 'lucide-react';
 import styles from './AdminStyles.module.css';
 import toast from 'react-hot-toast';
+import ConfirmModal from '../../components/admin/ConfirmModal';
 
 const SQL_SCRIPT = `
 CREATE TABLE IF NOT EXISTS public.events (
@@ -65,6 +66,7 @@ export default function Popups() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingPopup, setEditingPopup] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
 
   // Form State
   const [title, setTitle] = useState('');
@@ -222,16 +224,17 @@ export default function Popups() {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this popup?")) {
-      try {
-        await deleteEvent(id);
-        toast.success("Deleted successfully");
-        fetchPopups();
-      } catch (err) {
-        toast.error(err.message || "Failed to delete");
-        console.error(err);
-      }
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    try {
+      await deleteEvent(deleteId);
+      toast.success("Deleted successfully");
+      fetchPopups();
+    } catch (err) {
+      toast.error(err.message || "Failed to delete");
+      console.error(err);
+    } finally {
+      setDeleteId(null);
     }
   };
 
@@ -263,6 +266,7 @@ export default function Popups() {
   }
 
   return (
+    <>
     <div>
       <div className={styles.adminPageHeader}>
         <div className={styles.adminPageTitle}>
@@ -329,7 +333,7 @@ export default function Popups() {
                     <button onClick={() => openModalForEdit(popup)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#3b82f6', marginRight: '1rem' }}>
                       <Edit2 size={18} />
                     </button>
-                    <button onClick={() => handleDelete(popup.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444' }}>
+                    <button onClick={() => setDeleteId(popup.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444' }}>
                       <Trash2 size={18} />
                     </button>
                   </td>
@@ -446,5 +450,13 @@ export default function Popups() {
         </div>
       )}
     </div>
+    <ConfirmModal 
+      isOpen={!!deleteId}
+      title="Delete Popup"
+      message="Are you sure you want to delete this popup? This cannot be undone."
+      onConfirm={confirmDelete}
+      onCancel={() => setDeleteId(null)}
+    />
+    </>
   );
 }

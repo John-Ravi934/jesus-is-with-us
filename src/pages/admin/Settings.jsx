@@ -5,6 +5,7 @@ import { uploadImage } from '../../services/storageService';
 import { Settings as SettingsIcon, Database, Activity, ShieldCheck, Video, Save, Check, Copy, CreditCard, Upload } from 'lucide-react';
 import toast from 'react-hot-toast';
 import styles from './AdminStyles.module.css';
+import ConfirmModal from '../../components/admin/ConfirmModal';
 
 const SQL_SCRIPT = `
 -- Run this in your Supabase SQL Editor
@@ -74,6 +75,9 @@ export default function Settings() {
 
   // Tab Navigation State
   const [activeTab, setActiveTab] = useState('live');
+
+  // Deletion Modal State
+  const [deleteContext, setDeleteContext] = useState(null);
 
   useEffect(() => {
     loadData();
@@ -192,7 +196,11 @@ export default function Settings() {
     });
   };
 
-  const removeUpiSection = (index) => {
+  const requestRemoveUpiSection = (index) => {
+    setDeleteContext({ type: 'upi', index });
+  };
+
+  const executeRemoveUpiSection = (index) => {
     const newUpiSections = [...donationSettings.upiSections];
     newUpiSections.splice(index, 1);
     setDonationSettings({ ...donationSettings, upiSections: newUpiSections });
@@ -236,7 +244,11 @@ export default function Settings() {
     setDonationSettings({ ...donationSettings, bankTransferSections: newBankSections });
   };
 
-  const removeBankSection = (sectionIndex) => {
+  const requestRemoveBankSection = (sectionIndex) => {
+    setDeleteContext({ type: 'bank', index: sectionIndex });
+  };
+
+  const executeRemoveBankSection = (sectionIndex) => {
     const newBankSections = [...donationSettings.bankTransferSections];
     newBankSections.splice(sectionIndex, 1);
     setDonationSettings({ ...donationSettings, bankTransferSections: newBankSections });
@@ -271,6 +283,15 @@ export default function Settings() {
     }
   };
 
+  const confirmDelete = () => {
+    if (deleteContext?.type === 'upi') {
+      executeRemoveUpiSection(deleteContext.index);
+    } else if (deleteContext?.type === 'bank') {
+      executeRemoveBankSection(deleteContext.index);
+    }
+    setDeleteContext(null);
+  };
+
   if (dbError) {
     return (
       <div style={{ padding: '2rem', background: '#fff', borderRadius: '8px', border: '1px solid #fecaca' }}>
@@ -296,6 +317,7 @@ export default function Settings() {
   }
 
   return (
+    <>
     <div style={{ maxWidth: '1000px', margin: '0 auto', width: '100%' }}>
       {/* Tab Navigation */}
       <div className={styles.tabsContainer}>
@@ -417,7 +439,7 @@ export default function Settings() {
                     <h5 style={{ margin: 0, color: '#334155', fontSize: '0.95rem', fontWeight: 600 }}>UPI Account {index + 1}</h5>
                     {donationSettings.upiSections.length > 1 && (
                       <button 
-                        onClick={() => removeUpiSection(index)}
+                        onClick={() => requestRemoveUpiSection(index)}
                         style={{ background: '#fee2e2', border: 'none', color: '#ef4444', padding: '4px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.75rem', fontWeight: 600 }}
                       >
                         Remove Section
@@ -525,7 +547,7 @@ export default function Settings() {
                       </button>
                       {donationSettings.bankTransferSections.length > 1 && (
                         <button 
-                          onClick={() => removeBankSection(sIndex)}
+                          onClick={() => requestRemoveBankSection(sIndex)}
                           style={{ background: '#fee2e2', border: 'none', color: '#ef4444', padding: '4px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.75rem', fontWeight: 600 }}
                         >
                           Remove Section
@@ -696,5 +718,13 @@ export default function Settings() {
         )}
       </div>
     </div>
+    <ConfirmModal 
+      isOpen={!!deleteContext}
+      title="Remove Section"
+      message={`Are you sure you want to remove this ${deleteContext?.type === 'upi' ? 'UPI' : 'Bank'} section?`}
+      onConfirm={confirmDelete}
+      onCancel={() => setDeleteContext(null)}
+    />
+    </>
   );
 }

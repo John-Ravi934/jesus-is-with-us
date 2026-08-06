@@ -3,10 +3,12 @@ import { listPosters, deletePoster } from '../../services/storageService';
 import { Trash2, Download, Image as ImageIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
 import styles from './AdminStyles.module.css';
+import ConfirmModal from '../../components/admin/ConfirmModal';
 
 export default function MediaLibrary() {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [deleteId, setDeleteId] = useState(null);
 
   useEffect(() => {
     loadFiles();
@@ -24,15 +26,16 @@ export default function MediaLibrary() {
     }
   };
 
-  const handleDelete = async (fileName) => {
-    if (window.confirm("Are you sure you want to permanently delete this image from storage? Any Rhema words using this image will break!")) {
-      try {
-        await deletePoster(fileName);
-        toast.success("Image deleted successfully");
-        loadFiles();
-      } catch (e) {
-        toast.error(e.message || "Failed to delete image");
-      }
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    try {
+      await deletePoster(deleteId);
+      toast.success("Image deleted successfully");
+      loadFiles();
+    } catch (e) {
+      toast.error(e.message || "Failed to delete image");
+    } finally {
+      setDeleteId(null);
     }
   };
 
@@ -53,6 +56,7 @@ export default function MediaLibrary() {
   };
 
   return (
+    <>
     <div className={styles.sectionBox}>
       <div className={styles.adminPageHeader}>
         <div className={styles.adminPageTitle}>
@@ -107,7 +111,7 @@ export default function MediaLibrary() {
                       <Download size={16} />
                     </button>
                     <button 
-                      onClick={() => handleDelete(f.name)}
+                      onClick={() => setDeleteId(f.name)}
                       style={{background: 'none', border: 'none', cursor: 'pointer', color: '#EF4444'}}
                       title="Delete Permanently"
                     >
@@ -127,5 +131,13 @@ export default function MediaLibrary() {
         </div>
       )}
     </div>
+    <ConfirmModal 
+      isOpen={!!deleteId}
+      title="Delete Image Permanently"
+      message="Are you sure you want to permanently delete this image from storage? Any Rhema words using this image will break!"
+      onConfirm={confirmDelete}
+      onCancel={() => setDeleteId(null)}
+    />
+    </>
   );
 }

@@ -139,19 +139,21 @@ export default function Home() {
             </div>
             <div className={styles.aboutText}>
               <h2 data-aos="fade-up">Pastor <span className="script-accent">Israel Raj</span></h2>
-              <p data-aos="fade-up">Pastor Israel Raj serves as the Senior Pastor of JIWUM. His passion is to see lives transformed by the power of the Holy Spirit and to equip the next generation for ministry.</p>
+              <p data-aos="fade-up">Pastor Israel Raj serves as the Senior Pastor of JIWM. His passion is to see lives transformed by the power of the Holy Spirit and to equip the next generation for ministry.</p>
               <div className={styles.miniVideoSlider}>
                 {[1, 2, 3].map(i => (
-                  <div data-aos="fade-up" key={i} className={styles.miniVideoCard}>
-                    <img data-aos="fade-up" src={`https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&w=200&q=80`} alt="Video Thumbnail" />
-                    <PlayCircle size={24} className={styles.playOverlay} />
-                  </div>
+                  <a href="https://www.youtube.com/watch?v=P0Zyn4O8lFc&list=PLce0r2v0QQjJqnE5RAmWGCrUCVjNrK1nw" target="_blank" rel="noopener noreferrer" key={i}>
+                    <div data-aos="fade-up" className={styles.miniVideoCard}>
+                      <img data-aos="fade-up" src={`src/assets/Pastor Poster${i}.png`} alt={`Sermon Thumbnail ${i}`} />
+                      <PlayCircle size={24} className={styles.playOverlay} />
+                    </div>
+                  </a>
                 ))}
               </div>
               <div className={styles.socialLinks}>
-                <a data-aos="fade-up" href="#">YouTube</a>
-                <a data-aos="fade-up" href="#">Instagram</a>
-                <a data-aos="fade-up" href="#">Facebook</a>
+                <a data-aos="fade-up" href="https://www.youtube.com/@jesusiswithusministries7844/featured"  target="_blank" rel="noopener noreferrer" >YouTube</a>
+                <a data-aos="fade-up" href="https://www.instagram.com/jiwcministries?igsh=MXBqN2U3cHdrOWZjZg=="  target="_blank" rel="noopener noreferrer" >Instagram</a>
+                <a data-aos="fade-up" href="https://www.facebook.com/share/1BqSmZKf3S/"  target="_blank" rel="noopener noreferrer">Facebook</a>
               </div>
             </div>
           </div>
@@ -163,13 +165,17 @@ export default function Home() {
             <div className={styles.aboutText}>
               <h2 data-aos="fade-up">Pastor <span className="script-accent">Yoseppu </span></h2>
               <p data-aos="fade-up">Leading the worship ministry with a heart for authentic encounters with God. Through powerful worship sessions, many have experienced healing and breakthrough.</p>
-              <div className={styles.miniVideoSlider}>
-                {[1, 2, 3].map(i => (
-                  <div data-aos="fade-up" key={i} className={styles.miniVideoCard}>
-                    <img data-aos="fade-up" src={`https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&w=200&q=80`} alt="Video Thumbnail" />
-                    <PlayCircle size={24} className={styles.playOverlay} />
-                  </div>
-                ))}
+              <div data-aos="fade-up" style={{
+                background: '#f8fafc',
+                borderLeft: '4px solid #f59e0b',
+                padding: '1.5rem',
+                marginTop: '1.5rem',
+                borderRadius: '0 8px 8px 0',
+                fontStyle: 'italic',
+                color: '#475569'
+              }}>
+                "Worship the LORD with gladness; come before him with joyful songs."
+                <div style={{fontWeight: 'bold', marginTop: '0.5rem', color: '#0f172a'}}>- Psalm 100:2</div>
               </div>
             </div>
             <div className={styles.aboutImageRight}>
@@ -270,7 +276,7 @@ export default function Home() {
                     <div className={styles.eventInfo}>
                       <h4 data-aos="fade-up">{event.title}</h4>
                       <div className={styles.eventMeta}>
-                        <span><Calendar size={14} /> {new Date(event.event_date).toLocaleDateString()}</span>
+                        <span><Calendar size={14} /> {new Date(event.event_date).toLocaleDateString('en-GB')}</span>
                         {event.event_time && <span>• {event.event_time}</span>}
                       </div>
                       {event.location && (

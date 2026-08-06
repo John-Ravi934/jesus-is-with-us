@@ -21,7 +21,7 @@ export default function Footer() {
       setStatus('success');
       setMessage('Thank you for subscribing!');
       setEmail('');
-      
+
       setTimeout(() => {
         setStatus('idle');
         setMessage('');
@@ -38,14 +38,14 @@ export default function Footer() {
         <div className={styles.brandCol}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', marginTop: '-5px' }}>
             <img src={logo} alt="Jesus Is With Us Logo" style={{ height: '110px', objectFit: 'contain' }} />
-            <h2 className={styles.logoText} style={{ margin: 0, color: '#fff', fontSize: '1.6rem', fontWeight: 'bold', lineHeight: '1.2' }}>Jesus Is With Us<br/><span className="script-accent" style={{ color: 'var(--color-golden-accent)', fontSize: '1.8rem', fontWeight: 'normal' }}>Church</span></h2>
+            <h2 className={styles.logoText} style={{ margin: 0, color: '#fff', fontSize: '1.6rem', fontWeight: 'bold', lineHeight: '1.2' }}>Jesus Is With Us<br /><span className="script-accent" style={{ color: 'var(--color-golden-accent)', fontSize: '1.8rem', fontWeight: 'normal' }}>Church</span></h2>
           </div>
           <p className={styles.tagline}>Transforming Lives Through Worship, Prayer & Gospel Outreach</p>
           <div className={styles.socials} style={{ paddingBottom: '5px' }}>
-            <a href="#" className={styles.socialIcon}><FaFacebook size={20} /></a>
-            <a href="#" className={styles.socialIcon}><FaInstagram size={20} /></a>
-            <a href="#" className={styles.socialIcon}><FaYoutube size={20} /></a>
-            <a href="#" className={styles.socialIcon}><FaTwitter size={20} /></a>
+            <a href="https://www.facebook.com/share/1BqSmZKf3S/"  target="_blank" rel="noopener noreferrer" className={styles.socialIcon}><FaFacebook size={20} /></a>
+            <a href="https://www.instagram.com/jiwcministries?igsh=MXBqN2U3cHdrOWZjZg=="  target="_blank" rel="noopener noreferrer" className={styles.socialIcon}><FaInstagram size={20} /></a>
+            <a href="https://www.youtube.com/@jesusiswithusministries7844/featured"  target="_blank" rel="noopener noreferrer" className={styles.socialIcon}><FaYoutube size={20} /></a>
+            <a href="#"  target="_blank" rel="noopener noreferrer" className={styles.socialIcon}><FaTwitter size={20} /></a>
           </div>
         </div>
 
@@ -63,9 +63,10 @@ export default function Footer() {
         <div className={styles.contactCol}>
           <h3>Contact Us</h3>
           <ul>
-            <li><MapPin size={18} /> 123 Faith Avenue, Heaven City, HC 12345</li>
-            <li><Phone size={18} /> +1 (234) 567-8900</li>
-            <li><Mail size={18} /> contact@jesusiswithus.org</li>
+            <li><MapPin size={18} /> Jesus Is With Us Church M3FC+8C9, Kollapatty, Salem,
+              Tamil Nadu 636030</li>
+            <li><Phone size={18} /> +91 1234567890 </li>
+            <li><Mail size={18} /> jiwcministry033@gmail.com </li>
           </ul>
         </div>
 
@@ -73,17 +74,17 @@ export default function Footer() {
           <h3>Stay Connected</h3>
           <p>Subscribe to our newsletter for updates and daily devotions.</p>
           <form onSubmit={handleSubscribe} className={styles.newsletterForm}>
-            <input 
-              type="email" 
-              placeholder="Your Email Address" 
+            <input
+              type="email"
+              placeholder="Your Email Address"
               className={styles.input}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={status === 'loading'}
               required
             />
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className={styles.subscribeBtn}
               disabled={status === 'loading'}
             >
@@ -100,7 +101,7 @@ export default function Footer() {
           )}
         </div>
       </div>
-      
+
       <div className={styles.footerBottom}>
         <div className="container">
           <p>&copy; {new Date().getFullYear()} Jesus Is With Us Ministries. All rights reserved.</p>

@@ -156,7 +156,7 @@ export default function AnnouncementPopup() {
               </span>
               <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0f172a', margin: '0 0 4px 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{announcement.title}</h2>
               <p style={{ color: '#3b82f6', fontWeight: 500, fontSize: '0.85rem', margin: '0 0 8px 0' }}>
-                Date: {announcement.event_date ? new Date(announcement.event_date).toLocaleDateString() : 'TBA'}
+                Date: {announcement.event_date ? new Date(announcement.event_date).toLocaleDateString('en-GB') : 'TBA'}
                 {announcement.event_time && announcement.event_time !== 'always' && announcement.event_time !== 'once' ? ` at ${announcement.event_time}` : ''}
               </p>
               {displayDescription && (

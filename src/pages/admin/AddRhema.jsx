@@ -22,6 +22,11 @@ export default function AddRhema() {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [originalPoster, setOriginalPoster] = useState(null);
+  const [enableEnglish, setEnableEnglish] = useState(true);
+
+  const [tamilFile, setTamilFile] = useState(null);
+  const [tamilPreview, setTamilPreview] = useState(null);
+  const [originalTamilPoster, setOriginalTamilPoster] = useState(null);
   
   const [formData, setFormData] = useState({
     title: '',
@@ -61,8 +66,12 @@ export default function AddRhema() {
           status: data.status,
           featured: data.featured
         });
-        setPreview(data.poster_url);
-        setOriginalPoster(data.poster_url);
+        const getValidUrl = (url) => url && typeof url === 'string' && url.startsWith('http') ? url : null;
+        setPreview(getValidUrl(data.poster_url));
+        setOriginalPoster(getValidUrl(data.poster_url));
+        setEnableEnglish(!!getValidUrl(data.poster_url));
+        setTamilPreview(getValidUrl(data.tamil_poster_url));
+        setOriginalTamilPoster(getValidUrl(data.tamil_poster_url));
       } else if (cats.length > 0) {
         setFormData(prev => ({ ...prev, category: cats[0].name }));
       }
@@ -87,21 +96,40 @@ export default function AddRhema() {
     }
   };
 
+  const handleTamilImageUpload = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setTamilFile(selectedFile);
+      const url = URL.createObjectURL(selectedFile);
+      setTamilPreview(url);
+    }
+  };
+
   const handleSubmit = async (e, forceDraft = false) => {
     e.preventDefault();
-    if (!file && !preview) {
-      toast.error("Please upload a poster image!");
+    if (!tamilFile && !tamilPreview) {
+      toast.error("Please upload a Tamil poster image!");
+      return;
+    }
+    if (enableEnglish && !file && !preview) {
+      toast.error("Please upload an English poster image!");
       return;
     }
 
     setSaving(true);
     try {
-      let finalPosterUrl = originalPoster;
+      let finalPosterUrl = enableEnglish ? originalPoster : null;
+      let finalTamilPosterUrl = originalTamilPoster;
 
       // 1. Upload new poster to Supabase Storage if a new file was selected
-      if (file) {
+      if (enableEnglish && file) {
         const { publicUrl } = await uploadPoster(file);
         finalPosterUrl = publicUrl;
+      }
+      
+      if (tamilFile) {
+        const { publicUrl } = await uploadPoster(tamilFile);
+        finalTamilPosterUrl = publicUrl;
       }
 
       const payload = {
@@ -113,6 +141,7 @@ export default function AddRhema() {
         language: formData.language,
         date: formData.date,
         poster_url: finalPosterUrl,
+        tamil_poster_url: finalTamilPosterUrl,
         youtube_url: formData.youtubeUrl,
         featured: formData.featured,
         status: forceDraft ? 'draft' : 'published'
@@ -220,32 +249,69 @@ export default function AddRhema() {
       <div>
         <div className={styles.sectionBox}>
           <div className={styles.sectionHeader}>
-            <h3>Poster Image</h3>
+            <h3>Poster Image (Tamil)</h3>
           </div>
           
-          {!preview ? (
+          {!tamilPreview ? (
             <label className={styles.imageUploadArea}>
               <UploadCloud size={48} className={styles.uploadIcon} />
               <div>
                 <strong>Click to upload</strong> or drag and drop<br/>
                 <span style={{fontSize: '0.8rem', color: '#94A3B8'}}>PNG, JPG, WEBP (Max 5MB)</span>
               </div>
-              <input type="file" accept="image/png, image/jpeg, image/webp" onChange={handleImageUpload} style={{display: 'none'}} />
+              <input type="file" accept="image/png, image/jpeg, image/webp" onChange={handleTamilImageUpload} style={{display: 'none'}} />
             </label>
           ) : (
             <div style={{textAlign: 'center'}}>
-              <img src={preview} alt="Preview" className={styles.previewImage} />
-              <button className={styles.removeImageBtn} onClick={() => {setPreview(null); setFile(null);}}>
+              <img src={tamilPreview} alt="Preview" className={styles.previewImage} />
+              <button className={styles.removeImageBtn} onClick={() => {setTamilPreview(null); setTamilFile(null);}}>
                 {isEditMode ? 'Replace Image' : 'Remove Image'}
               </button>
-              {isEditMode && !preview && (
+              {isEditMode && !tamilPreview && (
                  <label className={styles.imageUploadArea} style={{marginTop: '1rem'}}>
                  <UploadCloud size={32} className={styles.uploadIcon} />
                  <span>Upload New Poster</span>
-                 <input type="file" accept="image/png, image/jpeg, image/webp" onChange={handleImageUpload} style={{display: 'none'}} />
+                 <input type="file" accept="image/png, image/jpeg, image/webp" onChange={handleTamilImageUpload} style={{display: 'none'}} />
                </label>
               )}
             </div>
+          )}
+        </div>
+
+        <div className={styles.sectionBox} style={{marginTop: '1.5rem', marginBottom: '1.5rem'}}>
+          <div className={styles.sectionHeader} style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+            <h3 style={{margin: 0}}>Poster Image (English)</h3>
+            <div style={{display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
+              <input type="checkbox" id="enableEnglish" checked={enableEnglish} onChange={(e) => setEnableEnglish(e.target.checked)} style={{width: '18px', height: '18px'}} />
+              <label htmlFor="enableEnglish" style={{marginBottom: 0, fontSize: '0.9rem', cursor: 'pointer', fontWeight: 600}}>Enable English Poster</label>
+            </div>
+          </div>
+          
+          {enableEnglish && (
+            !preview ? (
+              <label className={styles.imageUploadArea} style={{marginTop: '1rem'}}>
+                <UploadCloud size={48} className={styles.uploadIcon} />
+                <div>
+                  <strong>Click to upload</strong> or drag and drop<br/>
+                  <span style={{fontSize: '0.8rem', color: '#94A3B8'}}>PNG, JPG, WEBP (Max 5MB)</span>
+                </div>
+                <input type="file" accept="image/png, image/jpeg, image/webp" onChange={handleImageUpload} style={{display: 'none'}} />
+              </label>
+            ) : (
+              <div style={{textAlign: 'center', marginTop: '1rem'}}>
+                <img src={preview} alt="Preview" className={styles.previewImage} />
+                <button className={styles.removeImageBtn} onClick={() => {setPreview(null); setFile(null);}}>
+                  {isEditMode ? 'Replace Image' : 'Remove Image'}
+                </button>
+                {isEditMode && !preview && (
+                   <label className={styles.imageUploadArea} style={{marginTop: '1rem'}}>
+                   <UploadCloud size={32} className={styles.uploadIcon} />
+                   <span>Upload New Poster</span>
+                   <input type="file" accept="image/png, image/jpeg, image/webp" onChange={handleImageUpload} style={{display: 'none'}} />
+                 </label>
+                )}
+              </div>
+            )
           )}
         </div>
 

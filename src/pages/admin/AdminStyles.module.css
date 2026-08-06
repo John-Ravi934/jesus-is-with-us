@@ -888,3 +888,166 @@
   }
 }
 
+/* New Modern Analytics Dashboard Styles */
+.analyticsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.chartCard {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chartCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+}
+
+.chartCard.spanFull {
+  grid-column: 1 / -1;
+}
+
+.chartHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.chartTitle h3 {
+  font-size: 1.1rem;
+  color: #0f172a;
+  margin: 0 0 0.25rem 0;
+  font-weight: 700;
+}
+
+.chartTitle p {
+  color: #64748b;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.chartAction {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: #475569;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.chartAction:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.chartContent {
+  flex-grow: 1;
+  min-height: 250px;
+  position: relative;
+}
+
+/* Modern Stat Cards */
+.modernStatCard {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+  border: 1px solid #f1f5f9;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modernStatCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+}
+
+.modernStatCard.blue::before { background: #3b82f6; }
+.modernStatCard.orange::before { background: #f59e0b; }
+.modernStatCard.green::before { background: #10b981; }
+
+.statTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.statValue {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: 0.9rem;
+  color: #64748b;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.statBadge {
+  padding: 0.3rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.statBadge.positive {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.statBadge.negative {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.tooltipCustom {
+  background: #ffffff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+  padding: 1rem !important;
+}
+
+.tooltipLabel {
+  color: #64748b;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.tooltipItem {
+  color: #0f172a;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+
