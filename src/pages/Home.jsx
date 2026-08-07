@@ -135,7 +135,7 @@ export default function Home() {
         <div style={{ background: '#f5f5f5', padding: '4rem 0' }}>
           <div className={`container ${styles.aboutBlock} ${styles.reverseBlock}`} style={{ margin: '0 auto', paddingTop: 0, paddingBottom: 0 }}>
             <div className={styles.aboutImageLeft}>
-              <img data-aos="fade-up" src="/assets/Israel Pastor.png" alt="Israel Pastor" className={styles.roundedOrganic} />
+              <img data-aos="fade-up" src="/assets/israel-pastor.png" alt="Israel Pastor" className={styles.roundedOrganic} />
             </div>
             <div className={styles.aboutText}>
               <h2 data-aos="fade-up">Pastor <span className="script-accent">Israel Raj</span></h2>
@@ -144,7 +144,7 @@ export default function Home() {
                 {[1, 2, 3].map(i => (
                   <a href="https://www.youtube.com/watch?v=P0Zyn4O8lFc&list=PLce0r2v0QQjJqnE5RAmWGCrUCVjNrK1nw" target="_blank" rel="noopener noreferrer" key={i}>
                     <div data-aos="fade-up" className={styles.miniVideoCard}>
-                      <img data-aos="fade-up" src={`public/assets/Pastor Poster${i}.png`} alt={`Sermon Thumbnail ${i}`} />
+                      <img data-aos="fade-up" src={`/assets/pastor-poster${i}.png`} alt={`Sermon Thumbnail ${i}`} />
                       <PlayCircle size={24} className={styles.playOverlay} />
                     </div>
                   </a>
@@ -179,7 +179,7 @@ export default function Home() {
               </div>
             </div>
             <div className={styles.aboutImageRight}>
-              <img data-aos="fade-up" src="/assets/Yoseppu.png"  alt="Davidsam Joyson" className={styles.roundedOrganic} />
+              <img data-aos="fade-up" src="/assets/yoseppu.png"  alt="Davidsam Joyson" className={styles.roundedOrganic} />
             </div>
           </div>
         </div>

@@ -5,10 +5,10 @@ import toast from 'react-hot-toast';
 import styles from './AdminStyles.module.css';
 import { Lock, Mail, Eye, EyeOff, AlertCircle, Heart, ArrowLeft } from 'lucide-react';
 
-import CrossBibleImg from '/assets/Cross & Bible.png';
-import JesusImg from '/assets/Jesus.png';
-import BibleIcon from '/assets/Bible icon.png';
-import CloudImg from '/assets/Cloud.png';
+import CrossBibleImg from '/assets/cross-bible.png';
+import JesusImg from '/assets/jesus.png';
+import BibleIcon from '/assets/bible-icon.png';
+import CloudImg from '/assets/cloud.png';
 import LeavesImg from '/assets/leaves.png';
 
 export default function Login() {

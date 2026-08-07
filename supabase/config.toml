@@ -121,7 +121,7 @@ file_size_limit = "50MiB"
 # [storage.buckets.images]
 # public = false
 # file_size_limit = "50MiB"
-# allowed_mime_types = ["image/png", "image/jpeg"]
+# allowed_mime_types = ["image/", "image/jpeg"]
 # objects_path = "./images"
 
 # Allow connections via S3 compatible clients
