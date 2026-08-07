@@ -25,7 +25,7 @@ export default function AboutUs() {
               <p data-aos="fade-up">For over 15 years, Jesus Is With Us Ministries has been at the forefront of spiritual revival, community outreach, and raising a generation of passionate worshippers.</p>
             </div>
             <div className={styles.aboutImageRight}>
-              <img data-aos="fade-up" src="src\assets\Church image.jpg" alt="Our Story" className={styles.roundedOrganic} />
+              <img data-aos="fade-up" src="/assets/Church image.jpg" alt="Our Story" className={styles.roundedOrganic} />
             </div>
           </div>
         </div>
@@ -34,7 +34,7 @@ export default function AboutUs() {
         <div style={{ background: '#f5f5f5', padding: '4rem 0' }}>
           <div className={`container ${styles.aboutBlock} ${styles.reverseBlock}`} style={{ marginTop: 0, marginBottom: 0 }}>
             <div className={styles.aboutImageLeft}>
-              <img data-aos="fade-up" src="src\assets\Israel Pastor.png" alt="Founder" className={styles.roundedOrganicAlt} />
+              <img data-aos="fade-up" src="/assets/Israel Pastor.png" alt="Founder" className={styles.roundedOrganicAlt} />
             </div>
             <div className={styles.aboutText}>
               <span className="subheading">Founder's Message</span>
@@ -93,7 +93,7 @@ export default function AboutUs() {
                   <p data-aos="fade-up">Started as a small prayer group in a living room with just 5 members under Pastor Israel Raj.</p>
                 </div>
                 <div className={styles.timelineImage}>
-                  <img data-aos="fade-up" src="src\assets\Family Ministries.png" alt="Humble Beginning" className={styles.roundedOrganicAlt} />
+                  <img data-aos="fade-up" src="/assets/Family Ministries.png" alt="Humble Beginning" className={styles.roundedOrganicAlt} />
                 </div>
               </div>
             </div>
@@ -107,7 +107,7 @@ export default function AboutUs() {
                   <p data-aos="fade-up">By God's grace, we moved into our first dedicated sanctuary, accommodating over 500 members.</p>
                 </div>
                 <div className={styles.timelineImage}>
-                  <img data-aos="fade-up" src="src\assets\Family Ministries.png" alt="First Church" className={styles.roundedOrganic} />
+                  <img data-aos="fade-up" src="/assets/Family Ministries.png" alt="First Church" className={styles.roundedOrganic} />
                 </div>
               </div>
             </div>
@@ -121,7 +121,7 @@ export default function AboutUs() {
                   <p data-aos="fade-up">Initiated our first international mission trips and established community support programs.</p>
                 </div>
                 <div className={styles.timelineImage}>
-                  <img data-aos="fade-up" src="src\assets\Family Ministries.png" alt="Global Outreach" className={styles.roundedOrganicAlt} />
+                  <img data-aos="fade-up" src="/assets/Family Ministries.png" alt="Global Outreach" className={styles.roundedOrganicAlt} />
                 </div>
               </div>
             </div>
@@ -135,7 +135,7 @@ export default function AboutUs() {
                   <p data-aos="fade-up">Pastor Yoseppu took over the leadership, bringing a renewed focus on youth ministry and digital evangelism.</p>
                 </div>
                 <div className={styles.timelineImage}>
-                  <img data-aos="fade-up" src="src\assets\Family Ministries.png" alt="New Leadership" className={styles.roundedOrganic} />
+                  <img data-aos="fade-up" src="/assets/Family Ministries.png" alt="New Leadership" className={styles.roundedOrganic} />
                 </div>
               </div>
             </div>
