@@ -126,7 +126,7 @@ export default function Home() {
               </div>
             </div>
             <div className={styles.aboutImageRight}>
-              <img data-aos="fade-up" src="/assets/Church image.jpg" alt="Church" className={styles.roundedOrganic} />
+              <img data-aos="fade-up" src="/assets/church-image.jpg" alt="Church" className={styles.roundedOrganic} />
             </div>
           </div>
         </div>
@@ -179,7 +179,7 @@ export default function Home() {
               </div>
             </div>
             <div className={styles.aboutImageRight}>
-              <img data-aos="fade-up" src="/assets/yoseppu.png"  alt="Davidsam Joyson" className={styles.roundedOrganic} />
+              <img data-aos="fade-up" src="/assets/Yoseppu.png"  alt="Davidsam Joyson" className={styles.roundedOrganic} />
             </div>
           </div>
         </div>
