@@ -2,7 +2,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Menu, Search, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import styles from './Header.module.css';
-import logo from '../assets/logo.png';
+import logo from '/assets/logo.png';
 
 export default function Header() {
   const location = useLocation();

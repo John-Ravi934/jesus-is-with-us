@@ -4,7 +4,7 @@ import { FaFacebook, FaInstagram, FaYoutube, FaTwitter } from 'react-icons/fa';
 import { useState } from 'react';
 import { subscribeEmail } from '../services/subscriberService';
 import styles from './Footer.module.css';
-import logo from '../assets/logo.png';
+import logo from '/assets/logo.png';
 
 export default function Footer() {
   const [email, setEmail] = useState('');

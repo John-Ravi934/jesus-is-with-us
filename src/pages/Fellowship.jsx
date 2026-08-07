@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Calendar, Clock, MapPin, Users, Heart } from 'lucide-react';
 import toast from 'react-hot-toast';
 import styles from './Fellowship.module.css';
-import heroBg from '../assets/Youth Meeting.png';
+import heroBg from '/assets/Youth Meeting.png';
 import { supabase } from '../lib/supabase'; 
 
 export default function Fellowship() {
