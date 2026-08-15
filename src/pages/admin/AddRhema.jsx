@@ -118,7 +118,7 @@ export default function AddRhema() {
 
     setSaving(true);
     try {
-      let finalPosterUrl = enableEnglish ? originalPoster : null;
+      let finalPosterUrl = enableEnglish ? originalPoster : '';
       let finalTamilPosterUrl = originalTamilPoster;
 
       // 1. Upload new poster to Supabase Storage if a new file was selected
@@ -278,12 +278,41 @@ export default function AddRhema() {
           )}
         </div>
 
-        <div className={styles.sectionBox} style={{marginTop: '1.5rem', marginBottom: '1.5rem'}}>
-          <div className={styles.sectionHeader} style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-            <h3 style={{margin: 0}}>Poster Image (English)</h3>
-            <div style={{display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
-              <input type="checkbox" id="enableEnglish" checked={enableEnglish} onChange={(e) => setEnableEnglish(e.target.checked)} style={{width: '18px', height: '18px'}} />
-              <label htmlFor="enableEnglish" style={{marginBottom: 0, fontSize: '0.9rem', cursor: 'pointer', fontWeight: 600}}>Enable English Poster</label>
+        <div className={styles.sectionBox} style={{marginTop: '1.5rem', marginBottom: '1.5rem', border: enableEnglish ? '1px solid #2e7d32' : '1px solid #e2e8f0', transition: 'border-color 0.3s'}}>
+          <div className={styles.sectionHeader} style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: enableEnglish ? '1px solid #e2e8f0' : 'none', paddingBottom: enableEnglish ? '1rem' : '0', marginBottom: enableEnglish ? '1.5rem' : '0'}}>
+            <div style={{display: 'flex', flexDirection: 'column'}}>
+              <h3 style={{margin: 0, color: enableEnglish ? '#1e293b' : '#64748b'}}>Poster Image (English)</h3>
+              {!enableEnglish && <span style={{fontSize: '0.85rem', color: '#94a3b8', marginTop: '0.2rem'}}>Optional</span>}
+            </div>
+            
+            <div style={{display: 'flex', alignItems: 'center', gap: '0.75rem'}}>
+              <label htmlFor="enableEnglish" style={{marginBottom: 0, fontSize: '0.9rem', cursor: 'pointer', fontWeight: 600, color: enableEnglish ? '#2e7d32' : '#64748b'}}>
+                {enableEnglish ? 'Enabled' : 'Disabled'}
+              </label>
+              <div 
+                onClick={() => setEnableEnglish(!enableEnglish)}
+                style={{
+                  width: '44px',
+                  height: '24px',
+                  backgroundColor: enableEnglish ? '#2e7d32' : '#cbd5e1',
+                  borderRadius: '24px',
+                  position: 'relative',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.3s'
+                }}
+              >
+                <div style={{
+                  width: '20px',
+                  height: '20px',
+                  backgroundColor: 'white',
+                  borderRadius: '50%',
+                  position: 'absolute',
+                  top: '2px',
+                  left: enableEnglish ? '22px' : '2px',
+                  transition: 'left 0.3s cubic-bezier(0.4, 0.0, 0.2, 1)',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                }} />
+              </div>
             </div>
           </div>
           

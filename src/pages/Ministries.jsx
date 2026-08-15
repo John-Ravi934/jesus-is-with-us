@@ -5,12 +5,12 @@ import styles from './Ministries.module.css';
 
 export default function Ministries() {
   const ministries = [
-    { title: 'Gospel Outreach', icon: <Globe size={40} />, img: '/assets/Gospel Outreach.png', desc: 'Taking the message of hope across nations through mass crusades.' },
-    { title: 'Village Ministries', icon: <Home size={40} />, img: '/assets/Village Ministries.png', desc: 'Supporting and uplifting remote communities with the love of Christ.' },
-    { title: 'Children Ministries', icon: <Heart size={40} />, img: '/assets/Children Ministries.png', desc: 'Nurturing the faith of the next generation through Sunday School.' },
-    { title: 'Youth Ministries', icon: <Users size={40} />, img: '/assets/Youth Meeting.png', desc: 'Empowering young adults to live passionately for Jesus.' },
-    { title: 'Family Ministries', icon: <Users size={40} />, img: '/assets/Family Ministries.png', desc: 'Building strong, Christ-centered homes and marriages.' },
-    { title: 'Worship Ministries', icon: <Music size={40} />, img: '/assets/Worship Ministries.png', desc: 'Creating an atmosphere for the Holy Spirit to move.' }
+    { title: 'Gospel Outreach', icon: <Globe size={40} />, img: '/assets/gospel-outreach.png', desc: 'Taking the message of hope across nations through mass crusades.' },
+    { title: 'Village Ministries', icon: <Home size={40} />, img: '/assets/village-ministries.png', desc: 'Supporting and uplifting remote communities with the love of Christ.' },
+    { title: 'Children Ministries', icon: <Heart size={40} />, img: '/assets/children-ministries.png', desc: 'Nurturing the faith of the next generation through Sunday School.' },
+    { title: 'Youth Ministries', icon: <Users size={40} />, img: '/assets/youth-meeting.png', desc: 'Empowering young adults to live passionately for Jesus.' },
+    { title: 'Family Ministries', icon: <Users size={40} />, img: '/assets/family-ministries.png', desc: 'Building strong, Christ-centered homes and marriages.' },
+    { title: 'Worship Ministries', icon: <Music size={40} />, img: '/assets/worship-ministries.png', desc: 'Creating an atmosphere for the Holy Spirit to move.' }
   ];
 
   const [selectedMinistry, setSelectedMinistry] = useState(null);

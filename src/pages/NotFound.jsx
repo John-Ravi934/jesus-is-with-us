@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Home } from 'lucide-react';
-import NotFoundImage from '/assets/404 image.png';
+import NotFoundImage from '/assets/404-image.png';
 import styles from './NotFound.module.css';
 
 export default function NotFound() {

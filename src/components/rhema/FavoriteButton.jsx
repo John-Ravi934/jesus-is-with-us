@@ -26,6 +26,7 @@ export default function FavoriteButton({ wordId }) {
     
     localStorage.setItem('rhema_favs', JSON.stringify(newFavs));
     setIsFavorite(added);
+    window.dispatchEvent(new Event('favoritesChanged'));
     
     // Trigger animation
     setAnimating(true);
