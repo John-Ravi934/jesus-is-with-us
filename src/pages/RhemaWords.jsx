@@ -84,8 +84,17 @@ export default function RhemaWords() {
     }).catch(console.error);
 
     // Load favorites from local storage
-    const savedFavs = localStorage.getItem('rhema_favs');
-    if (savedFavs) setFavorites(JSON.parse(savedFavs));
+    const loadFavorites = () => {
+      const savedFavs = localStorage.getItem('rhema_favs');
+      if (savedFavs) setFavorites(JSON.parse(savedFavs));
+    };
+    
+    loadFavorites();
+    window.addEventListener('favoritesChanged', loadFavorites);
+    
+    return () => {
+      window.removeEventListener('favoritesChanged', loadFavorites);
+    };
   }, []);
 
   const featuredWord = rhemaDatabase[featuredIndex] || null;

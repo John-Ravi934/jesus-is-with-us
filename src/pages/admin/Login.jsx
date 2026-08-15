@@ -33,7 +33,7 @@ export default function Login() {
     if (lockoutUntil > now) {
       setAttempts(MAX_ATTEMPTS);
       setTimeLeft(Math.ceil((lockoutUntil - now) / 1000));
-      
+
       intervalId = setInterval(() => {
         const currentNow = Date.now();
         if (lockoutUntil <= currentNow) {
@@ -76,7 +76,7 @@ export default function Login() {
         const lockoutUntil = Date.now() + LOCKOUT_DURATION;
         localStorage.setItem('adminLockoutUntil', lockoutUntil.toString());
         setTimeLeft(LOCKOUT_DURATION / 1000);
-        
+
         const intervalId = setInterval(() => {
           const now = Date.now();
           if (lockoutUntil <= now) {
@@ -99,14 +99,14 @@ export default function Login() {
 
   return (
     <div className={styles.loginPageWrapper}>
-      
+
       {/* Background Decorators */}
       <img src={CloudImg} alt="Clouds" className={styles.bgCloud} />
 
       <div className={styles.loginLeftPanel}>
         <img src={CrossBibleImg} alt="Cross and Bible" className={styles.panelImage} />
         <div className={styles.panelQuote}>
-          <p>"For I know the plans I have for you,"<br/>declares the Lord, "plans to prosper you<br/>and not to harm you, plans to give you<br/>hope and a future."</p>
+          <p>"For I know the plans I have for you,"<br />declares the Lord, "plans to prosper you<br />and not to harm you, plans to give you<br />hope and a future."</p>
           <span>— Jeremiah 29:11</span>
           <img src={LeavesImg} alt="Leaves" className={styles.bgLeaves} />
         </div>
@@ -121,37 +121,37 @@ export default function Login() {
             <h2>Jesus is with us</h2>
             <p>Ministry Admin Portal</p>
           </div>
-          
+
           <form onSubmit={handleLogin} className={styles.loginForm}>
             <div className={styles.formGroupNew}>
               <label>Email Address</label>
               <div className={styles.inputWrapperNew}>
                 <Mail size={18} className={styles.inputIconNew} />
-                <input 
-                  type="email" 
-                  required 
+                <input
+                  type="email"
+                  required
                   value={email}
                   onChange={e => setEmail(e.target.value)}
-                  placeholder="admin@jesusiswithus.org" 
+                  placeholder="admin@jesusiswithus.org"
                 />
               </div>
             </div>
-            
+
             <div className={styles.formGroupNew}>
               <label>Password</label>
               <div className={styles.inputWrapperNew}>
                 <Lock size={18} className={styles.inputIconNew} />
-                <input 
-                  type={showPassword ? "text" : "password"} 
-                  required 
+                <input
+                  type={showPassword ? "text" : "password"}
+                  required
                   value={password}
                   onChange={e => setPassword(e.target.value)}
-                  placeholder="••••••••" 
+                  placeholder="••••••••"
                   disabled={attempts >= MAX_ATTEMPTS}
                   style={{ paddingRight: '2.5rem' }}
                 />
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className={styles.passwordToggle}
                   style={{ position: 'absolute', right: '1rem', background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer' }}
@@ -160,13 +160,13 @@ export default function Login() {
                 </button>
               </div>
             </div>
-            
+
             {attempts > 0 && attempts < MAX_ATTEMPTS && (
               <div style={{ color: '#ef4444', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem' }}>
                 <AlertCircle size={16} /> You have {MAX_ATTEMPTS - attempts} attempt{MAX_ATTEMPTS - attempts > 1 ? 's' : ''} remaining.
               </div>
             )}
-            
+
             {attempts >= MAX_ATTEMPTS && (
               <div style={{ color: '#ef4444', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -184,12 +184,10 @@ export default function Login() {
               <Lock size={16} />
               {loading ? 'Authenticating...' : 'Secure Login'}
             </button>
-            
+
             <div className={styles.loginFooterNew}>
               <div className={styles.footerLine}></div>
-              <p>Walk in faith. Serve with love.</p>
-              <Heart size={16} color="var(--color-primary-green)" />
-              <div style={{ marginTop: '1.5rem' }}>
+              <div style={{ marginTop: '0.2rem', marginBottom: '20px' }}>
                 <Link to="/" style={{ color: '#64748b', textDecoration: 'none', fontSize: '0.9rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', transition: 'color 0.2s' }} onMouseOver={(e) => e.currentTarget.style.color = '#2e7d32'} onMouseOut={(e) => e.currentTarget.style.color = '#64748b'}>
                   <ArrowLeft size={16} /> Return Home
                 </Link>
@@ -202,7 +200,7 @@ export default function Login() {
       <div className={styles.loginRightPanel}>
         <div className={styles.panelQuoteTopRight}>
           <span className={styles.quoteIconRight}>“</span>
-          <p>I can do all this through him<br/>who gives me strength.</p>
+          <p>I can do all this through him<br />who gives me strength.</p>
           <span>— Philippians 4:13</span>
         </div>
         <img src={JesusImg} alt="Jesus Praying" className={styles.panelImageRight} />

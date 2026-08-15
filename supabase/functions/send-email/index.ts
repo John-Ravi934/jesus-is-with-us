@@ -29,7 +29,7 @@ serve(async (req) => {
         'Authorization': `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: 'Acme <onboarding@resend.dev>', 
+        from: 'Jesus Is With Us <onboarding@resend.dev>', 
         to: [ADMIN_EMAIL],
         subject: emailSubject,
         html: `

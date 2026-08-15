@@ -67,9 +67,10 @@ export default function AnnouncementPopup() {
         .popup-container {
           background-color: ${hideDetails ? 'transparent' : '#fff'};
           border-radius: 16px;
-          width: ${hideDetails ? '800px' : '650px'}; /* Large width even without description */
-          max-width: 95vw;
-          height: auto; /* Natural height */
+          width: fit-content;
+          min-width: ${hideDetails ? 'auto' : '320px'};
+          max-width: min(95vw, 650px);
+          height: auto; 
           max-height: 90vh;
           overflow-y: auto;
           overflow-x: hidden;
@@ -77,26 +78,29 @@ export default function AnnouncementPopup() {
           position: relative;
           animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
           display: ${hideDetails ? 'inline-block' : 'flex'};
-          flex-direction: column; /* Vertical layout */
+          flex-direction: column;
+          margin: 0 auto;
         }
 
         .popup-image {
-          width: 100%;
-          height: auto; /* Natural aspect ratio, no cropping */
+          width: auto;
+          height: auto; 
           max-height: ${hideDetails ? '85vh' : '65vh'};
           max-width: 100%;
-          object-fit: contain; /* Guarantee no crop */
+          object-fit: contain; 
           display: block;
           border-radius: ${hideDetails ? '16px' : '16px 16px 0 0'};
-          background-color: #f1f5f9; /* Subtle background if there's any empty space */
+          background-color: ${hideDetails ? 'transparent' : '#fff'};
+          margin: 0 auto;
         }
 
         .popup-details {
-          width: 100%;
-          height: auto; /* Allow natural height based on content */
+          width: 0;
+          min-width: 100%;
+          box-sizing: border-box;
           padding: 24px 24px;
           display: flex;
-          flex-direction: row; /* Split into two divisions horizontally */
+          flex-direction: row; 
           justify-content: space-between;
           align-items: center;
           gap: 16px;
@@ -104,7 +108,7 @@ export default function AnnouncementPopup() {
 
         @media (max-width: 768px) {
           .popup-image {
-            max-height: 400px;
+            max-height: 50vh;
           }
           .popup-details {
             flex-direction: column;

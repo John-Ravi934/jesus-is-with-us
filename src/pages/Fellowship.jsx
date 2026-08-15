@@ -10,7 +10,7 @@ export default function Fellowship() {
 
   useEffect(() => {
     if (window.location.hash === '#form' || window.location.hash === '#join-form') {
-      const section = document.getElementById('form');
+      const section = document.getElementById('join-form');
       if (section) section.scrollIntoView({ behavior: 'smooth' });
     } else if (window.location.hash === '#whatsapp') {
       const section = document.getElementById('whatsapp');
@@ -76,7 +76,7 @@ export default function Fellowship() {
       </section>
 
       <section data-aos="fade-up" className="gray-section">
-        <div className={`container ${styles.joinContainer}`} id="form">
+        <div className={`container ${styles.joinContainer}`} id="join-form">
           <div className={styles.joinForm}>
             <h3 data-aos="fade-up">Join A Fellowship</h3>
             <p data-aos="fade-up">Fill out the form below and our team will connect you with a group.</p>
