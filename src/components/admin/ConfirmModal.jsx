@@ -1,7 +1,7 @@
 import { AlertTriangle, X } from 'lucide-react';
 import styles from '../../pages/admin/AdminStyles.module.css'; // Adjust path if needed
 
-export default function ConfirmModal({ isOpen, title, message, onConfirm, onCancel, confirmText = "Delete", cancelText = "Cancel" }) {
+export default function ConfirmModal({ isOpen, title, message, onConfirm, onCancel, confirmText = "Delete", cancelText = "Cancel", confirmColor = "#EF4444", iconBg = "#FEE2E2", iconColor = "#EF4444" }) {
   if (!isOpen) return null;
 
   return (
@@ -19,7 +19,7 @@ export default function ConfirmModal({ isOpen, title, message, onConfirm, onCanc
       }}>
         <div style={{ padding: '1.5rem', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
           <div style={{
-            background: '#FEE2E2', color: '#EF4444', padding: '0.75rem', 
+            background: iconBg, color: iconColor, padding: '0.75rem', 
             borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center'
           }}>
             <AlertTriangle size={24} />
@@ -56,7 +56,7 @@ export default function ConfirmModal({ isOpen, title, message, onConfirm, onCanc
           <button 
             onClick={onConfirm}
             style={{
-              padding: '0.5rem 1rem', background: '#EF4444', border: 'none', 
+              padding: '0.5rem 1rem', background: confirmColor, border: 'none', 
               borderRadius: '6px', color: '#fff', fontWeight: 500, cursor: 'pointer',
               boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
             }}

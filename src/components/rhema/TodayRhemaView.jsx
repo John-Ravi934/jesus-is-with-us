@@ -20,7 +20,13 @@ export default function TodayRhemaView({
   // Reset language index when featured word changes
   useEffect(() => {
     setActiveLangIndex(0);
-  }, [featuredIndex]);
+    
+    // Increment view whenever a new word is featured
+    if (featuredWord) {
+      incrementViews(featuredWord.id).catch(console.error);
+      window.dispatchEvent(new CustomEvent('statsUpdated', { detail: { id: featuredWord.id, type: 'view' } }));
+    }
+  }, [featuredWord?.id]);
 
   const handlePrev = () => {
     if (featuredIndex < rhemaDatabase.length - 1) {
@@ -36,9 +42,6 @@ export default function TodayRhemaView({
 
   const openLightbox = async () => {
     setLightboxOpen(true);
-    if (featuredWord) {
-      await incrementViews(featuredWord.id).catch(console.error);
-    }
   };
 
   const handleSelectPrevious = (id) => {

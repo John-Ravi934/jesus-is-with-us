@@ -40,3 +40,13 @@ export const deletePlaylist = async (id) => {
   if (error) throw error;
   return true;
 };
+
+export const incrementPlaylistViews = async (id, currentViews) => {
+  const { error } = await supabase
+    .from('playlists')
+    .update({ views: (currentViews || 0) + 1 })
+    .eq('id', id);
+    
+  if (error) throw error;
+  return true;
+};

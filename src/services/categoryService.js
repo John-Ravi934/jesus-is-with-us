@@ -15,12 +15,12 @@ export const getCategories = async () => {
   return data;
 };
 
-export const addCategory = async (name, color = '#2E7D32') => {
+export const addCategory = async (name, color = '#2E7D32', icon = 'Tag') => {
   const slug = generateSlug(name);
   
   const { data, error } = await supabase
     .from('categories')
-    .insert([{ name, slug, color }])
+    .insert([{ name, slug, color, icon }])
     .select()
     .single();
 
@@ -41,4 +41,18 @@ export const deleteCategory = async (id) => {
     throw new Error(error.message);
   }
   return true;
+};
+
+export const updateCategory = async (id, name, color, icon = 'Tag') => {
+  const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+  
+  const { data, error } = await supabase
+    .from('categories')
+    .update({ name, slug, color, icon })
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) throw new Error(error.message);
+  return data;
 };
