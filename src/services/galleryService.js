@@ -10,10 +10,21 @@ export const getGalleryImages = async () => {
   return data;
 };
 
-export const addGalleryImage = async (image_url, title = null) => {
+export const addGalleryImage = async (image_url, title = null, status = 'published') => {
   const { data, error } = await supabase
     .from("gallery_images")
-    .insert([{ image_url, title }])
+    .insert([{ image_url, title, status }])
+    .select();
+
+  if (error) throw error;
+  return data[0];
+};
+
+export const updateGalleryImage = async (id, updates) => {
+  const { data, error } = await supabase
+    .from("gallery_images")
+    .update(updates)
+    .eq("id", id)
     .select();
 
   if (error) throw error;

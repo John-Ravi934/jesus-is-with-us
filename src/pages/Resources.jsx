@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Search, FolderOpen, AlertCircle } from 'lucide-react';
-import { getPlaylists } from '../services/playlistService';
+import { Search, FolderOpen, AlertCircle, Eye } from 'lucide-react';
+import { getPlaylists, incrementPlaylistViews } from '../services/playlistService';
 import styles from './Resources.module.css';
 
 export default function Resources() {
@@ -44,6 +44,27 @@ export default function Resources() {
 
   const handleLoadMore = () => {
     setDisplayCount(prev => prev + 8);
+  };
+
+  const handleViewPlaylist = async (pl, e) => {
+    e.preventDefault();
+    
+    // Open the link in a new tab
+    if (pl.link_url) {
+      window.open(pl.link_url, '_blank', 'noopener,noreferrer');
+    }
+    
+    // Optimistic UI update
+    setPlaylists(prev => prev.map(p => 
+      p.id === pl.id ? { ...p, views: (p.views || 0) + 1 } : p
+    ));
+    
+    // Increment in DB
+    try {
+      await incrementPlaylistViews(pl.id, pl.views);
+    } catch (err) {
+      console.error("Failed to increment views", err);
+    }
   };
 
   return (
@@ -120,9 +141,21 @@ export default function Resources() {
                       <img src={pl.image_url || 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&w=400&q=80'} alt={pl.title} />
                     </div>
                     <h3>{pl.title}</h3>
-                    <a href={pl.link_url || '#'} target={pl.link_url ? "_blank" : "_self"} rel="noreferrer" className={styles.viewPlaylist}>
-                      View full playlist
-                    </a>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.5rem' }}>
+                      <a 
+                        href={pl.link_url || '#'} 
+                        target={pl.link_url ? "_blank" : "_self"} 
+                        rel="noreferrer" 
+                        className={styles.viewPlaylist}
+                        onClick={(e) => handleViewPlaylist(pl, e)}
+                      >
+                        View full playlist
+                      </a>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: '#94a3b8', fontSize: '0.85rem' }}>
+                        <Eye size={16} />
+                        <span>{pl.views || 0}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}

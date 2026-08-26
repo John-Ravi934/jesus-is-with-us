@@ -1,21 +1,27 @@
 import { supabase } from '../lib/supabase';
 
 export const getAppStatistics = async () => {
+  // Aggregate views and downloads across all rhema_words
   const { data, error } = await supabase
-    .from('app_statistics')
-    .select('*')
-    .limit(1)
-    .single();
+    .from('rhema_words')
+    .select('views, downloads');
     
   if (error) {
-    // If the table is empty for some reason, return a default object
-    if (error.code === 'PGRST116') {
-      return { total_views: 0, total_downloads: 0, total_visitors: 0 };
-    }
-    throw new Error(error.message);
+    console.error("Error fetching rhema statistics:", error);
+    return { total_views: 0, total_downloads: 0, total_visitors: 0 };
   }
   
-  return data;
+  let total_views = 0;
+  let total_downloads = 0;
+  
+  if (data) {
+    data.forEach(word => {
+      total_views += (word.views || 0);
+      total_downloads += (word.downloads || 0);
+    });
+  }
+  
+  return { total_views, total_downloads, total_visitors: 0 };
 };
 
 export const getStorageStats = async () => {

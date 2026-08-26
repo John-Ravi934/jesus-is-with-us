@@ -34,3 +34,13 @@ export const deleteSubscriber = async (id) => {
   if (error) throw error;
   return true;
 };
+
+export const updateSubscriberStatus = async (id, status) => {
+  const { error } = await supabase
+    .from("subscribers")
+    .update({ status })
+    .eq("id", id);
+
+  if (error) throw error;
+  return true;
+};

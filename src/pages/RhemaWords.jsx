@@ -83,7 +83,6 @@ export default function RhemaWords() {
       setLoading(false);
     }).catch(console.error);
 
-    // Load favorites from local storage
     const loadFavorites = () => {
       const savedFavs = localStorage.getItem('rhema_favs');
       if (savedFavs) setFavorites(JSON.parse(savedFavs));
@@ -92,8 +91,25 @@ export default function RhemaWords() {
     loadFavorites();
     window.addEventListener('favoritesChanged', loadFavorites);
     
+    const handleStatsUpdate = (e) => {
+      const { id, type } = e.detail;
+      setRhemaDatabase(prev => prev.map(word => {
+        if (word.id === id) {
+          return {
+            ...word,
+            views: type === 'view' ? (word.views || 0) + 1 : (word.views || 0),
+            downloads: type === 'download' ? (word.downloads || 0) + 1 : (word.downloads || 0)
+          };
+        }
+        return word;
+      }));
+    };
+    
+    window.addEventListener('statsUpdated', handleStatsUpdate);
+    
     return () => {
       window.removeEventListener('favoritesChanged', loadFavorites);
+      window.removeEventListener('statsUpdated', handleStatsUpdate);
     };
   }, []);
 
@@ -186,7 +202,7 @@ export default function RhemaWords() {
               <p data-aos="fade-up">Languages</p>
             </div>
             <div className={styles.statItem}>
-              <h3 data-aos="fade-up">45K+</h3>
+              <h3 data-aos="fade-up">{loading ? '...' : rhemaDatabase.reduce((acc, word) => acc + (word.views || 0) + (word.downloads || 0), 0).toLocaleString()}+</h3>
               <p data-aos="fade-up">Lives Touched</p>
             </div>
             <div className={styles.themeToggle}>

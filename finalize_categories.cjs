@@ -1,29 +1,22 @@
-import { useState, useEffect } from 'react';
-import { getCategories, addCategory, deleteCategory, updateCategory } from '../../services/categoryService';
-import { getRhemaWords } from '../../services/rhemaService';
-import { Plus, Trash2, Edit2, Search, ChevronDown, ChevronLeft, ChevronRight, Lightbulb, MoreHorizontal, Sparkles, Check, Save, ArrowRight } from 'lucide-react';
-import toast from 'react-hot-toast';
-import styles from './AdminStyles.module.css';
-import ConfirmModal from '../../components/admin/ConfirmModal';
-import CategoryIcon from '../../components/categories/CategoryIcon';
-import CategoryIconPicker from '../../components/categories/CategoryIconPicker';
-import CategorySuggestionModal from '../../components/categories/CategorySuggestionModal';
-import { biblicalIconCatalog } from '../../constants/biblicalIcons';
+const fs = require('fs');
+let code = fs.readFileSync('src/pages/admin/Categories.jsx', 'utf8');
 
-const defaultIconNames = ['FaCrown', 'FaHeart', 'LuBook', 'LuFlame', 'FaDove', 'FaCross', 'LuShield', 'LuStar', 'FaAnchor'];
-let mainIcons = defaultIconNames.map(name => biblicalIconCatalog.find(i => i.iconName === name)).filter(Boolean);
-if (mainIcons.length < 9) {
-  const extra = biblicalIconCatalog.filter(i => !mainIcons.includes(i)).slice(0, 9 - mainIcons.length);
-  mainIcons.push(...extra);
-}
-const colorPresets = ['#22c55e', '#eab308', '#f97316', '#ec4899', '#a855f7', '#3b82f6', '#06b6d4', '#94a3b8'];
+code = code.replace(
+  "import { getCategories, addCategory, deleteCategory } from '../../services/categoryService';",
+  "import { getCategories, addCategory, deleteCategory, updateCategory } from '../../services/categoryService';\nimport { getRhemaWords } from '../../services/rhemaService';"
+);
 
-export default function Categories() {
+// We want to replace the whole body of the Categories component because it's simpler.
+// Find where the component starts
+const compStart = code.indexOf('export default function Categories() {');
+const preComp = code.substring(0, compStart);
+
+const newComponent = `export default function Categories() {
   const [categories, setCategories] = useState([]);
   const [categoryCounts, setCategoryCounts] = useState({});
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [newCat, setNewCat] = useState({ name: '', color: '#22c55e', icon: mainIcons[0].iconName });
+  const [newCat, setNewCat] = useState({ name: '', color: '#10b981', icon: 'Tag' });
   const [deleteId, setDeleteId] = useState(null);
   const [editingId, setEditingId] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -36,7 +29,7 @@ export default function Categories() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const [showIconModal, setShowIconModal] = useState(false);
-  const [showSuggestionModal, setShowSuggestionModal] = useState(false);
+  const [iconSearch, setIconSearch] = useState('');
 
   useEffect(() => {
     setCurrentPage(1);
@@ -81,11 +74,14 @@ export default function Categories() {
         await addCategory(newCat.name, newCat.color, newCat.icon);
         toast.success("Category added!");
       }
-      setNewCat({ name: '', color: '#22c55e', icon: mainIcons[0].iconName });
+      setNewCat({ name: '', color: '#10b981', icon: 'Tag' });
       setEditingId(null);
       loadData();
     } catch (e) {
       toast.error(e.message || "Failed to save category.");
+      if (e.message && e.message.includes("icon")) {
+         toast.error("Please add an 'icon' column (type 'text') to your 'categories' table in Supabase.");
+      }
     } finally {
       setSubmitting(false);
     }
@@ -93,12 +89,12 @@ export default function Categories() {
 
   const handleEdit = (cat) => {
     setEditingId(cat.id);
-    setNewCat({ name: cat.name, color: cat.color, icon: cat.icon || mainIcons[0].iconName });
+    setNewCat({ name: cat.name, color: cat.color, icon: cat.icon || 'Tag' });
   };
 
   const cancelEdit = () => {
     setEditingId(null);
-    setNewCat({ name: '', color: '#22c55e', icon: mainIcons[0].iconName });
+    setNewCat({ name: '', color: '#10b981', icon: 'Tag' });
   };
 
   const confirmDelete = async () => {
@@ -116,13 +112,9 @@ export default function Categories() {
 
   const filteredCategories = categories.filter(c => 
     c.name.toLowerCase().includes(searchQuery.toLowerCase())
-  ).filter(c => {
-    if (filter === 'All') return true;
-    const count = categoryCounts[c.name] || 0;
-    if (filter === 'Active') return count > 0;
-    if (filter === 'Inactive') return count === 0;
-    return true;
-  }).sort((a, b) => {
+  ).filter(c => 
+    filter === 'All' || (categoryCounts[c.name] > 0)
+  ).sort((a, b) => {
     if (sortBy === 'A-Z') return a.name.localeCompare(b.name);
     return b.name.localeCompare(a.name);
   });
@@ -137,51 +129,17 @@ export default function Categories() {
       <div className={styles.adminPageHeader} style={{ position: 'relative', zIndex: 10 }}>
         <div className={styles.adminPageTitle}>
           <h2>Categories</h2>
-          <p>Organize your Rhema words with topics and labels.</p>
-        </div>
-        <div className={styles.headerGraphic}>
-          <div className={styles.folderGraphic}>
-            <div className={styles.folderBack}></div>
-            <div className={styles.folderFront}></div>
-            <div className={styles.folderTag}></div>
-            <div className={styles.dot1}></div>
-            <div className={styles.dot2}></div>
-          </div>
+          <p>Manage the topics and labels for your Rhema words.</p>
         </div>
       </div>
 
       <div className={styles.categoryLayout} style={{ position: 'relative', zIndex: 10 }}>
         <div className={styles.categoryFormCard}>
           <div className={styles.categoryFormHeader}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <div className={styles.categoryFormHeaderIcon}>
-                <Plus size={20} />
-              </div>
-              {editingId ? 'Edit Category' : 'Create New Category'}
+            <div className={styles.categoryFormHeaderIcon}>
+              <Plus size={20} />
             </div>
-            {!editingId && (
-              <button 
-                type="button"
-                className={styles.suggestBtn}
-                onClick={() => setShowSuggestionModal(true)}
-                title="Suggest Biblical Category"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '36px',
-                  height: '36px',
-                  color: '#7c3aed',
-                  backgroundColor: '#8b5cf615',
-                  border: 'none',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s'
-                }}
-              >
-                <Sparkles size={18} />
-              </button>
-            )}
+            {editingId ? 'Edit Category' : 'Create New Category'}
           </div>
 
           <form onSubmit={handleSubmit}>
@@ -202,27 +160,26 @@ export default function Categories() {
             <div className={styles.formGroup}>
               <label style={{ fontSize: '0.9rem', fontWeight: 600 }}>Choose Icon</label>
               <div className={styles.iconGrid}>
-                {mainIcons.map(iconDef => {
-                  const isSelected = newCat.icon === iconDef.iconName;
-                  const IconComp = iconDef.icon;
+                {mainIconNames.map(iconName => {
+                  const IconComp = iconMap[iconName];
+                  if (!IconComp) return null;
+                  const isSelected = newCat.icon === iconName;
                   return (
                     <div 
-                      key={iconDef.iconName} 
-                      className={`${styles.iconOption} ${isSelected ? styles.selected : ''}`}
-                      onClick={() => setNewCat({...newCat, icon: iconDef.iconName})}
-                      title={iconDef.name}
+                      key={iconName} 
+                      className={\`\${styles.iconOption} \${isSelected ? styles.selected : ''}\`}
+                      onClick={() => setNewCat({...newCat, icon: iconName})}
                     >
                       <IconComp size={20} />
                     </div>
                   );
                 })}
                 <div 
-                  className={styles.iconOptionMore}
+                  className={styles.iconOption}
                   onClick={() => setShowIconModal(true)}
                   title="More Icons"
                 >
                   <MoreHorizontal size={20} />
-                  <span style={{ fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.05em' }}>MORE</span>
                 </div>
               </div>
             </div>
@@ -230,29 +187,41 @@ export default function Categories() {
             <div className={styles.formGroup}>
               <label style={{ fontSize: '0.9rem', fontWeight: 600 }}>Choose Color</label>
               <div className={styles.colorPresets}>
-                {colorPresets.map(preset => {
-                  const isSelected = newCat.color.toLowerCase() === preset.toLowerCase();
-                  return (
-                    <div 
-                      key={preset}
-                      className={`${styles.colorPreset} ${isSelected ? styles.selected : ''}`}
-                      style={{ backgroundColor: preset }}
-                      onClick={() => setNewCat({...newCat, color: preset})}
-                    >
-                      {isSelected && <Check size={16} color="#ffffff" strokeWidth={3} />}
-                    </div>
-                  );
-                })}
+                {colorPresets.map(preset => (
+                  <div 
+                    key={preset}
+                    className={\`\${styles.colorPreset} \${newCat.color.toLowerCase() === preset ? styles.selected : ''}\`}
+                    style={{ backgroundColor: preset }}
+                    onClick={() => setNewCat({...newCat, color: preset})}
+                  ></div>
+                ))}
+              </div>
+              
+              <div className={styles.colorPickerPremium}>
+                <div 
+                  className={styles.colorPreviewDot} 
+                  style={{ backgroundColor: newCat.color }}
+                  onClick={() => document.getElementById('catColorPicker').click()}
+                ></div>
+                <span style={{ fontFamily: 'monospace', fontWeight: 600, color: '#475569', fontSize: '0.9rem' }}>
+                  {newCat.color.toUpperCase()}
+                </span>
+                <input 
+                  id="catColorPicker"
+                  type="color" 
+                  value={newCat.color} 
+                  onChange={e => setNewCat({...newCat, color: e.target.value})} 
+                  className={styles.colorInputHidden}
+                />
               </div>
             </div>
 
             <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
-              <button type="submit" className={styles.primaryBtnPremium} disabled={submitting}>
-                <Save size={18} />
+              <button type="submit" className={styles.primaryBtn} disabled={submitting} style={{ flex: 1, padding: '0.8rem', borderRadius: '8px', fontSize: '1rem' }}>
                 {submitting ? 'Saving...' : (editingId ? 'Update Category' : 'Save Category')}
               </button>
               {editingId && (
-                <button type="button" onClick={cancelEdit} className={styles.secondaryBtnPremium} disabled={submitting}>
+                <button type="button" onClick={cancelEdit} className={styles.secondaryBtn} disabled={submitting} style={{ padding: '0.8rem', borderRadius: '8px' }}>
                   Cancel
                 </button>
               )}
@@ -284,22 +253,16 @@ export default function Categories() {
           <div className={styles.filterControls}>
             <div className={styles.filterPills}>
               <button 
-                className={`${styles.filterPill} ${filter === 'All' ? styles.active : ''}`}
+                className={\`\${styles.filterPill} \${filter === 'All' ? styles.active : ''}\`}
                 onClick={() => setFilter('All')}
               >
                 All ({categories.length})
               </button>
               <button 
-                className={`${styles.filterPill} ${filter === 'Active' ? styles.active : ''}`}
+                className={\`\${styles.filterPill} \${filter === 'Active' ? styles.active : ''}\`}
                 onClick={() => setFilter('Active')}
               >
                 Active ({categories.filter(c => (categoryCounts[c.name] || 0) > 0).length})
-              </button>
-              <button 
-                className={`${styles.filterPill} ${filter === 'Inactive' ? styles.active : ''}`}
-                onClick={() => setFilter('Inactive')}
-              >
-                Inactive ({categories.filter(c => (categoryCounts[c.name] || 0) === 0).length})
               </button>
             </div>
             <div 
@@ -313,31 +276,27 @@ export default function Categories() {
 
           {loading ? <p>Loading categories...</p> : (
             <>
-              <div className={styles.listTableHeader}>
-                <div className={styles.colCategory}>CATEGORY</div>
-                <div className={styles.colPosts}>POSTS</div>
-                <div className={styles.colActions}>ACTIONS</div>
-              </div>
               <div className={styles.categoryListPremium}>
                 {paginatedCategories.map(c => {
+                  const IconComp = iconMap[c.icon || 'Tag'] || Object.values(iconMap)[0];
                   const count = categoryCounts[c.name] || 0;
                   return (
-                    <div key={c.id} className={styles.categoryRowGrid}>
-                      <div className={styles.categoryColMain}>
-                        <CategoryIcon icon={c.icon} color={c.color} size={38} iconSize={18} className={styles.categoryDot} />
-                        <div className={styles.categoryRowContent}>
-                          <div className={styles.categoryRowName}>{c.name}</div>
-                          <div className={styles.categoryRowSlug}>{c.slug}</div>
-                        </div>
+                    <div key={c.id} className={styles.categoryRow}>
+                      <div className={styles.categoryDot} style={{ backgroundColor: c.color }}>
+                        <IconComp size={22} />
                       </div>
-                      <div className={styles.categoryColPosts}>
+                      <div className={styles.categoryRowContent}>
+                        <div className={styles.categoryRowName}>{c.name}</div>
+                        <div className={styles.categoryRowSlug}>{c.slug}</div>
+                      </div>
+                      <div className={styles.categoryRowStat}>
                         {count}
                       </div>
-                      <div className={styles.categoryColActions}>
-                        <button className={`${styles.actionBtnSquarePremium} ${styles.edit}`} onClick={() => handleEdit(c)} title="Edit">
+                      <div className={styles.categoryRowActions}>
+                        <button className={\`\${styles.actionBtnSquare} \${styles.edit}\`} onClick={() => handleEdit(c)} title="Edit">
                           <Edit2 size={16}/>
                         </button>
-                        <button className={`${styles.actionBtnSquarePremium} ${styles.delete}`} onClick={() => setDeleteId(c.id)} title="Delete">
+                        <button className={\`\${styles.actionBtnSquare} \${styles.delete}\`} onClick={() => setDeleteId(c.id)} title="Delete">
                           <Trash2 size={16}/>
                         </button>
                       </div>
@@ -366,7 +325,7 @@ export default function Categories() {
                   {Array.from({ length: totalPages || 1 }, (_, i) => i + 1).map(page => (
                     <button 
                       key={page}
-                      className={`${styles.pageBtn} ${currentPage === page ? styles.active : ''}`}
+                      className={\`\${styles.pageBtn} \${currentPage === page ? styles.active : ''}\`}
                       onClick={() => setCurrentPage(page)}
                     >
                       {page}
@@ -394,26 +353,53 @@ export default function Categories() {
         onCancel={() => setDeleteId(null)}
       />
 
-      <CategoryIconPicker 
-        isOpen={showIconModal} 
-        onClose={() => setShowIconModal(false)}
-        selectedIcon={newCat.icon}
-        onSelect={(iconValue) => setNewCat({...newCat, icon: iconValue})}
-      />
+      {showIconModal && (
+        <div className={styles.modalOverlay} onClick={() => setShowIconModal(false)}>
+          <div className={styles.modalContent} onClick={e => e.stopPropagation()} style={{ maxWidth: '600px', width: '90%' }}>
+            <div className={styles.modalHeader}>
+              <h3 style={{ margin: 0, fontSize: '1.25rem', color: '#0f172a' }}>Choose Icon</h3>
+              <button onClick={() => setShowIconModal(false)} className={styles.iconBtn}><X size={20}/></button>
+            </div>
+            
+            <div style={{ padding: '0 1.5rem', marginTop: '1rem' }}>
+              <div className={styles.searchBar} style={{ width: '100%', maxWidth: 'none', margin: '0' }}>
+                <Search size={18} color="#94a3b8" />
+                <input 
+                  type="text" 
+                  placeholder="Search icons..." 
+                  value={iconSearch}
+                  onChange={e => setIconSearch(e.target.value)}
+                  style={{ border: 'none', outline: 'none', width: '100%', padding: '0.5rem', marginLeft: '0.5rem', backgroundColor: 'transparent' }}
+                />
+              </div>
+            </div>
 
-      <CategorySuggestionModal
-        isOpen={showSuggestionModal}
-        onClose={() => setShowSuggestionModal(false)}
-        existingCategories={categories}
-        onSelect={(suggestion) => {
-          setNewCat({
-            name: suggestion.name,
-            icon: suggestion.icon,
-            color: suggestion.color
-          });
-          setEditingId(null); // Switch to create mode if it was in edit mode
-        }}
-      />
+            <div className={styles.iconGrid} style={{ gridTemplateColumns: 'repeat(8, 1fr)', gap: '1rem', marginTop: '1.5rem', maxHeight: '400px', overflowY: 'auto', padding: '0.5rem' }}>
+              {iconNames.filter(name => name.toLowerCase().includes(iconSearch.toLowerCase())).map(iconName => {
+                const IconComp = iconMap[iconName];
+                if (!IconComp) return null;
+                const isSelected = newCat.icon === iconName;
+                return (
+                  <div 
+                    key={iconName} 
+                    className={\`\${styles.iconOption} \${isSelected ? styles.selected : ''}\`}
+                    onClick={() => {
+                      setNewCat({...newCat, icon: iconName});
+                      setShowIconModal(false);
+                    }}
+                  >
+                    <IconComp size={24} />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+`;
+
+fs.writeFileSync('src/pages/admin/Categories.jsx', preComp + newComponent);
+console.log('Successfully finalized Categories.jsx!');

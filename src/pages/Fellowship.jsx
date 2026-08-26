@@ -3,7 +3,7 @@ import { Calendar, Clock, MapPin, Users, Heart } from 'lucide-react';
 import toast from 'react-hot-toast';
 import styles from './Fellowship.module.css';
 import heroBg from '/assets/youth-meeting.png';
-import { supabase } from '../lib/supabase'; 
+import { supabase } from '../lib/supabase';
 
 export default function Fellowship() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -19,7 +19,7 @@ export default function Fellowship() {
   }, []);
 
   const groups = [
-    { title: "Men's Fellowship", time: "Saturdays, 8:00 AM", location: "Main Hall", desc: "Building strong men of faith through brotherhood and the Word." },
+    { title: "Revival Igniter's Fellowship", time: "Saturdays, 8:00 AM", location: "Main Hall", desc: "Building strong men of faith through brotherhood and the Word." },
     { title: "Women's Fellowship", time: "Saturdays, 10:00 AM", location: "Chapel", desc: "Empowering women to live out their God-given purpose." },
     { title: "Youth Fellowship", time: "Fridays, 6:30 PM", location: "Youth Center", desc: "A passionate community of young people seeking God." },
     { title: "Bible Study", time: "Wednesdays, 7:00 PM", location: "Online & In-Person", desc: "Deep diving into the scriptures to grow in wisdom." },
@@ -96,7 +96,7 @@ export default function Fellowship() {
                       message: e.target[4].value
                     }
                   });
-                  
+
                   if (error) {
                     toast.error('Failed to send request. Please try again.');
                   } else {
@@ -118,7 +118,7 @@ export default function Fellowship() {
               <input type="tel" placeholder="Phone Number" required />
               <select required>
                 <option value="">Select Fellowship Interest</option>
-                <option value="men">Men's Fellowship</option>
+                <option value="men">Revival Igniter's Fellowship</option>
                 <option value="women">Women's Fellowship</option>
                 <option value="youth">Youth Fellowship</option>
                 <option value="bible">Bible Study</option>

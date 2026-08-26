@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { addRhema, updateRhema, getRhemaById } from '../../services/rhemaService';
 import { uploadPoster } from '../../services/storageService';
 import toast from 'react-hot-toast';
-import { UploadCloud, CheckCircle, Save } from 'lucide-react';
+import { UploadCloud, Save, FileEdit, BookOpen, Folder, Globe, Calendar, Link as LinkIcon, Image as ImageIcon, Send, Info, Check } from 'lucide-react';
 import styles from './AdminStyles.module.css';
 
 import { getCategories } from '../../services/categoryService';
@@ -170,192 +170,199 @@ export default function AddRhema() {
   }
 
   return (
-    <div className={styles.addGrid}>
-      <div className={styles.sectionBox}>
-        <div className={styles.sectionHeader}>
-          <h3>{isEditMode ? 'Edit Rhema Details' : 'New Rhema Details'}</h3>
-        </div>
+    <div style={{ position: 'relative' }}>
+      <div className={styles.publishGrid}>
         
-        <form onSubmit={(e) => handleSubmit(e, false)} id="rhemaForm">
-          <div className={styles.formGroup}>
-            <label>Bible Reference (e.g. Isaiah 40:31)</label>
-            <div className={styles.inputWrapper}>
-              <input type="text" name="reference" required value={formData.reference} onChange={handleChange} placeholder="Isaiah 40:31" />
-            </div>
-          </div>
-          
-          <div className={styles.formGroup}>
-            <label>Bible Verse Text</label>
-            <div className={styles.inputWrapper}>
-              <input type="text" name="verse" required value={formData.verse} onChange={handleChange} placeholder="But they that wait upon the LORD..." />
-            </div>
-          </div>
-
-          <div style={{display: 'flex', gap: '1rem'}}>
-            <div className={styles.formGroup} style={{flex: 1}}>
-              <label>Poster Title (English)</label>
-              <div className={styles.inputWrapper}>
-                <input type="text" name="title" required value={formData.title} onChange={handleChange} placeholder="Mount Up With Wings" />
+        {/* LEFT COLUMN: Rhema Details */}
+        <div className={styles.publishMainColumn}>
+          <div className={styles.detailsCard}>
+            <div className={styles.detailsHeader}>
+              <div className={styles.detailsIconWrapper}>
+                <FileEdit size={24} color="#10b981" />
               </div>
-            </div>
-            <div className={styles.formGroup} style={{flex: 1}}>
-              <label>Poster Title (Tamil)</label>
-              <div className={styles.inputWrapper}>
-                <input type="text" name="tamilTitle" value={formData.tamilTitle} onChange={handleChange} placeholder="கழுகுகளைப் போல..." />
-              </div>
-            </div>
-          </div>
-
-          <div style={{display: 'flex', gap: '1rem'}}>
-            <div className={styles.formGroup} style={{flex: 1}}>
-              <label>Category</label>
-              <div className={styles.inputWrapper}>
-                <select name="category" value={formData.category} onChange={handleChange}>
-                  {dbCategories.map(c => <option key={c} value={c}>{c}</option>)}
-                </select>
-              </div>
-            </div>
-            <div className={styles.formGroup} style={{flex: 1}}>
-              <label>Language</label>
-              <div className={styles.inputWrapper}>
-                <select name="language" value={formData.language} onChange={handleChange}>
-                  {languages.map(l => <option key={l} value={l}>{l}</option>)}
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.formGroup}>
-            <label>Schedule Date</label>
-            <div className={styles.inputWrapper}>
-              <input type="date" name="date" required value={formData.date} onChange={handleChange} />
-            </div>
-          </div>
-
-          <div className={styles.formGroup}>
-            <label>YouTube Community Post URL (Optional)</label>
-            <div className={styles.inputWrapper}>
-              <input type="url" name="youtubeUrl" value={formData.youtubeUrl} onChange={handleChange} placeholder="https://youtube.com/..." />
-            </div>
-          </div>
-
-          <div className={styles.formGroup} style={{display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '1rem'}}>
-            <input type="checkbox" id="featured" checked={formData.featured} onChange={(e) => setFormData({...formData, featured: e.target.checked})} style={{width: '20px', height: '20px'}} />
-            <label htmlFor="featured" style={{marginBottom: 0}}>Mark as Today's Featured Rhema</label>
-          </div>
-        </form>
-      </div>
-
-      <div>
-        <div className={styles.sectionBox}>
-          <div className={styles.sectionHeader}>
-            <h3>Poster Image (Tamil)</h3>
-          </div>
-          
-          {!tamilPreview ? (
-            <label className={styles.imageUploadArea}>
-              <UploadCloud size={48} className={styles.uploadIcon} />
               <div>
-                <strong>Click to upload</strong> or drag and drop<br/>
-                <span style={{fontSize: '0.8rem', color: '#94A3B8'}}>PNG, JPG, WEBP (Max 5MB)</span>
+                <h3 className={styles.detailsTitle}>Rhema Details</h3>
+                <p className={styles.detailsSubtitle}>Fill in the details below to publish a new Rhema.</p>
               </div>
-              <input type="file" accept="image/png, image/jpeg, image/webp" onChange={handleTamilImageUpload} style={{display: 'none'}} />
-            </label>
-          ) : (
-            <div style={{textAlign: 'center'}}>
-              <img src={tamilPreview} alt="Preview" className={styles.previewImage} />
-              <button className={styles.removeImageBtn} onClick={() => {setTamilPreview(null); setTamilFile(null);}}>
-                {isEditMode ? 'Replace Image' : 'Remove Image'}
-              </button>
-              {isEditMode && !tamilPreview && (
-                 <label className={styles.imageUploadArea} style={{marginTop: '1rem'}}>
-                 <UploadCloud size={32} className={styles.uploadIcon} />
-                 <span>Upload New Poster</span>
-                 <input type="file" accept="image/png, image/jpeg, image/webp" onChange={handleTamilImageUpload} style={{display: 'none'}} />
-               </label>
-              )}
             </div>
-          )}
+
+            <form onSubmit={(e) => handleSubmit(e, false)} id="rhemaForm" className={styles.detailsForm}>
+              <div className={styles.sectionDivider}>
+                <span className={styles.sectionBadge}>BIBLE INFORMATION</span>
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>Bible Reference (e.g. Isaiah 40:31)</label>
+                <div className={styles.inputWithIconRight}>
+                  <input type="text" name="reference" required value={formData.reference} onChange={handleChange} placeholder="Isaiah 40:31" />
+                  <BookOpen className={styles.inputIconIconRight} size={18} />
+                </div>
+              </div>
+              
+              <div className={styles.formGroup}>
+                <label>Bible Verse Text</label>
+                <div className={styles.textareaWrapper}>
+                  <textarea 
+                    name="verse" 
+                    required 
+                    value={formData.verse} 
+                    onChange={handleChange} 
+                    placeholder="But they that wait upon the LORD..." 
+                    rows={4}
+                    maxLength={500}
+                  ></textarea>
+                  <span className={styles.charCount}>{formData.verse.length} / 500</span>
+                </div>
+              </div>
+
+              <div className={styles.formRow2}>
+                <div className={styles.formGroup}>
+                  <label>Poster Title (English)</label>
+                  <input type="text" name="title" required value={formData.title} onChange={handleChange} placeholder="Mount Up With Wings" className={styles.standardInput} />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Poster Title (Tamil)</label>
+                  <input type="text" name="tamilTitle" value={formData.tamilTitle} onChange={handleChange} placeholder="சிறகுகளோடு மேலேற..." className={styles.standardInput} />
+                </div>
+              </div>
+
+              <div className={styles.formRow2}>
+                <div className={styles.formGroup}>
+                  <label>Category</label>
+                  <div className={styles.inputWithIconLeft}>
+                    <Folder className={styles.inputIconIconLeft} size={18} />
+                    <select name="category" value={formData.category} onChange={handleChange} className={styles.hasLeftIcon}>
+                      {dbCategories.map(c => <option key={c} value={c}>{c}</option>)}
+                    </select>
+                  </div>
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Language</label>
+                  <div className={styles.inputWithIconLeft}>
+                    <Globe className={styles.inputIconIconLeft} size={18} />
+                    <select name="language" value={formData.language} onChange={handleChange} className={styles.hasLeftIcon}>
+                      {languages.map(l => <option key={l} value={l}>{l}</option>)}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>Schedule Date</label>
+                <div className={styles.inputWithIconLeft}>
+                  <Calendar className={styles.inputIconIconLeft} size={18} />
+                  <input type="date" name="date" required value={formData.date} onChange={handleChange} className={styles.hasLeftIcon} />
+                </div>
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>YouTube Community Post URL (Optional)</label>
+                <div className={styles.inputWithIconLeft}>
+                  <LinkIcon className={styles.inputIconIconLeft} size={18} />
+                  <input type="url" name="youtubeUrl" value={formData.youtubeUrl} onChange={handleChange} placeholder="https://youtube.com/..." className={styles.hasLeftIcon} />
+                </div>
+              </div>
+
+              <div className={`${styles.featuredToggleBox} ${formData.featured ? styles.activeBox : ''}`} onClick={() => setFormData({...formData, featured: !formData.featured})}>
+                <div className={`${styles.customCheckbox} ${formData.featured ? styles.checked : ''}`}>
+                  {formData.featured && <Check size={16} strokeWidth={4} color="#ffffff" />}
+                </div>
+                <div className={styles.featuredText}>
+                  <h4>Mark as Today's Featured Rhema</h4>
+                  <p>This will highlight the Rhema on today's section.</p>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
 
-        <div className={styles.sectionBox} style={{marginTop: '1.5rem', marginBottom: '1.5rem', border: enableEnglish ? '1px solid #2e7d32' : '1px solid #e2e8f0', transition: 'border-color 0.3s'}}>
-          <div className={styles.sectionHeader} style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: enableEnglish ? '1px solid #e2e8f0' : 'none', paddingBottom: enableEnglish ? '1rem' : '0', marginBottom: enableEnglish ? '1.5rem' : '0'}}>
-            <div style={{display: 'flex', flexDirection: 'column'}}>
-              <h3 style={{margin: 0, color: enableEnglish ? '#1e293b' : '#64748b'}}>Poster Image (English)</h3>
-              {!enableEnglish && <span style={{fontSize: '0.85rem', color: '#94a3b8', marginTop: '0.2rem'}}>Optional</span>}
-            </div>
-            
-            <div style={{display: 'flex', alignItems: 'center', gap: '0.75rem'}}>
-              <label htmlFor="enableEnglish" style={{marginBottom: 0, fontSize: '0.9rem', cursor: 'pointer', fontWeight: 600, color: enableEnglish ? '#2e7d32' : '#64748b'}}>
-                {enableEnglish ? 'Enabled' : 'Disabled'}
-              </label>
-              <div 
-                onClick={() => setEnableEnglish(!enableEnglish)}
-                style={{
-                  width: '44px',
-                  height: '24px',
-                  backgroundColor: enableEnglish ? '#2e7d32' : '#cbd5e1',
-                  borderRadius: '24px',
-                  position: 'relative',
-                  cursor: 'pointer',
-                  transition: 'background-color 0.3s'
-                }}
-              >
-                <div style={{
-                  width: '20px',
-                  height: '20px',
-                  backgroundColor: 'white',
-                  borderRadius: '50%',
-                  position: 'absolute',
-                  top: '2px',
-                  left: enableEnglish ? '22px' : '2px',
-                  transition: 'left 0.3s cubic-bezier(0.4, 0.0, 0.2, 1)',
-                  boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
-                }} />
-              </div>
-            </div>
-          </div>
+        {/* RIGHT COLUMN: Uploads & Actions */}
+        <div className={styles.publishSideColumn}>
           
-          {enableEnglish && (
-            !preview ? (
-              <label className={styles.imageUploadArea} style={{marginTop: '1rem'}}>
-                <UploadCloud size={48} className={styles.uploadIcon} />
-                <div>
-                  <strong>Click to upload</strong> or drag and drop<br/>
-                  <span style={{fontSize: '0.8rem', color: '#94A3B8'}}>PNG, JPG, WEBP (Max 5MB)</span>
-                </div>
-                <input type="file" accept="image/png, image/jpeg, image/webp" onChange={handleImageUpload} style={{display: 'none'}} />
+          <div className={styles.uploadCard}>
+            <div className={styles.uploadHeader}>
+              <div className={styles.uploadIconWrapperPurple}>
+                <ImageIcon size={18} color="#a855f7" />
+              </div>
+              <h4>Poster Image (Tamil)</h4>
+            </div>
+            {!tamilPreview ? (
+              <label className={styles.uploadAreaPurple}>
+                <UploadCloud size={36} color="#a855f7" style={{marginBottom: '0.75rem'}} />
+                <div className={styles.uploadTextBold}>Drag & drop or click to upload</div>
+                <div className={styles.uploadTextSub}>PNG, JPG, WEBP (Max 5MB)</div>
+                <input type="file" accept="image/png, image/jpeg, image/webp" onChange={handleTamilImageUpload} style={{display: 'none'}} />
               </label>
             ) : (
-              <div style={{textAlign: 'center', marginTop: '1rem'}}>
-                <img src={preview} alt="Preview" className={styles.previewImage} />
-                <button className={styles.removeImageBtn} onClick={() => {setPreview(null); setFile(null);}}>
-                  {isEditMode ? 'Replace Image' : 'Remove Image'}
-                </button>
-                {isEditMode && !preview && (
-                   <label className={styles.imageUploadArea} style={{marginTop: '1rem'}}>
-                   <UploadCloud size={32} className={styles.uploadIcon} />
-                   <span>Upload New Poster</span>
-                   <input type="file" accept="image/png, image/jpeg, image/webp" onChange={handleImageUpload} style={{display: 'none'}} />
-                 </label>
-                )}
+              <div className={styles.previewContainer}>
+                <img src={tamilPreview} alt="Preview" className={styles.previewImageFull} />
+                <button className={styles.removeBtnOverlay} onClick={() => {setTamilPreview(null); setTamilFile(null);}}>Remove Image</button>
               </div>
-            )
-          )}
-        </div>
-
-        <div className={styles.sectionBox}>
-          <div className={styles.sectionHeader}>
-            <h3>Publish Actions</h3>
+            )}
           </div>
-          
-          <button type="submit" form="rhemaForm" className={styles.primaryBtn} disabled={saving} style={{marginBottom: '1rem'}}>
-            <CheckCircle size={20} /> {saving ? 'Saving...' : (isEditMode && formData.status === 'published' ? 'Update Rhema' : 'Publish Now')}
-          </button>
-          
-          <button type="button" onClick={(e) => handleSubmit(e, true)} className={styles.primaryBtn} disabled={saving} style={{background: '#F1F5F9', color: '#334155'}}>
-            <Save size={20} /> Save as Draft
-          </button>
+
+          <div className={`${styles.uploadCard} ${!enableEnglish ? styles.disabledCard : ''}`}>
+            <div className={styles.uploadHeaderFlex}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <div className={styles.uploadIconWrapperGreen}>
+                  <ImageIcon size={18} color="#10b981" />
+                </div>
+                <h4 style={{ color: enableEnglish ? '#0f172a' : '#94a3b8' }}>Poster Image (English)</h4>
+              </div>
+              <div style={{display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer'}} onClick={() => setEnableEnglish(!enableEnglish)}>
+                <span className={styles.toggleLabel} style={{ color: enableEnglish ? '#10b981' : '#94a3b8' }}>
+                  {enableEnglish ? 'Enabled' : 'Disabled'}
+                </span>
+                <div className={`${styles.toggleSwitch} ${enableEnglish ? styles.active : ''}`}>
+                  <div className={styles.toggleHandle}></div>
+                </div>
+              </div>
+            </div>
+            {enableEnglish && (
+              !preview ? (
+                <label className={styles.uploadAreaGreen}>
+                  <UploadCloud size={36} color="#10b981" style={{marginBottom: '0.75rem'}} />
+                  <div className={styles.uploadTextBold}>Drag & drop or click to upload</div>
+                  <div className={styles.uploadTextSub}>PNG, JPG, WEBP (Max 5MB)</div>
+                  <input type="file" accept="image/png, image/jpeg, image/webp" onChange={handleImageUpload} style={{display: 'none'}} />
+                </label>
+              ) : (
+                <div className={styles.previewContainer}>
+                  <img src={preview} alt="Preview" className={styles.previewImageFull} />
+                  <button className={styles.removeBtnOverlay} onClick={() => {setPreview(null); setFile(null);}}>Remove Image</button>
+                </div>
+              )
+            )}
+          </div>
+
+          <div className={styles.actionCard}>
+            <div className={styles.uploadHeader}>
+              <div className={styles.actionIconWrapper}>
+                <Send size={18} color="#f59e0b" />
+              </div>
+              <div>
+                <h4>Publish Actions</h4>
+                <p className={styles.actionSub}>Choose an action to continue</p>
+              </div>
+            </div>
+            <div className={styles.actionButtons}>
+              <button type="submit" form="rhemaForm" className={styles.publishNowBtn} disabled={saving}>
+                <Send size={18} /> {saving ? 'Saving...' : (isEditMode && formData.status === 'published' ? 'Update Now' : 'Publish Now')}
+              </button>
+              <button type="button" onClick={(e) => handleSubmit(e, true)} className={styles.saveDraftBtn} disabled={saving}>
+                <Save size={18} /> {isEditMode && formData.status === 'draft' ? 'Update Draft' : 'Save as Draft'}
+              </button>
+            </div>
+          </div>
+
+          {/* Footer Banner - Moved under Actions */}
+          <div className={styles.footerBanner}>
+            <div className={styles.footerIconBox}>
+              <Info size={18} />
+            </div>
+            <div><strong>Note:</strong> You can save as draft and publish later from the Rhema Library.</div>
+          </div>
+
         </div>
       </div>
     </div>

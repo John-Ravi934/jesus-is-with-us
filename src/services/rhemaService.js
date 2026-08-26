@@ -114,11 +114,27 @@ export const updateRhema = async (id, updates) => {
   return data;
 };
 
-// RPC Calls
+// RPC Calls with fallback
 export const incrementViews = async (id) => {
-  await supabase.rpc('increment_rhema_views', { poster_id: id });
+  const { error } = await supabase.rpc('increment_rhema_views', { poster_id: id });
+  
+  // Fallback if RPC function doesn't exist in Supabase
+  if (error) {
+    const { data } = await supabase.from('rhema_words').select('views').eq('id', id).single();
+    if (data) {
+      await supabase.from('rhema_words').update({ views: (data.views || 0) + 1 }).eq('id', id);
+    }
+  }
 };
 
 export const incrementDownloads = async (id) => {
-  await supabase.rpc('increment_rhema_downloads', { poster_id: id });
+  const { error } = await supabase.rpc('increment_rhema_downloads', { poster_id: id });
+  
+  // Fallback if RPC function doesn't exist in Supabase
+  if (error) {
+    const { data } = await supabase.from('rhema_words').select('downloads').eq('id', id).single();
+    if (data) {
+      await supabase.from('rhema_words').update({ downloads: (data.downloads || 0) + 1 }).eq('id', id);
+    }
+  }
 };

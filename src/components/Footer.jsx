@@ -1,10 +1,13 @@
 import { Link } from 'react-router-dom';
 import { MapPin, Phone, Mail, CheckCircle2 } from 'lucide-react';
-import { FaFacebook, FaInstagram, FaYoutube, FaTwitter } from 'react-icons/fa';
+import { FaFacebook, FaInstagram, FaYoutube, FaTwitter, FaShare, FaShareSquare, FaShopware } from 'react-icons/fa';
 import { useState } from 'react';
 import { subscribeEmail } from '../services/subscriberService';
 import styles from './Footer.module.css';
 import logo from '/assets/logo.png';
+import { FaSharechat } from './FaSharechat';
+
+
 
 export default function Footer() {
   const [email, setEmail] = useState('');
@@ -42,10 +45,10 @@ export default function Footer() {
           </div>
           <p className={styles.tagline}>Transforming Lives Through Worship, Prayer & Gospel Outreach</p>
           <div className={styles.socials} style={{ paddingBottom: '5px' }}>
-            <a href="https://www.facebook.com/share/1BqSmZKf3S/"  target="_blank" rel="noopener noreferrer" className={styles.socialIcon}><FaFacebook size={20} /></a>
-            <a href="https://www.instagram.com/jiwcministries?igsh=MXBqN2U3cHdrOWZjZg=="  target="_blank" rel="noopener noreferrer" className={styles.socialIcon}><FaInstagram size={20} /></a>
-            <a href="https://www.youtube.com/@jesusiswithusministries7844/featured"  target="_blank" rel="noopener noreferrer" className={styles.socialIcon}><FaYoutube size={20} /></a>
-            <a href="#"  target="_blank" rel="noopener noreferrer" className={styles.socialIcon}><FaTwitter size={20} /></a>
+            <a href="https://www.facebook.com/share/1BqSmZKf3S/" target="_blank" rel="noopener noreferrer" className={styles.socialIcon}><FaFacebook size={20} /></a>
+            <a href="https://www.instagram.com/jiwcministries?igsh=MXBqN2U3cHdrOWZjZg==" target="_blank" rel="noopener noreferrer" className={styles.socialIcon}><FaInstagram size={20} /></a>
+            <a href="https://www.youtube.com/@jesusiswithusministries7844/featured" target="_blank" rel="noopener noreferrer" className={styles.socialIcon}><FaYoutube size={20} /></a>
+            <a href="https://sharechat.com/profile/1894693559?d=n" target="_blank" rel="noopener noreferrer" className={styles.socialIcon}><FaSharechat size={20} /></a>
           </div>
         </div>
 

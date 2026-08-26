@@ -105,8 +105,8 @@ function App() {
             <Route path="events" element={<Events />} />
             <Route path="popups" element={<Popups />} />
             <Route path="gallery" element={<GalleryAdmin />} />
-            <Route path="playlists" element={<Playlists />} />
             <Route path="subscribers" element={<Subscribers />} />
+            <Route path="playlists" element={<Playlists />} />
             <Route path="media" element={<MediaLibrary />} />
             <Route path="settings" element={<Settings />} />
           </Route>

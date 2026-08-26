@@ -33,6 +33,7 @@ export default function DownloadButton({ word }) {
       
       // Analytics
       await incrementDownloads(word.id).catch(console.error);
+      window.dispatchEvent(new CustomEvent('statsUpdated', { detail: { id: word.id, type: 'download' } }));
     } catch (e) {
       console.error("Download failed", e);
       toast.error("Failed to download poster");

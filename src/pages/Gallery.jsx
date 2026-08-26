@@ -16,7 +16,8 @@ export default function Gallery() {
     try {
       setLoading(true);
       const data = await getGalleryImages();
-      setImages(data || []);
+      const visibleImages = (data || []).filter(img => img.status !== 'draft');
+      setImages(visibleImages);
     } catch (err) {
       console.error("Failed to load gallery:", err);
     } finally {
