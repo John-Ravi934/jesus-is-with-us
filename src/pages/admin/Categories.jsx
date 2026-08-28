@@ -230,7 +230,7 @@ export default function Categories() {
             <div className={styles.formGroup}>
               <label style={{ fontSize: '0.9rem', fontWeight: 600 }}>Choose Color</label>
               <div className={styles.colorPresets}>
-                {colorPresets.map(preset => {
+                {colorPresets.slice(0, -1).map(preset => {
                   const isSelected = newCat.color.toLowerCase() === preset.toLowerCase();
                   return (
                     <div 
@@ -243,6 +243,33 @@ export default function Categories() {
                     </div>
                   );
                 })}
+                <div 
+                  className={styles.colorPreset}
+                  style={{ 
+                    background: 'conic-gradient(red, yellow, lime, aqua, blue, magenta, red)',
+                    position: 'relative',
+                    border: !colorPresets.slice(0, -1).some(p => p.toLowerCase() === newCat.color.toLowerCase()) ? '3px solid #fff' : 'none',
+                    boxShadow: !colorPresets.slice(0, -1).some(p => p.toLowerCase() === newCat.color.toLowerCase()) ? '0 0 0 2px #3b82f6' : 'none'
+                  }}
+                  title="Pick a custom color"
+                  onClick={() => document.getElementById('customColorPicker').click()}
+                >
+                  {!colorPresets.slice(0, -1).some(p => p.toLowerCase() === newCat.color.toLowerCase()) && (
+                    <Check size={16} color="#ffffff" strokeWidth={3} style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 1, filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.5))'}} />
+                  )}
+                  <input 
+                    id="customColorPicker"
+                    type="color" 
+                    value={newCat.color}
+                    onChange={(e) => setNewCat({...newCat, color: e.target.value})}
+                    style={{
+                      opacity: 0,
+                      position: 'absolute',
+                      top: 0, left: 0, width: 0, height: 0,
+                      visibility: 'hidden'
+                    }}
+                  />
+                </div>
               </div>
             </div>
 

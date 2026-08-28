@@ -13,6 +13,18 @@ import TodayRhemaView from '../components/rhema/TodayRhemaView';
 import CategoryScroll from '../components/rhema/CategoryScroll';
 import DynamicCalendar from '../components/rhema/DynamicCalendar';
 
+const renderBoldPipe = (text) => {
+  if (!text || !text.includes('|')) return <span style={{ fontWeight: 400 }}>{text}</span>;
+  const parts = text.split('|');
+  return (
+    <>
+      <span style={{ fontWeight: 400 }}>{parts[0].trim()}</span>
+      <strong style={{ fontWeight: 'bold', margin: '0 4px', color: '#15a349' }}>|</strong>
+      <span style={{ fontWeight: 400 }}>{parts[1].trim()}</span>
+    </>
+  );
+};
+
 const popularTags = ["Faith", "Healing", "Grace", "Peace", "Love"];
 
 const isValidUrl = (url) => url && typeof url === 'string' && url.startsWith('http');
@@ -286,7 +298,7 @@ export default function RhemaWords() {
                         <span className={styles.archiveDate}>{new Date(word.date).toLocaleDateString('en-GB')}</span>
                         {favorites.includes(word.id) && <Heart size={14} fill="#C8A646" color="#C8A646" />}
                       </div>
-                      <h4 data-aos="fade-up">{word.bible_reference}</h4>
+                      <h4 data-aos="fade-up">{renderBoldPipe(word.bible_reference)}</h4>
                     </div>
                   </div>
                 );
@@ -305,13 +317,13 @@ export default function RhemaWords() {
                 return (
                   <div key={word.id} className={styles.timelineItem}>
                     <div className={styles.timelineDot}></div>
-                    <div className={styles.timelineDate}>{new Date(word.date).toLocaleDateString('en-GB', {month: 'short', day: 'numeric'})}</div>
+                    <div className={styles.timelineDate}>{new Date(word.date).toLocaleDateString('en-GB', {month: 'short', day: 'numeric', year: 'numeric'})}</div>
                     <div className={styles.timelineContent} onClick={() => { setFeaturedIndex(originalIndex); handleTabChange('today'); }}>
                       <div className={styles.timelineThumb}>
                         <img data-aos="fade-up" src={getThumb(word)} alt="thumb" loading="lazy" />
                       </div>
                       <div className={styles.timelineText}>
-                        <h4 data-aos="fade-up">{word.bible_reference}</h4>
+                        <h4 data-aos="fade-up">{renderBoldPipe(word.bible_reference)}</h4>
                         <p data-aos="fade-up">"{word.bible_verse.substring(0, 60)}..."</p>
                       </div>
                     </div>
@@ -347,7 +359,7 @@ export default function RhemaWords() {
                         <span className={styles.archiveDate}>{new Date(word.date).toLocaleDateString('en-GB')}</span>
                         <Heart size={14} fill="#C8A646" color="#C8A646" />
                       </div>
-                      <h4 data-aos="fade-up">{word.bible_reference}</h4>
+                      <h4 data-aos="fade-up">{renderBoldPipe(word.bible_reference)}</h4>
                     </div>
                   </div>
                 );

@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import styles from './Fellowship.module.css';
 import heroBg from '/assets/youth-meeting.png';
 import { supabase } from '../lib/supabase';
+import { saveMessage } from '../services/messageService';
 
 export default function Fellowship() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -85,16 +86,28 @@ export default function Fellowship() {
                 e.preventDefault();
                 setIsSubmitting(true);
 
+                const payload = {
+                  fullName: e.target[0].value,
+                  email: e.target[1].value,
+                  phone: e.target[2].value,
+                  interest: e.target[3].options[e.target[3].selectedIndex].text,
+                  message: e.target[4].value
+                };
+
                 try {
+                  // Save to DB so admin can see notifications
+                  await saveMessage({
+                    formType: 'Fellowship',
+                    fullName: payload.fullName,
+                    email: payload.email,
+                    phone: payload.phone,
+                    subject: payload.interest,
+                    message: payload.message || 'I would like to join this fellowship.'
+                  }).catch(e => console.warn('Failed to save message to DB:', e));
+
                   // Send data to our secure Edge Function
                   const { data, error } = await supabase.functions.invoke('send-email', {
-                    body: {
-                      fullName: e.target[0].value,
-                      email: e.target[1].value,
-                      phone: e.target[2].value,
-                      interest: e.target[3].value,
-                      message: e.target[4].value
-                    }
+                    body: payload
                   });
 
                   if (error) {

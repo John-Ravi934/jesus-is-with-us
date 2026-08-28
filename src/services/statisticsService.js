@@ -1,10 +1,33 @@
 import { supabase } from '../lib/supabase';
 
-export const getAppStatistics = async () => {
-  // Aggregate views and downloads across all rhema_words
-  const { data, error } = await supabase
+export const getAppStatistics = async (dateFilter = 'all') => {
+  // Calculate the date range based on filter
+  let query = supabase
     .from('rhema_words')
-    .select('views, downloads');
+    .select('views, downloads, date');
+
+  if (dateFilter !== 'all') {
+    const now = new Date();
+    let startDate;
+    
+    if (dateFilter === 'today') {
+      startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    } else if (dateFilter === 'week') {
+      startDate = new Date(now);
+      startDate.setDate(now.getDate() - 7);
+    } else if (dateFilter === 'month') {
+      startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+    } else if (dateFilter === 'year') {
+      startDate = new Date(now.getFullYear(), 0, 1);
+    }
+
+    if (startDate) {
+      const startStr = startDate.toISOString().split('T')[0];
+      query = query.gte('date', startStr);
+    }
+  }
+
+  const { data, error } = await query;
     
   if (error) {
     console.error("Error fetching rhema statistics:", error);

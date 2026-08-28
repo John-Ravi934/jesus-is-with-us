@@ -1,10 +1,23 @@
-import { Tag, Globe, Eye, Download } from 'lucide-react';
+import { Tag, Globe, Eye, Download, Book, Cross, Heart, Star, Sparkles, Flame, Shield, Sun } from 'lucide-react';
 import styles from './RhemaComponents.module.css';
 
 export default function PosterMetadata({ word }) {
   if (!word) return null;
 
   const isValidUrl = (url) => url && typeof url === 'string' && url.startsWith('http');
+
+  const getCategoryIcon = (cat) => {
+    const c = cat.toLowerCase();
+    if (c.includes('faith')) return <Sparkles size={14} className={styles.badgeIcon} />;
+    if (c.includes('healing')) return <Cross size={14} className={styles.badgeIcon} />;
+    if (c.includes('grace')) return <Sun size={14} className={styles.badgeIcon} />;
+    if (c.includes('peace')) return <Star size={14} className={styles.badgeIcon} />;
+    if (c.includes('love')) return <Heart size={14} className={styles.badgeIcon} />;
+    if (c.includes('holy spirit')) return <Flame size={14} className={styles.badgeIcon} />;
+    if (c.includes('protection')) return <Shield size={14} className={styles.badgeIcon} />;
+    if (c.includes('praise')) return <Star size={14} className={styles.badgeIcon} />;
+    return <Tag size={14} className={styles.badgeIcon} />;
+  };
 
   return (
     <div className={styles.infoHeader}>
@@ -15,11 +28,32 @@ export default function PosterMetadata({ word }) {
         </span>
       </div>
       
-      <h2 className={styles.infoTitle}>{word.bible_reference}</h2>
+      <h2 className={styles.infoTitle} style={{ fontSize: '25px', marginTop: '1.5rem' }}>
+        {word.bible_reference ? (() => {
+          const ref = word.bible_reference.replace(/[\[\]]/g, '').trim();
+          if (ref.includes('|')) {
+            const parts = ref.split('|');
+            return (
+              <>
+                <span style={{ fontWeight: 400 }}>{parts[0].trim()}</span>
+                <strong style={{ fontWeight: 'bold', margin: '0 8px', color: '#15a349' }}>|</strong>
+                <span style={{ fontWeight: 400 }}>{parts[1].trim()}</span>
+              </>
+            );
+          }
+          return <span style={{ fontWeight: 400 }}>{ref}</span>;
+        })() : `${word.tamil_title || 'தமிழ்'} | ${word.title}`}
+      </h2>
       
+      {word.bible_verse && (
+        <p style={{ fontStyle: 'italic', color: '#475569', marginBottom: '1.25rem', lineHeight: 1.6, fontSize: '1.05rem', borderLeft: '3px solid #C8A646', paddingLeft: '1rem' }}>
+          "{word.bible_verse}"
+        </p>
+      )}
+
       <div className={styles.badgesRow}>
         <span className={styles.badgeItem} title="Category">
-          <Tag size={14} className={styles.badgeIcon} /> {word.category}
+          {getCategoryIcon(word.category)} {word.category}
         </span>
         {isValidUrl(word.tamil_poster_url) && (
           <span className={styles.badgeItem} title="Language">

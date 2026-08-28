@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { getGalleryImages } from '../services/galleryService';
-import { Image as ImageIcon } from 'lucide-react';
+import { Image as ImageIcon, ChevronLeft, ChevronRight, X } from 'lucide-react';
 
 export default function Gallery() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedAlbum, setSelectedAlbum] = useState(null);
+  const [activePhotoIndex, setActivePhotoIndex] = useState(0);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -25,20 +26,41 @@ export default function Gallery() {
     }
   };
 
+  // Group images by title (which acts as the event/category)
+  const groupedImages = images.reduce((acc, img) => {
+    const category = img.title || 'General';
+    if (!acc[category]) acc[category] = [];
+    if (acc[category].length < 5) {
+      acc[category].push(img);
+    }
+    return acc;
+  }, {});
+
   return (
     <>
-      <div style={{ paddingTop: '120px', minHeight: '80vh', backgroundColor: '#F8F8FA' }}>
-        <div className="container" style={{ paddingBottom: '4rem' }}>
-          
-          <div style={{ textAlign: "center", marginBottom: "3rem", paddingTop: "2rem" }} data-aos="fade-up">
-            <h1 data-aos="fade-up" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', color: '#090b24', margin: 0 }}>
-              Photo <span className="script-accent" style={{ display: 'inline' }}>Gallery</span>
-            </h1>
-            <p data-aos="fade-up" style={{ color: '#64748b', fontSize: '1.1rem', marginTop: '1rem' }}>
-              Get a glimpse of the vibrant life, worship, and fellowship at our church.
-            </p>
-          </div>
+      {/* 500px Hero Banner */}
+      <section style={{ 
+        height: '500px', 
+        background: 'linear-gradient(rgba(9, 11, 36, 0.8), rgba(9, 11, 36, 0.9)), url("https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2073&auto=format&fit=crop") center/cover',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        color: '#fff',
+        paddingTop: '80px' // for navbar
+      }}>
+        <div className="container" data-aos="fade-up">
+          <h1 style={{ fontSize: 'clamp(3rem, 6vw, 5rem)', fontWeight: 800, margin: '0 0 1rem' }}>
+            Photo <span className="script-accent" style={{ color: '#FCD34D' }}>Gallery</span>
+          </h1>
+          <p style={{ fontSize: '1.2rem', color: '#cbd5e1', maxWidth: '600px', margin: '0 auto', lineHeight: 1.6 }}>
+            Get a glimpse of the vibrant life, worship, and fellowship at our church.
+          </p>
+        </div>
+      </section>
 
+      <div style={{ minHeight: '80vh', backgroundColor: '#F8F8FA', padding: '4rem 0' }}>
+        <div className="container">
           {loading ? (
             <div style={{ textAlign: 'center', padding: '4rem' }}>Loading gallery...</div>
           ) : images.length === 0 ? (
@@ -49,47 +71,61 @@ export default function Gallery() {
           ) : (
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-              gap: '24px',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+              gap: '2rem',
             }}>
-              {images.map((img) => (
+              {Object.entries(groupedImages).map(([category, catImages]) => (
                 <div 
-                  key={img.id} 
+                  key={category} 
                   style={{ 
                     cursor: 'pointer',
                     borderRadius: '16px',
                     overflow: 'hidden',
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-                    aspectRatio: '1',
-                    position: 'relative'
+                    boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
+                    aspectRatio: '4/3',
+                    position: 'relative',
+                    background: '#000'
                   }}
-                  onClick={() => setSelectedImage(img)}
+                  onClick={() => {
+                    setSelectedAlbum({ name: category, photos: catImages });
+                    setActivePhotoIndex(0);
+                  }}
                   className="gallery-item"
+                  data-aos="fade-up"
                 >
-                  <img data-aos="fade-up" 
-                    src={img.image_url} 
-                    alt={img.title || "Gallery image"} 
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      transition: 'transform 0.3s ease'
-                    }}
-                    onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-                    onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                  />
-                  {img.title && (
-                    <div style={{
-                      position: 'absolute',
-                      bottom: 0, left: 0, right: 0,
-                      background: 'linear-gradient(transparent, rgba(0,0,0,0.8))',
-                      padding: '20px 15px 15px',
-                      color: 'white',
-                      fontSize: '0.9rem'
-                    }}>
-                      {img.title}
-                    </div>
+                  {catImages.length > 0 && (
+                    <img 
+                      src={(catImages.find(p => p.status === 'published-cover') || catImages[0]).image_url} 
+                      alt={category} 
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        transition: 'transform 0.5s ease',
+                        opacity: 0.8
+                      }}
+                      onMouseOver={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.05)';
+                        e.currentTarget.style.opacity = '1';
+                      }}
+                      onMouseOut={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.opacity = '0.8';
+                      }}
+                    />
                   )}
+                  <div style={{
+                    position: 'absolute',
+                    bottom: 0, left: 0, right: 0,
+                    background: 'linear-gradient(transparent, rgba(0,0,0,0.9))',
+                    padding: '40px 20px 20px',
+                    color: 'white',
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}>
+                    <span style={{ fontSize: '1.25rem', fontWeight: 800 }}>{category}</span>
+                    <span style={{ fontSize: '0.9rem', color: '#cbd5e1' }}>{catImages.length} Photos</span>
+                  </div>
                 </div>
               ))}
             </div>
@@ -97,36 +133,68 @@ export default function Gallery() {
         </div>
       </div>
 
-      {/* Lightbox */}
-      {selectedImage && (
+      {/* Album Lightbox */}
+      {selectedAlbum && (
         <div 
           style={{
             position: 'fixed',
             top: 0, left: 0, right: 0, bottom: 0,
-            backgroundColor: 'rgba(0,0,0,0.9)',
+            backgroundColor: 'rgba(0,0,0,0.95)',
             zIndex: 99999,
             display: 'flex',
+            flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer'
+            justifyContent: 'center'
           }}
-          onClick={() => setSelectedImage(null)}
         >
-          <img data-aos="fade-up" 
-            src={selectedImage.image_url} 
-            alt="Fullscreen View" 
-            style={{
-              maxWidth: '90vw',
-              maxHeight: '90vh',
-              objectFit: 'contain',
-              borderRadius: '8px'
-            }}
-          />
-          {selectedImage.title && (
-            <div style={{ position: 'absolute', bottom: '30px', color: 'white', fontSize: '1.2rem', textAlign: 'center', background: 'rgba(0,0,0,0.5)', padding: '8px 24px', borderRadius: '50px' }}>
-              {selectedImage.title}
-            </div>
-          )}
+          {/* Close Button */}
+          <button 
+            onClick={() => setSelectedAlbum(null)}
+            style={{ position: 'absolute', top: '20px', right: '20px', background: 'none', border: 'none', color: 'white', cursor: 'pointer', zIndex: 10 }}
+          >
+            <X size={32} />
+          </button>
+          
+          <div style={{ color: 'white', position: 'absolute', top: '30px', fontSize: '1.2rem', fontWeight: 700 }}>
+            {selectedAlbum.name} <span style={{ opacity: 0.5 }}>({activePhotoIndex + 1} / {selectedAlbum.photos.length})</span>
+          </div>
+
+          <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <img 
+              src={selectedAlbum.photos[activePhotoIndex].image_url} 
+              alt="Fullscreen View" 
+              style={{
+                maxWidth: '90vw',
+                maxHeight: '80vh',
+                objectFit: 'contain',
+                borderRadius: '8px'
+              }}
+            />
+            
+            {/* Nav Buttons */}
+            {selectedAlbum.photos.length > 1 && (
+              <>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActivePhotoIndex(prev => prev === 0 ? selectedAlbum.photos.length - 1 : prev - 1);
+                  }}
+                  style={{ position: 'absolute', left: '20px', background: 'rgba(255,255,255,0.1)', border: 'none', color: 'white', borderRadius: '50%', width: '50px', height: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+                >
+                  <ChevronLeft size={32} />
+                </button>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActivePhotoIndex(prev => prev === selectedAlbum.photos.length - 1 ? 0 : prev + 1);
+                  }}
+                  style={{ position: 'absolute', right: '20px', background: 'rgba(255,255,255,0.1)', border: 'none', color: 'white', borderRadius: '50%', width: '50px', height: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+                >
+                  <ChevronRight size={32} />
+                </button>
+              </>
+            )}
+          </div>
         </div>
       )}
     </>

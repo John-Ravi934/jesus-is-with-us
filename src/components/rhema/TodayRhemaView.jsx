@@ -60,8 +60,8 @@ export default function TodayRhemaView({
   if (isValidUrl(featuredWord.poster_url)) posters.push(featuredWord.poster_url);
   const currentPosterUrl = posters[activeLangIndex] || posters[0];
 
-  // Filter out the currently featured word for the "Previous" grid
-  const previousWords = rhemaDatabase.filter((_, idx) => idx !== featuredIndex);
+  // Filter out the currently featured word for the "Previous" grid and limit to 12
+  const previousWords = rhemaDatabase.filter((_, idx) => idx !== featuredIndex).slice(0, 12);
 
   return (
     <>

@@ -342,15 +342,6 @@ export default function Events() {
               </select>
               <ChevronDown size={14} style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', pointerEvents: 'none' }} />
             </div>
-            <div style={{ position: 'relative' }}>
-              <select id="filter-status" value={filterStatus} onChange={e => { setFilterStatus(e.target.value); setCurrentPage(1); }}
-                style={{ appearance: 'none', padding: '0.65rem 2.2rem 0.65rem 1rem', border: '1px solid #e2e8f0', borderRadius: '8px', fontSize: '0.9rem', color: '#475569', background: '#fff', cursor: 'pointer', outline: 'none', minWidth: '130px', fontFamily: 'inherit' }}>
-                <option value="">All Status</option>
-                <option value="published">Published</option>
-                <option value="draft">Draft</option>
-              </select>
-              <ChevronDown size={14} style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', pointerEvents: 'none' }} />
-            </div>
             <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
               <Calendar size={15} style={{ color: '#94a3b8', flexShrink: 0 }} />
               <select id="sort-order" value={sortOrder} onChange={e => setSortOrder(e.target.value)}
@@ -475,8 +466,11 @@ export default function Events() {
       {/* ADD / EDIT MODAL */}
       {isModalOpen && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: '1rem' }}>
-          <div style={{ background: '#fff', borderRadius: '20px', width: '100%', maxWidth: '520px', maxHeight: '92vh', overflowY: 'auto', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', animation: 'modalIn 0.25s ease' }}>
-            <style>{`@keyframes modalIn { from { opacity:0; transform:scale(0.95) translateY(10px); } to { opacity:1; transform:scale(1) translateY(0); } }`}</style>
+          <div style={{ background: '#fff', borderRadius: '20px', width: '100%', maxWidth: '520px', maxHeight: '92vh', overflowY: 'auto', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', animation: 'modalIn 0.25s ease', scrollbarWidth: 'none', msOverflowStyle: 'none' }} className="eventsModal">
+            <style>{`
+              @keyframes modalIn { from { opacity:0; transform:scale(0.95) translateY(10px); } to { opacity:1; transform:scale(1) translateY(0); } }
+              .eventsModal::-webkit-scrollbar { display: none; }
+            `}</style>
             <div style={{ padding: '1.75rem 1.75rem 0', position: 'relative' }}>
               <button id="close-modal-btn" onClick={() => setIsModalOpen(false)}
                 style={{ position: 'absolute', top: '1.25rem', right: '1.25rem', background: '#f1f5f9', border: 'none', borderRadius: '50%', width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#64748b' }}
