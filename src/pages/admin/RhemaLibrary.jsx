@@ -183,7 +183,9 @@ export default function RhemaLibrary() {
                     <div className={styles.gridCellRhema}>
                       <img src={thumbUrl} alt="thumb" className={styles.gridRhemaThumb} />
                       <div className={styles.gridRhemaText}>
-                        <div className={styles.gridRhemaTitle}>{r.bible_reference}</div>
+                        <div className={styles.gridRhemaTitle}>
+                          {r.bible_reference ? (r.bible_reference.includes(' | ') ? r.bible_reference.split(' | ')[1].trim() : r.bible_reference) : r.title}
+                        </div>
                         <div className={styles.gridRhemaSub}>{r.title || r.bible_verse?.substring(0,40)+'...'}</div>
                       </div>
                     </div>

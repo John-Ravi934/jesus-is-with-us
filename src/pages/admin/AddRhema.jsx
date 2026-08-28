@@ -31,7 +31,8 @@ export default function AddRhema() {
   const [formData, setFormData] = useState({
     title: '',
     tamilTitle: '',
-    reference: '',
+    tamilReference: '',
+    englishReference: '',
     verse: '', 
     category: 'Faith',
     language: 'English',
@@ -54,10 +55,18 @@ export default function AddRhema() {
 
       if (isEditMode) {
         const data = await getRhemaById(id);
+        
+        let tamilRef = '';
+        let englishRef = data.bible_reference || '';
+        if (data.bible_reference && data.bible_reference.includes(' | ')) {
+          [tamilRef, englishRef] = data.bible_reference.split(' | ');
+        }
+        
         setFormData({
           title: data.title,
           tamilTitle: data.tamil_title || '',
-          reference: data.bible_reference,
+          tamilReference: tamilRef,
+          englishReference: englishRef,
           verse: data.bible_verse,
           category: data.category,
           language: data.language,
@@ -135,7 +144,7 @@ export default function AddRhema() {
       const payload = {
         title: formData.title,
         tamil_title: formData.tamilTitle,
-        bible_reference: formData.reference,
+        bible_reference: `${formData.tamilReference} | ${formData.englishReference}`,
         bible_verse: formData.verse,
         category: formData.category,
         language: formData.language,
@@ -191,11 +200,20 @@ export default function AddRhema() {
                 <span className={styles.sectionBadge}>BIBLE INFORMATION</span>
               </div>
 
-              <div className={styles.formGroup}>
-                <label>Bible Reference (e.g. Isaiah 40:31)</label>
-                <div className={styles.inputWithIconRight}>
-                  <input type="text" name="reference" required value={formData.reference} onChange={handleChange} placeholder="Isaiah 40:31" />
-                  <BookOpen className={styles.inputIconIconRight} size={18} />
+              <div className={styles.formRow2}>
+                <div className={styles.formGroup}>
+                  <label>Bible Reference (Tamil)</label>
+                  <div className={styles.inputWithIconRight}>
+                    <input type="text" name="tamilReference" required value={formData.tamilReference} onChange={handleChange} placeholder="ஏசாயா 40:31" />
+                    <BookOpen className={styles.inputIconIconRight} size={18} />
+                  </div>
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Bible Reference (English)</label>
+                  <div className={styles.inputWithIconRight}>
+                    <input type="text" name="englishReference" required value={formData.englishReference} onChange={handleChange} placeholder="Isaiah 40:31" />
+                    <BookOpen className={styles.inputIconIconRight} size={18} />
+                  </div>
                 </div>
               </div>
               
@@ -207,7 +225,7 @@ export default function AddRhema() {
                     required 
                     value={formData.verse} 
                     onChange={handleChange} 
-                    placeholder="But they that wait upon the LORD..." 
+                    placeholder="உன் தேவனாகிய கர்த்தர் உனக்குக் கொடுத்த..." 
                     rows={4}
                     maxLength={500}
                   ></textarea>
@@ -263,13 +281,13 @@ export default function AddRhema() {
                 </div>
               </div>
 
-              <div className={`${styles.featuredToggleBox} ${formData.featured ? styles.activeBox : ''}`} onClick={() => setFormData({...formData, featured: !formData.featured})}>
-                <div className={`${styles.customCheckbox} ${formData.featured ? styles.checked : ''}`}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '1rem', padding: '1.25rem', background: formData.featured ? '#f0fdf4' : '#f8fafc', border: `1px solid ${formData.featured ? '#bbf7d0' : '#e2e8f0'}`, borderRadius: '12px', cursor: 'pointer', transition: 'all 0.2s' }} onClick={() => setFormData({...formData, featured: !formData.featured})}>
+                <div style={{ width: 24, height: 24, flexShrink: 0, borderRadius: '6px', border: formData.featured ? '2px solid #10b981' : '2px solid #cbd5e1', background: formData.featured ? '#10b981' : '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}>
                   {formData.featured && <Check size={16} strokeWidth={4} color="#ffffff" />}
                 </div>
-                <div className={styles.featuredText}>
-                  <h4>Mark as Today's Featured Rhema</h4>
-                  <p>This will highlight the Rhema on today's section.</p>
+                <div>
+                  <h4 style={{ margin: '0 0 0.25rem 0', fontSize: '1rem', color: '#0f172a' }}>Mark as Today's Featured Rhema</h4>
+                  <p style={{ margin: 0, fontSize: '0.85rem', color: '#64748b' }}>This will highlight the Rhema on today's section.</p>
                 </div>
               </div>
             </form>

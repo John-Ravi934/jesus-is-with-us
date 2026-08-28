@@ -34,6 +34,8 @@ import Popups from './pages/admin/Popups';
 import GalleryAdmin from './pages/admin/GalleryAdmin';
 import Subscribers from './pages/admin/Subscribers';
 import Playlists from './pages/admin/Playlists';
+import UserManual from './pages/admin/UserManual';
+import Notifications from './pages/admin/Notifications';
 
 function App() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -109,6 +111,8 @@ function App() {
             <Route path="playlists" element={<Playlists />} />
             <Route path="media" element={<MediaLibrary />} />
             <Route path="settings" element={<Settings />} />
+            <Route path="notifications" element={<Notifications />} />
+            <Route path="manual" element={<UserManual />} />
           </Route>
 
         </Routes>

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { supabase } from '../lib/supabase';
+import { saveMessage } from '../services/messageService';
 import styles from './Contact.module.css';
 
 export default function Contact() {
@@ -107,11 +108,15 @@ export default function Contact() {
                 };
 
                 try {
+                  // Save to DB so admin can see notifications
+                  await saveMessage(payload).catch(e => console.warn('Failed to save message to DB:', e));
+
                   const { error } = await supabase.functions.invoke('send-email', {
                     body: payload
                   });
 
                   if (error) {
+                    // if it fails to invoke edge function, we still saved it to DB! So maybe we say it succeeded, or notify them. Let's just say success if DB saved it, or error. If it failed here, they can still be reached. Let's keep existing logic.
                     toast.error('Failed to send request. Please try again.');
                   } else {
                     toast.success('Thank you, we will reach you soon!');

@@ -61,3 +61,33 @@ export const updateDonationSettings = async (settingsObject) => {
   if (error) throw error;
   return data[0];
 };
+
+export const getEmailSettings = async () => {
+  const { data, error } = await supabase
+    .from('site_settings')
+    .select('setting_value')
+    .eq('setting_key', 'email_settings')
+    .single();
+  
+  if (error) {
+    if (error.code === 'PGRST116') {
+      return { 
+        resendApiKey: '',
+        fromEmail: 'noreply@yourdomain.com',
+        replyToEmail: 'contact@yourdomain.com'
+      };
+    }
+    throw error;
+  }
+  return data.setting_value;
+};
+
+export const updateEmailSettings = async (settingsObject) => {
+  const { data, error } = await supabase
+    .from('site_settings')
+    .upsert({ setting_key: 'email_settings', setting_value: settingsObject }, { onConflict: 'setting_key' })
+    .select();
+  
+  if (error) throw error;
+  return data[0];
+};

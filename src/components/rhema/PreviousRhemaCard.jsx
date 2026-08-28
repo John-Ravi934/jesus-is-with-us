@@ -14,7 +14,21 @@ export default function PreviousRhemaCard({ word, onClick }) {
           <span>{new Date(word.date).toLocaleDateString('en-GB', {month: 'short', day: 'numeric', year: 'numeric'})}</span>
           <span className={styles.prevCatBadge}>{word.category}</span>
         </div>
-        <h4 className={styles.prevTitle}>{word.bible_reference}</h4>
+        <h4 className={styles.prevTitle}>
+          {word.bible_reference ? (() => {
+            if (word.bible_reference.includes('|')) {
+              const parts = word.bible_reference.split('|');
+              return (
+                <>
+                  <span style={{ fontWeight: 400 }}>{parts[0].trim()}</span>
+                  <strong style={{ fontWeight: 'bold', margin: '0 4px', color: '#15a349' }}>|</strong>
+                  <span style={{ fontWeight: 400 }}>{parts[1].trim()}</span>
+                </>
+              );
+            }
+            return <span style={{ fontWeight: 400 }}>{word.bible_reference}</span>;
+          })() : word.title}
+        </h4>
       </div>
     </div>
   );
