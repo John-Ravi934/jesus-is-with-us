@@ -168,5 +168,3 @@ export default function Fellowship() {
     </>
   );
 }
-/ /   T r i g g e r   V e r c e l   b u i l d  
- 
