@@ -9,6 +9,12 @@
   background: transparent;
 }
 
+.liveHeader {
+  background: #0b0e26 !important;
+  backdrop-filter: blur(20px) !important;
+  padding: 1rem 0 !important;
+}
+
 .scrolled {
   background: rgba(9, 11, 36, 0.95);
   backdrop-filter: blur(20px);
@@ -36,7 +42,7 @@
 
 .nav {
   display: flex;
-  gap: 2rem;
+  gap: 1.2rem;
   align-items: center;
 }
 
@@ -45,6 +51,11 @@
   text-decoration: none;
   font-weight: 500;
   transition: var(--transition-fast);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.navEn a {
   font-size: 0.95rem;
 }
 
@@ -56,6 +67,34 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.langSelector {
+  display: flex;
+  align-items: center;
+}
+
+.langSelect {
+  background: transparent;
+  color: var(--color-white);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  transition: var(--transition-fast);
+}
+
+.langSelect option {
+  background: #ffffff;
+  color: #000000;
+}
+
+.langSelect:hover,
+.langSelect:focus {
+  border-color: var(--color-golden-accent);
 }
 
 .iconBtn {
@@ -92,13 +131,13 @@
     flex-direction: column;
     padding: 6rem 2rem;
     transition: var(--transition-smooth);
-    box-shadow: -10px 0 40px rgba(0,0,0,0.5);
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
   }
-  
+
   .navOpen {
     right: 0;
   }
-  
+
   .mobileToggle {
     display: block;
     z-index: 1001;
@@ -110,4 +149,3 @@
   font-weight: 700 !important;
   border-bottom: 2px solid var(--color-primary-pink);
 }
-

@@ -1,6 +1,7 @@
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Menu, Search, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 import styles from './Header.module.css';
 import logo from '/assets/logo.png';
 
@@ -9,6 +10,7 @@ export default function Header() {
   const isHomePage = location.pathname === '/';
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { language, setLanguage, t, isLiveHeroActive } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,25 +21,31 @@ export default function Header() {
   }, []);
 
   return (
-    <header className={`${styles.header} ${(isScrolled || !isHomePage) ? styles.scrolled : ''}`}>
+    <header className={`${styles.header} ${(isScrolled || !isHomePage) ? styles.scrolled : ''} ${isLiveHeroActive ? styles.liveHeader : ''}`}>
       <div className={`container ${styles.headerContainer}`}>
         <Link to="/" className={styles.logo}>
           <img src={logo} alt="Jesus is with us Logo" className={styles.logoImg} />
         </Link>
         
-        <nav className={`${styles.nav} ${mobileMenuOpen ? styles.navOpen : ''}`}>
-          <NavLink to="/" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? styles.activeLink : ""}>Home</NavLink>
-          <NavLink to="/about" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? styles.activeLink : ""}>About Us</NavLink>
-          <NavLink to="/ministries" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? styles.activeLink : ""}>Ministries</NavLink>
-          <NavLink to="/fellowship" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? styles.activeLink : ""}>Fellowship</NavLink>
-          <NavLink to="/rhema" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? styles.activeLink : ""}>Rhema Words</NavLink>
-          <NavLink to="/gallery" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? styles.activeLink : ""}>Gallery</NavLink>
-          <NavLink to="/resources" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? styles.activeLink : ""}>Resources</NavLink>
-          <NavLink to="/contact" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? styles.activeLink : ""}>Contact</NavLink>
-          <Link to="/donate" className="btn btn-primary" onClick={() => setMobileMenuOpen(false)}>Donate</Link>
+        <nav className={`${styles.nav} ${mobileMenuOpen ? styles.navOpen : ''} ${language === 'en' ? styles.navEn : ''}`}>
+          <NavLink to="/" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? styles.activeLink : ""}>{t('nav_home')}</NavLink>
+          <NavLink to="/about" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? styles.activeLink : ""}>{t('nav_about')}</NavLink>
+          <NavLink to="/ministries" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? styles.activeLink : ""}>{t('nav_ministries')}</NavLink>
+          <NavLink to="/fellowship" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? styles.activeLink : ""}>{t('nav_fellowship')}</NavLink>
+          <NavLink to="/rhema" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? styles.activeLink : ""}>{t('nav_rhema')}</NavLink>
+          <NavLink to="/gallery" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? styles.activeLink : ""}>{t('nav_gallery')}</NavLink>
+          <NavLink to="/resources" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? styles.activeLink : ""}>{t('nav_resources')}</NavLink>
+          <NavLink to="/contact" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? styles.activeLink : ""}>{t('nav_contact')}</NavLink>
+          <Link to="/donate" className="btn btn-primary" onClick={() => setMobileMenuOpen(false)}>{t('nav_donate')}</Link>
         </nav>
 
         <div className={styles.actions}>
+          <div className={styles.langSelector}>
+            <select className={styles.langSelect} value={language} onChange={(e) => setLanguage(e.target.value)}>
+              <option value="en">EN</option>
+              <option value="ta">TA</option>
+            </select>
+          </div>
           <button className={styles.mobileToggle} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>

@@ -1,0 +1,56 @@
+.ministriesSection {
+  background-color: #090b24;
+  padding: 6rem 0;
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.ministriesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.ministryCard {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.ministryCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.cardIconWrapper {
+  background: var(--color-brand-secondary);
+  color: white;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cardContent {
+  padding: 2rem;
+  flex-grow: 1;
+}
+
+.cardContent h3 {
+  font-size: 1.25rem;
+  color: var(--color-brand-primary);
+  margin-bottom: 1rem;
+}
+
+.cardContent p {
+  color: #475569;
+  line-height: 1.6;
+}

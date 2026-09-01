@@ -1,23 +1,26 @@
 import { useState, useEffect } from 'react';
 import { X, PlayCircle } from 'lucide-react';
-import { getEvents } from '../services/eventService';
+import { getPopups } from '../services/popupService';
+
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function AnnouncementPopup() {
+  const { language, t } = useLanguage();
   const [announcement, setAnnouncement] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const fetchAnnouncement = async () => {
       try {
-        // Fetch only active announcements
-        const events = await getEvents({ status: 'published', is_announcement: true });
+        // Fetch only active popups
+        const events = await getPopups({ status: 'published' });
         
         if (events && events.length > 0) {
-          // Sort by date descending and pick the most recent one
-          const latest = events.sort((a, b) => new Date(b.event_date) - new Date(a.event_date))[0];
+          // Sort by created_at descending and pick the most recent one
+          const latest = events.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
           
           // Check if user has already dismissed the popup in this session
-          const showAlways = latest.event_time === 'always';
+          const showAlways = latest.show_every_time;
           const hasSeen = sessionStorage.getItem('announcement_dismissed');
           
           if (!hasSeen || showAlways) {
@@ -44,8 +47,8 @@ export default function AnnouncementPopup() {
 
   if (!announcement || !isVisible) return null;
 
-  const hideDetails = announcement.description?.startsWith('<!--NO_DETAILS-->');
-  const displayDescription = announcement.description?.replace('<!--NO_DETAILS-->', '');
+  const hideDetails = !announcement.show_details;
+  const displayDescription = announcement[`description_${language}`] || announcement.description_en || announcement.description;
 
   return (
     <div style={{
@@ -139,7 +142,7 @@ export default function AnnouncementPopup() {
         {announcement.image_url ? (
           <img 
             src={announcement.image_url} 
-            alt={announcement.title} 
+            alt={announcement[`title_${language}`] || announcement.title_en || announcement.title} 
             className="popup-image"
           />
         ) : (
@@ -156,13 +159,9 @@ export default function AnnouncementPopup() {
                 borderRadius: '50px', fontSize: '0.75rem', fontWeight: 600, 
                 letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '8px'
               }}>
-                Upcoming Event
+                {t('popup_upcoming_event')}
               </span>
-              <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0f172a', margin: '0 0 4px 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{announcement.title}</h2>
-              <p style={{ color: '#3b82f6', fontWeight: 500, fontSize: '0.85rem', margin: '0 0 8px 0' }}>
-                Date: {announcement.event_date ? new Date(announcement.event_date).toLocaleDateString('en-GB') : 'TBA'}
-                {announcement.event_time && announcement.event_time !== 'always' && announcement.event_time !== 'once' ? ` at ${announcement.event_time}` : ''}
-              </p>
+              <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0f172a', margin: '0 0 4px 0' }}>{announcement[`title_${language}`] || announcement.title_en || announcement.title_ta}</h2>
               {displayDescription && (
                 <p style={{ color: '#475569', fontSize: '0.85rem', lineHeight: 1.4, margin: '0', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                   {displayDescription}
@@ -183,7 +182,7 @@ export default function AnnouncementPopup() {
                   }}
                   onClick={handleClose}
                 >
-                  <PlayCircle size={18} /> Learn More
+                  <PlayCircle size={18} /> {t('popup_learn_more')}
                 </a>
               )}
               <button 
@@ -196,7 +195,7 @@ export default function AnnouncementPopup() {
                 }}
                 onClick={handleClose}
               >
-                Dismiss
+                {t('popup_dismiss')}
               </button>
             </div>
           </div>

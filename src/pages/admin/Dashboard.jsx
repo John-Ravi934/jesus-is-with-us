@@ -9,6 +9,7 @@ import {
   BarChart, Bar, Legend, Line, LineChart, LabelList,
   PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip
 } from 'recharts';
+import adminStyles from './AdminStyles.module.css';
 
 const COLORS = ['#22c55e', '#eab308', '#ef4444', '#06b6d4', '#8b5cf6', '#3b82f6', '#f97316', '#a855f7'];
 
@@ -86,7 +87,7 @@ export default function Dashboard() {
       setWeeklyData(arrWeek);
       
       const formattedCategoryData = Object.keys(catMap).map(key => {
-        const dbCat = categoriesData.find(c => c.name === key);
+        const dbCat = categoriesData.find(c => c.name_en === key || c.name === key);
         return { name: key, value: catMap[key], color: dbCat ? dbCat.color : null, icon: dbCat ? dbCat.icon : null };
       });
 
@@ -197,7 +198,6 @@ export default function Dashboard() {
   const headerSub = { fontSize: '0.85rem', color: '#64748b', margin: '0.2rem 0 0' };
   const allTimeDropdown = { padding: '0.5rem 1rem', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', color: '#475569', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' };
 
-  const topCardsGrid = { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem', marginBottom: '1.5rem' };
   const statCard = { background: '#fff', borderRadius: '16px', padding: '1.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' };
   
   const iconWrapper = (color, bg, small=false) => ({ width: small ? 32 : 44, height: small ? 32 : 44, borderRadius: '50%', background: bg, color: color, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: small ? 0 : '1rem' });
@@ -246,7 +246,7 @@ export default function Dashboard() {
       </div>
 
       {/* TOP 3 CARDS */}
-      <div style={topCardsGrid}>
+      <div className={adminStyles.responsiveGrid3} style={{ marginBottom: '1.5rem' }}>
         {/* Card 1 */}
         <div style={statCard}>
           <div style={iconWrapper('#22c55e', '#dcfce7')}><FileText size={20} /></div>
@@ -335,7 +335,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: '2rem' }}>
+        <div className={adminStyles.responsiveGrid_Engagement}>
           {/* Left Summary Stack */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             
@@ -396,7 +396,7 @@ export default function Dashboard() {
       </div>
 
       {/* TWO COLUMNS: WEEKLY REACH & DISTRIBUTION */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '1.5rem' }}>
+      <div className={adminStyles.responsiveGrid2} style={{ marginBottom: '1.5rem' }}>
         
         {/* Weekly Content Reach */}
         <div style={{ background: '#fff', borderRadius: '16px', padding: '1.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
@@ -507,7 +507,7 @@ export default function Dashboard() {
       </div>
 
       {/* BOTTOM SECTION: TABLE & QUICK ACTIONS */}
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem' }}>
+      <div className={adminStyles.responsiveGrid2_1} style={{ marginBottom: '1.5rem' }}>
         
         {/* Recent Rhema Table */}
         <div style={{ background: '#fff', borderRadius: '16px', padding: '1.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
@@ -516,36 +516,38 @@ export default function Dashboard() {
             <Link to="/admin/rhema/library" style={{ padding: '0.3rem 0.8rem', border: '1px solid #e2e8f0', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 600, color: '#16a34a', textDecoration: 'none' }}>View All</Link>
           </div>
           
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-            <thead>
-              <tr style={{ borderBottom: '1px solid #f1f5f9' }}>
-                <th style={{ padding: '0.75rem 0', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.05em' }}>POSTER</th>
-                <th style={{ padding: '0.75rem 0', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.05em' }}>REFERENCE</th>
-                <th style={{ padding: '0.75rem 0', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.05em' }}>CATEGORY</th>
-                <th style={{ padding: '0.75rem 0', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.05em' }}>DATE</th>
-                <th style={{ padding: '0.75rem 0', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.05em' }}>STATUS</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recent.map((r, i) => (
-                <tr key={i} style={{ borderBottom: '1px solid #f8fafc' }}>
-                  <td style={{ padding: '0.75rem 0' }}>
-                    <div style={{ width: 36, height: 36, borderRadius: '6px', background: '#e2e8f0', overflow: 'hidden' }}>
-                      {r.poster_url && <img src={r.poster_url} alt="poster" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
-                    </div>
-                  </td>
-                  <td style={{ padding: '0.75rem 0', fontSize: '0.85rem', fontWeight: 700, color: '#0f172a' }}>{r.bible_reference || `Verse ${i+1}`}</td>
-                  <td style={{ padding: '0.75rem 0' }}>
-                    <span style={{ display: 'inline-block', padding: '0.2rem 0.6rem', borderRadius: '4px', background: '#fef3c7', color: '#d97706', fontSize: '0.75rem', fontWeight: 600 }}>{r.category || 'Encouragement'}</span>
-                  </td>
-                  <td style={{ padding: '0.75rem 0', fontSize: '0.85rem', color: '#475569', fontWeight: 500 }}>{new Date(r.date || Date.now()).toLocaleDateString('en-GB')}</td>
-                  <td style={{ padding: '0.75rem 0' }}>
-                    <span style={{ display: 'inline-block', padding: '0.2rem 0.6rem', borderRadius: '4px', background: '#dcfce7', color: '#16a34a', fontSize: '0.75rem', fontWeight: 600 }}>Published</span>
-                  </td>
+          <div className={adminStyles.responsiveTableContainer}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid #f1f5f9' }}>
+                  <th style={{ padding: '0.75rem 0', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.05em' }}>POSTER</th>
+                  <th style={{ padding: '0.75rem 0', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.05em' }}>REFERENCE</th>
+                  <th style={{ padding: '0.75rem 0', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.05em' }}>CATEGORY</th>
+                  <th style={{ padding: '0.75rem 0', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.05em' }}>DATE</th>
+                  <th style={{ padding: '0.75rem 0', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.05em' }}>STATUS</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {recent.map((r, i) => (
+                  <tr key={i} style={{ borderBottom: '1px solid #f8fafc' }}>
+                    <td style={{ padding: '0.75rem 0' }}>
+                      <div style={{ width: 36, height: 36, borderRadius: '6px', background: '#e2e8f0', overflow: 'hidden' }}>
+                        {r.poster_url && <img src={r.poster_url} alt="poster" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
+                      </div>
+                    </td>
+                    <td style={{ padding: '0.75rem 0', fontSize: '0.85rem', fontWeight: 700, color: '#0f172a' }}>{r.bible_reference_en || r.bible_reference || `Verse ${i+1}`}</td>
+                    <td style={{ padding: '0.75rem 0' }}>
+                      <span style={{ display: 'inline-block', padding: '0.2rem 0.6rem', borderRadius: '4px', background: '#fef3c7', color: '#d97706', fontSize: '0.75rem', fontWeight: 600 }}>{r.category || 'Encouragement'}</span>
+                    </td>
+                    <td style={{ padding: '0.75rem 0', fontSize: '0.85rem', color: '#475569', fontWeight: 500 }}>{new Date(r.date || Date.now()).toLocaleDateString('en-GB')}</td>
+                    <td style={{ padding: '0.75rem 0' }}>
+                      <span style={{ display: 'inline-block', padding: '0.2rem 0.6rem', borderRadius: '4px', background: '#dcfce7', color: '#16a34a', fontSize: '0.75rem', fontWeight: 600 }}>Published</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* Quick Actions */}

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../../lib/supabase';
 import { getPlaylists, createPlaylist, updatePlaylist, deletePlaylist } from '../../services/playlistService';
+import { translateText } from '../../services/translationService';
 import { Plus, Edit2, Trash2, X, Image as ImageIcon, Check, Copy, PlaySquare, Folder, Eye, Calendar, Search, ArrowUpDown, ChevronLeft, ChevronRight, UploadCloud, ExternalLink, Save } from 'lucide-react';
 import styles from './AdminStyles.module.css';
 import toast from 'react-hot-toast';
@@ -148,7 +149,7 @@ export default function Playlists() {
 
   const openModalForEdit = (playlist) => {
     setEditingPlaylist(playlist);
-    setTitle(playlist.title);
+    setTitle(playlist.title_en || playlist.title || '');
     setCategory(playlist.category || 'Sermons');
     setLinkUrl(playlist.link_url || '');
     setImageFile(null);
@@ -195,8 +196,11 @@ export default function Playlists() {
         finalImageUrl = await uploadImage(imageFile);
       }
 
+      const titleTa = await translateText(title);
+
       const playlistData = {
-        title,
+        title_en: title,
+        title_ta: titleTa,
         category,
         link_url: linkUrl,
         image_url: finalImageUrl
@@ -268,7 +272,7 @@ export default function Playlists() {
 
   // Filter and Sort Logic
   const filteredPlaylists = playlists.filter(pl => {
-    const matchesSearch = pl.title?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = pl.title_en?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = filterCategory === 'All Categories' || pl.category === filterCategory;
     return matchesSearch && matchesCategory;
   });
@@ -440,7 +444,7 @@ export default function Playlists() {
           <button className={styles.primaryBtn} onClick={openModalForNew}>Add Playlist</button>
         </div>
       ) : (
-        <div className={styles.tableContainerPremium}>
+        <div className={styles.tableContainerPremium}>        <div className={styles.responsiveTableContainer}>
           <table className={styles.playlistTable}>
             <thead>
               <tr>
@@ -456,14 +460,14 @@ export default function Playlists() {
                   <td>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                       {pl.image_url ? (
-                        <img src={pl.image_url} alt={pl.title} style={{ width: '80px', height: '50px', borderRadius: '6px', objectFit: 'cover', border: '1px solid #e2e8f0' }} />
+                        <img src={pl.image_url} alt={pl.title_en} style={{ width: '80px', height: '50px', borderRadius: '6px', objectFit: 'cover', border: '1px solid #e2e8f0' }} />
                       ) : (
                         <div style={{ width: '80px', height: '50px', borderRadius: '6px', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #e2e8f0' }}>
                           <ImageIcon size={20} color="#94a3b8" />
                         </div>
                       )}
                       <div>
-                        <strong style={{ fontSize: '1rem', color: '#0f172a', display: 'block', marginBottom: '0.2rem' }}>{pl.title}</strong>
+                        <strong style={{ fontSize: '1rem', color: '#0f172a', display: 'block', marginBottom: '0.2rem' }}>{pl.title_en}</strong>
                         <div style={{ fontSize: '0.8rem', color: '#64748b', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
                           <Calendar size={12} />
                           Added on {new Date(pl.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
@@ -505,6 +509,7 @@ export default function Playlists() {
               ))}
             </tbody>
           </table>
+        </div>
           
           {/* Pagination */}
           <div style={{ padding: '1.25rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid #e2e8f0' }}>

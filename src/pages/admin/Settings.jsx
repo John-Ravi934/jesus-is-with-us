@@ -133,6 +133,7 @@ export default function Settings() {
   const [loading, setLoading] = useState(true);
   // Live Stream Settings
   const [liveActive, setLiveActive] = useState(false);
+  const [liveShowInHero, setLiveShowInHero] = useState(false);
   const [liveLink, setLiveLink] = useState('');
   const [liveTooltip, setLiveTooltip] = useState('Live started in the youtube');
   const [savingLive, setSavingLive] = useState(false);
@@ -207,6 +208,7 @@ export default function Settings() {
       
       const liveData = await getLiveStreamSettings();
       setLiveActive(liveData.is_active || false);
+      setLiveShowInHero(liveData.show_in_hero || false);
       setLiveLink(liveData.link || '');
       setLiveTooltip(liveData.tooltip || 'Live started in the youtube');
       
@@ -282,6 +284,7 @@ export default function Settings() {
     try {
       await updateLiveStreamSettings({
         is_active: liveActive,
+        show_in_hero: liveShowInHero,
         link: liveLink,
         tooltip: liveTooltip
       });
@@ -609,6 +612,27 @@ export default function Settings() {
               <div style={{ background: '#f0fdf4', padding: '0.8rem 1rem', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
                 <Lightbulb size={16} style={{ color: '#15803d' }} />
                 <span style={{ color: '#15803d', fontSize: '0.8rem', fontWeight: 600 }}>Tip: Keep your message short and engaging.</span>
+              </div>
+
+              {/* Showcase in Hero Toggle */}
+              <div>
+                <label style={{ ...labelStyle, marginBottom: '0.2rem' }}>Showcase as Hero Background</label>
+                <p style={{ margin: '0 0 0.5rem', fontSize: '0.75rem', color: '#94a3b8' }}>Replaces the default home page video with the live YouTube stream.</p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer' }} onClick={() => setLiveShowInHero(!liveShowInHero)}>
+                  <div style={{
+                    width: 44, height: 24, backgroundColor: liveShowInHero ? '#2e7d32' : '#cbd5e1',
+                    borderRadius: 24, position: 'relative', transition: '0.2s', flexShrink: 0
+                  }}>
+                    <div style={{
+                      position: 'absolute', top: 2, left: liveShowInHero ? 22 : 2,
+                      width: 20, height: 20, backgroundColor: '#fff', borderRadius: '50%',
+                      transition: '0.2s', boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                    }} />
+                  </div>
+                  <span style={{ fontSize: '0.9rem', fontWeight: 600, color: liveShowInHero ? '#1a2940' : '#64748b' }}>
+                    Show in Hero is {liveShowInHero ? 'ON' : 'OFF'}
+                  </span>
+                </div>
               </div>
 
               {/* Save Button */}

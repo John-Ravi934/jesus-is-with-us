@@ -6,7 +6,8 @@ export default function CategoryIcon({
   color,
   size = 38,
   iconSize = 18,
-  className = ''
+  className = '',
+  transparentBg = false
 }) {
   const IconComponent = biblicalIconMap[icon] || LuTag;
 
@@ -16,12 +17,12 @@ export default function CategoryIcon({
       style={{
         width: size,
         height: size,
-        backgroundColor: color,
+        backgroundColor: transparentBg ? 'transparent' : color,
         borderRadius: '50%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        color: '#fff',
+        color: transparentBg ? color : '#fff',
         flexShrink: 0
       }}
       aria-hidden="true"

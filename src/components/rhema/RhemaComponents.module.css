@@ -517,6 +517,9 @@
   height: 330px;
   display: flex;
   flex-direction: column;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 
 .darkTheme .prevCard {
@@ -535,6 +538,9 @@
   height: 220px;
   object-fit: cover;
   transition: filter 0.3s;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .prevCard:hover .prevThumb {

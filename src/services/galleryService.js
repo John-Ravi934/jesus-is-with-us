@@ -10,10 +10,10 @@ export const getGalleryImages = async () => {
   return data;
 };
 
-export const addGalleryImage = async (image_url, title = null, status = 'published') => {
+export const addGalleryImage = async (image_url, title_en = null, title_ta = null, status = 'published') => {
   const { data, error } = await supabase
     .from("gallery_images")
-    .insert([{ image_url, title, status }])
+    .insert([{ image_url, title_en, title_ta, status }])
     .select();
 
   if (error) throw error;

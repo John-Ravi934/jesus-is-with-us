@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom';
 import { MapPin, Phone, Mail, CheckCircle2 } from 'lucide-react';
-import { FaFacebook, FaInstagram, FaYoutube, FaTwitter, FaShare, FaShareSquare, FaShopware } from 'react-icons/fa';
+import { FaFacebook, FaInstagram, FaYoutube } from 'react-icons/fa';
 import { useState } from 'react';
 import { subscribeEmail } from '../services/subscriberService';
 import styles from './Footer.module.css';
 import logo from '/assets/logo.png';
 import { FaSharechat } from './FaSharechat';
-
-
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function Footer() {
+  const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState('idle'); // idle, loading, success, error
   const [message, setMessage] = useState('');
@@ -22,7 +22,7 @@ export default function Footer() {
       setStatus('loading');
       await subscribeEmail(email);
       setStatus('success');
-      setMessage('Thank you for subscribing!');
+      setMessage(t('footer_subscribe_success'));
       setEmail('');
 
       setTimeout(() => {
@@ -38,12 +38,12 @@ export default function Footer() {
   return (
     <footer className={styles.footer}>
       <div className={`container ${styles.footerGrid}`}>
-        <div className={styles.brandCol}>
+        <div className={styles.aboutCol}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', marginTop: '-5px' }}>
             <img src={logo} alt="Jesus Is With Us Logo" style={{ height: '110px', objectFit: 'contain' }} />
-            <h2 className={styles.logoText} style={{ margin: 0, color: '#fff', fontSize: '1.6rem', fontWeight: 'bold', lineHeight: '1.2' }}>Jesus Is With Us<br /><span className="script-accent" style={{ color: 'var(--color-golden-accent)', fontSize: '1.8rem', fontWeight: 'normal' }}>Church</span></h2>
+            <h2 className={styles.logoText} style={{ margin: 0, color: '#fff', fontSize: '1.6rem', fontWeight: 'bold', lineHeight: '1.2' }}>{t('hero_title_1')}<br /><span className="script-accent" style={{ color: 'var(--color-golden-accent)', fontSize: '1.8rem', fontWeight: 'normal' }}>{t('hero_title_2')}</span></h2>
           </div>
-          <p className={styles.tagline}>Transforming Lives Through Worship, Prayer & Gospel Outreach</p>
+          <p className={styles.tagline}>{t('footer_tagline')}</p>
           <div className={styles.socials} style={{ paddingBottom: '5px' }}>
             <a href="https://www.facebook.com/share/1BqSmZKf3S/" target="_blank" rel="noopener noreferrer" className={styles.socialIcon}><FaFacebook size={20} /></a>
             <a href="https://www.instagram.com/jiwcministries?igsh=MXBqN2U3cHdrOWZjZg==" target="_blank" rel="noopener noreferrer" className={styles.socialIcon}><FaInstagram size={20} /></a>
@@ -53,33 +53,32 @@ export default function Footer() {
         </div>
 
         <div className={styles.linksCol}>
-          <h3>Quick Links</h3>
+          <h3>{t('footer_links')}</h3>
           <ul>
-            <li><Link to="/about">About Ministry</Link></li>
-            <li><Link to="/ministries">Our Ministries</Link></li>
-            <li><Link to="/fellowship">Join Fellowship</Link></li>
-            <li><Link to="/rhema">Rhema Words</Link></li>
-            <li><Link to="/donate">Donate</Link></li>
+            <li><Link to="/about">{t('footer_links_about')}</Link></li>
+            <li><Link to="/ministries">{t('footer_links_ministries')}</Link></li>
+            <li><Link to="/fellowship">{t('footer_links_fellowship')}</Link></li>
+            <li><Link to="/rhema">{t('footer_links_rhema')}</Link></li>
+            <li><Link to="/donate">{t('footer_links_donate')}</Link></li>
           </ul>
         </div>
 
         <div className={styles.contactCol}>
-          <h3>Contact Us</h3>
+          <h3>{t('footer_contact')}</h3>
           <ul>
-            <li><MapPin size={18} /> Jesus Is With Us Church M3FC+8C9, Kollapatty, Salem,
-              Tamil Nadu 636030</li>
+            <li><MapPin size={18} /> {t('footer_address')}</li>
             <li><Phone size={18} /> +91 1234567890 </li>
             <li><Mail size={18} /> jiwcministry033@gmail.com </li>
           </ul>
         </div>
 
         <div className={styles.newsletterCol}>
-          <h3>Stay Connected</h3>
-          <p>Subscribe to our newsletter for updates and daily devotions.</p>
+          <h3>{t('footer_subscribe')}</h3>
+          <p>{t('footer_subscribe_desc')}</p>
           <form onSubmit={handleSubscribe} className={styles.newsletterForm}>
             <input
               type="email"
-              placeholder="Your Email Address"
+              placeholder={t('footer_subscribe_placeholder')}
               className={styles.input}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -91,7 +90,7 @@ export default function Footer() {
               className={styles.subscribeBtn}
               disabled={status === 'loading'}
             >
-              {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
+              {status === 'loading' ? t('footer_subscribe_loading') : t('footer_subscribe_btn')}
             </button>
           </form>
           {status === 'success' && (
@@ -107,7 +106,7 @@ export default function Footer() {
 
       <div className={styles.footerBottom}>
         <div className="container">
-          <p>&copy; {new Date().getFullYear()} Jesus Is With Us Ministries. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} {t('footer_copyright')}</p>
         </div>
       </div>
     </footer>

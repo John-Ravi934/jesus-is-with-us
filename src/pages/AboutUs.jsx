@@ -1,156 +1,107 @@
 import { CheckCircle, Target, Eye, Users, PlayCircle, MapPin, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import styles from './AboutUs.module.css';
+import { useLanguage } from '../contexts/LanguageContext';
+import { churchContent } from '../data/churchContent';
+import DivineVision from '../components/DivineVision';
+import PrayerCTA from '../components/PrayerCTA';
 
 export default function AboutUs() {
+  const { t, language } = useLanguage();
+  const timelineEvents = churchContent[language]?.timeline_events || churchContent.en.timeline_events;
+
   return (
     <>
       <section className={styles.hero} data-aos="fade-in">
         <div className={styles.heroOverlay}></div>
         <div className={`container ${styles.heroContent}`}>
-          <span className="subheading animate-fade-up">Who We Are</span>
-          <h1 data-aos="fade-up" className="animate-fade-up delay-100">Our <span className="script-accent">Story</span></h1>
+          <span className="subheading animate-fade-up">{t('about_hero_label')}</span>
+          <h1 data-aos="fade-up" className="animate-fade-up delay-100">{t('about_hero_title')}<span className="script-accent">{t('about_hero_title_2')}</span></h1>
         </div>
       </section>
 
-      {/* Alternating About Sections matching the Unique UI Design */}
-      <section data-aos="fade-up" style={{ display: 'flex', flexDirection: 'column' }}>
-        
-        {/* Block 1: Our Story */}
-        <div style={{ background: '#ffffff', padding: '4rem 0' }}>
+      {/* 1. Foundation & Vision */}
+      <section data-aos="fade-up" style={{ display: 'flex', flexDirection: 'column', padding: 0 }}>
+        <div className={styles.sectionBgWhite}>
           <div className={`container ${styles.aboutBlock}`} style={{ marginTop: 0, marginBottom: 0 }}>
             <div className={styles.aboutText}>
-              <h2 data-aos="fade-up">A Legacy of <span className="script-accent">Faith</span> & Action</h2>
-              <p data-aos="fade-up">What started as a small prayer group of 5 people in a living room has blossomed into a global movement reaching thousands every week. Our story is a testament to God's unfailing grace and the power of united prayer.</p>
-              <p data-aos="fade-up">For over 15 years, Jesus Is With Us Ministries has been at the forefront of spiritual revival, community outreach, and raising a generation of passionate worshippers.</p>
+              <h2 data-aos="fade-up">{t('about_foundation_heading')}<span className="script-accent">{t('about_foundation_heading_2')}</span></h2>
+              <p data-aos="fade-up">{t('intro_desc_p1')}</p>
+              <p data-aos="fade-up">{t('intro_desc_p2')}</p>
             </div>
             <div className={styles.aboutImageRight}>
-              <img data-aos="fade-up" src="/assets/church-image.jpg" alt="Our Story" className={styles.roundedOrganic} />
+              <img data-aos="fade-up" src="/assets/israel-pastor.png" alt="Pastor Israel Raj" className={styles.roundedOrganic} />
             </div>
           </div>
         </div>
 
-        {/* Block 2: Founder */}
-        <div style={{ background: '#f5f5f5', padding: '4rem 0' }}>
+        {/* 2. Church Dedication */}
+        <div className={styles.sectionBgGray}>
           <div className={`container ${styles.aboutBlock} ${styles.reverseBlock}`} style={{ marginTop: 0, marginBottom: 0 }}>
             <div className={styles.aboutImageLeft}>
-              <img data-aos="fade-up" src="/assets/israel-pastor.png" alt="Founder" className={styles.roundedOrganicAlt} />
+              <img data-aos="fade-up" src="/assets/church-image.png" alt="Church Dedication" className={styles.roundedOrganicAlt} />
             </div>
             <div className={styles.aboutText}>
-              <span className="subheading">Founder's Message</span>
-              <h2 data-aos="fade-up">Driven By <span className="script-accent">Compassion</span></h2>
-              <blockquote className={styles.messageQuote}>
-                "The church is not a building you go to, but a family you belong to. We are called to be the hands and feet of Jesus to a hurting world."
-              </blockquote>
-              <p data-aos="fade-up">Welcome to our family. We believe that no matter where you are in life, God has a unique purpose for you. Let's walk this journey of faith together.</p>
-              
-              <div className={styles.socialLinks}>
-                <a data-aos="fade-up" href="#">YouTube</a>
-                <a data-aos="fade-up" href="#">Instagram</a>
-                <a data-aos="fade-up" href="#">Facebook</a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </section>
-
-      {/* Block 3: Mission & Vision (Dark Section) */}
-      <section data-aos="fade-up" className="dark-section" style={{ padding: '6rem 0' }}>
-        <div className="container">
-          <div className={styles.missionVisionGrid}>
-            <div className={styles.mvContent}>
-              <Target size={40} className={styles.mvIcon} />
-              <h3 data-aos="fade-up">Our <span className="script-accent">Mission</span></h3>
-              <p data-aos="fade-up">To preach the Gospel of Jesus Christ to the ends of the earth, heal the brokenhearted, and set the captives free through the power of the Holy Spirit.</p>
-            </div>
-            
-            <div className={styles.mvContent}>
-              <Eye size={40} className={styles.mvIcon} />
-              <h3 data-aos="fade-up">Our <span className="script-accent">Vision</span></h3>
-              <p data-aos="fade-up">To see a global awakening where every community experiences the tangible presence of God and is transformed by His unconditional love.</p>
+              <h2 data-aos="fade-up">{t('about_dedication_heading')}<span className="script-accent">{t('about_dedication_heading_2')}</span></h2>
+              <p data-aos="fade-up">{t('about_dedication_p1')}</p>
+              <p data-aos="fade-up">{t('about_dedication_p2')}</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Block 4: Milestones of Faith - Our Church Journey */}
-      <section data-aos="fade-up" className="light-section" style={{ padding: '6rem 0' }}>
+      {/* 3. Divine Vision */}
+      <DivineVision />
+
+      {/* 4. Milestones Timeline */}
+      <section data-aos="fade-up" className={`light-section ${styles.timelineSection}`}>
         <div className="container">
           <div className={styles.milestoneHeader}>
-            <span className="subheading">Our Church Journey</span>
-            <h2 data-aos="fade-up">Milestones of <span className="script-accent">Faith</span></h2>
-            <p data-aos="fade-up">From humble beginnings to a global family, see how God has moved through the decades.</p>
+            <span className="subheading">{t('about_timeline_label')}</span>
+            <h2 data-aos="fade-up">{t('about_timeline_heading')}<span className="script-accent">{t('about_timeline_heading_2')}</span></h2>
+            <p data-aos="fade-up">{t('about_timeline_desc')}</p>
           </div>
-          
+
           <div className={styles.timeline} data-aos="fade-up">
-            <div className={styles.timelineItem} data-aos="fade-up">
-              <div className={styles.timelineDot}></div>
-              <div className={styles.timelineContentWrapper}>
-                <div className={styles.timelineContent}>
-                  <h3 data-aos="fade-up">1970</h3>
-                  <h4 data-aos="fade-up">The Humble Beginning</h4>
-                  <p data-aos="fade-up">Started as a small prayer group in a living room with just 5 members under Pastor Israel Raj.</p>
-                </div>
-                <div className={styles.timelineImage}>
-                  <img data-aos="fade-up" src="/assets/family-ministries.png" alt="Humble Beginning" className={styles.roundedOrganicAlt} />
-                </div>
-              </div>
-            </div>
-            
-            <div className={styles.timelineItem} data-aos="fade-up">
-              <div className={styles.timelineDot}></div>
-              <div className={`${styles.timelineContentWrapper} ${styles.timelineReverse}`}>
-                <div className={styles.timelineContent}>
-                  <h3 data-aos="fade-up">1985</h3>
-                  <h4 data-aos="fade-up">First Church Building</h4>
-                  <p data-aos="fade-up">By God's grace, we moved into our first dedicated sanctuary, accommodating over 500 members.</p>
-                </div>
-                <div className={styles.timelineImage}>
-                  <img data-aos="fade-up" src="/assets/family-ministries.png" alt="First Church" className={styles.roundedOrganic} />
+            {timelineEvents.map((event, index) => (
+              <div key={index} className={styles.timelineItem} data-aos="fade-up">
+                <div className={styles.timelineDot}></div>
+                <div className={`${styles.timelineContentWrapper} ${index % 2 !== 0 ? styles.timelineReverse : ''}`}>
+                  <div className={styles.timelineContent}>
+                    <h3 data-aos="fade-up">{event.year}</h3>
+                    <h4 data-aos="fade-up">{event.title}</h4>
+                    <p data-aos="fade-up">{event.description}</p>
+                  </div>
+                  <div className={styles.timelineImage}>
+                    <img data-aos="fade-up" src={event.image} alt={event.title} className={index % 2 !== 0 ? styles.roundedOrganic : styles.roundedOrganicAlt} />
+                  </div>
                 </div>
               </div>
-            </div>
-            
-            <div className={styles.timelineItem} data-aos="fade-up">
-              <div className={styles.timelineDot}></div>
-              <div className={styles.timelineContentWrapper}>
-                <div className={styles.timelineContent}>
-                  <h3 data-aos="fade-up">2005</h3>
-                  <h4 data-aos="fade-up">Global Outreach Launched</h4>
-                  <p data-aos="fade-up">Initiated our first international mission trips and established community support programs.</p>
-                </div>
-                <div className={styles.timelineImage}>
-                  <img data-aos="fade-up" src="/assets/family-ministries.png" alt="Global Outreach" className={styles.roundedOrganicAlt} />
-                </div>
-              </div>
-            </div>
-            
-            <div className={styles.timelineItem} data-aos="fade-up">
-              <div className={styles.timelineDot}></div>
-              <div className={`${styles.timelineContentWrapper} ${styles.timelineReverse}`}>
-                <div className={styles.timelineContent}>
-                  <h3 data-aos="fade-up">2021</h3>
-                  <h4 data-aos="fade-up">New Leadership Era</h4>
-                  <p data-aos="fade-up">Pastor Yoseppu took over the leadership, bringing a renewed focus on youth ministry and digital evangelism.</p>
-                </div>
-                <div className={styles.timelineImage}>
-                  <img data-aos="fade-up" src="/assets/family-ministries.png" alt="New Leadership" className={styles.roundedOrganic} />
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
-      
-      <section className={styles.ctaSection} data-aos="zoom-in">
-        <div className={styles.ctaOverlay}></div>
-        <div className={`container ${styles.ctaContent}`}>
-          <h2 data-aos="fade-up">Need <span className="script-accent">Prayer?</span></h2>
-          <p data-aos="fade-up">Our intercessory team is standing by to pray with you.</p>
-          <Link data-aos="fade-up" to="/contact#prayer" className="btn btn-primary" style={{marginTop: '2rem', textDecoration: 'none'}}>Submit Prayer Request</Link>
+
+      {/* 5. Conclusion */}
+      <section data-aos="fade-up" style={{ background: '#ffffff', padding: '6rem 0', textAlign: 'center' }}>
+        <div className="container">
+          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+            <h2 data-aos="fade-up" style={{ marginBottom: '2rem', color: 'var(--color-brand-primary)' }}>{t('about_conclusion_heading')}<span className="script-accent">{t('about_conclusion_heading_2')}</span></h2>
+            <p data-aos="fade-up" style={{ fontSize: '1.2rem', lineHeight: '1.8', marginBottom: '1.5rem', color: '#475569' }}>
+              {t('about_conclusion_p1')}
+            </p>
+            <p data-aos="fade-up" style={{ fontSize: '1.2rem', lineHeight: '1.8', marginBottom: '1.5rem', color: '#475569', fontWeight: '500' }}>
+              {t('about_conclusion_p2')}
+            </p>
+            <p data-aos="fade-up" style={{ fontSize: '1.4rem', color: 'var(--color-brand-accent)', fontStyle: 'italic', fontWeight: 'bold' }}>
+              {t('about_conclusion_p3')}
+            </p>
+          </div>
         </div>
       </section>
+
+      {/* Prayer CTA */}
+      <PrayerCTA />
     </>
   );
 }

@@ -40,7 +40,7 @@ export default function CategorySuggestionModal({ isOpen, onClose, onSelect, exi
   const existingNormalizedNames = useMemo(() => {
     const set = new Set();
     existingCategories.forEach(cat => {
-      set.add(normalizeName(cat.name));
+      set.add(normalizeName(cat.name_en || cat.name));
     });
     return set;
   }, [existingCategories]);

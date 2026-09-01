@@ -1,0 +1,41 @@
+.ctaSection {
+  position: relative;
+  padding: 6rem 0;
+  text-align: center;
+  color: white;
+  background-image: url('assets/family-ministries.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.ctaOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(225, 29, 116, 0.85);
+  /* The pink highlight color */
+  z-index: 1;
+}
+
+.ctaContent {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ctaContent h2 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.ctaContent p {
+  font-size: 1.25rem;
+  max-width: 600px;
+  margin: 0 auto;
+}

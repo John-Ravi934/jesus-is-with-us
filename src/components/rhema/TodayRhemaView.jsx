@@ -7,12 +7,15 @@ import PosterModal from './PosterModal';
 import PosterMetadata from './PosterMetadata';
 import PosterToolbar from './PosterToolbar';
 import PreviousRhemaGrid from './PreviousRhemaGrid';
+import { useLanguage } from '../../contexts/LanguageContext';
 
-export default function TodayRhemaView({ 
-  rhemaDatabase, 
-  featuredIndex, 
-  setFeaturedIndex 
+export default function TodayRhemaView({
+  rhemaDatabase,
+  categories = [],
+  featuredIndex,
+  setFeaturedIndex
 }) {
+  const { t } = useLanguage();
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [activeLangIndex, setActiveLangIndex] = useState(0);
   const featuredWord = rhemaDatabase[featuredIndex] || null;
@@ -20,7 +23,7 @@ export default function TodayRhemaView({
   // Reset language index when featured word changes
   useEffect(() => {
     setActiveLangIndex(0);
-    
+
     // Increment view whenever a new word is featured
     if (featuredWord) {
       incrementViews(featuredWord.id).catch(console.error);
@@ -30,7 +33,7 @@ export default function TodayRhemaView({
 
   const handlePrev = () => {
     if (featuredIndex < rhemaDatabase.length - 1) {
-      setFeaturedIndex(featuredIndex + 1); 
+      setFeaturedIndex(featuredIndex + 1);
     }
   };
 
@@ -48,6 +51,16 @@ export default function TodayRhemaView({
     const idx = rhemaDatabase.findIndex(w => w.id === id);
     if (idx !== -1) {
       setFeaturedIndex(idx);
+      const tryScroll = (attempts = 0) => {
+        const el = document.getElementById('today-rhema-view-container');
+        if (el) {
+          const y = el.getBoundingClientRect().top + window.scrollY - 80;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        } else if (attempts < 10) {
+          requestAnimationFrame(() => tryScroll(attempts + 1));
+        }
+      };
+      requestAnimationFrame(() => tryScroll(0));
     }
   };
 
@@ -65,17 +78,17 @@ export default function TodayRhemaView({
 
   return (
     <>
-      <PosterModal 
-        open={lightboxOpen} 
-        setOpen={setLightboxOpen} 
-        posterUrl={currentPosterUrl} 
+      <PosterModal
+        open={lightboxOpen}
+        setOpen={setLightboxOpen}
+        posterUrl={currentPosterUrl}
       />
 
-      <div className={styles.galleryContainer}>
+      <div id="today-rhema-view-container" className={styles.galleryContainer}>
         {/* LEFT COLUMN: POSTER */}
         <div className={styles.posterColumn} onClick={openLightbox}>
-          <TodayPoster 
-            posters={posters} 
+          <TodayPoster
+            posters={posters}
             activeIndex={activeLangIndex}
             onChangeIndex={(idx) => {
               setActiveLangIndex(idx);
@@ -85,45 +98,46 @@ export default function TodayRhemaView({
 
         {/* RIGHT COLUMN: INFORMATION PANEL */}
         <div className={styles.infoColumn}>
-          <PosterMetadata word={featuredWord} />
-          
+          <PosterMetadata word={featuredWord} categories={categories} />
+
           <div className={styles.divider}></div>
-          
+
           <PosterToolbar word={featuredWord} />
-          
+
           <div className={styles.divider}></div>
 
           <div className={styles.segmentedNav}>
-            <button 
-              className={styles.segBtn} 
-              onClick={handlePrev} 
+            <button
+              className={styles.segBtn}
+              onClick={handlePrev}
               disabled={featuredIndex === rhemaDatabase.length - 1}
             >
-              <ChevronLeft size={18} /> Previous
+              <ChevronLeft size={18} /> {t('rhema_prev')}
             </button>
-            <button 
-              className={`${styles.segBtn} ${styles.segBtnPrimary}`} 
+            <button
+              className={`${styles.segBtn} ${styles.segBtnPrimary}`}
               onClick={() => {
                 const idx = rhemaDatabase.findIndex(d => d.featured);
                 setFeaturedIndex(idx !== -1 ? idx : 0);
               }}
             >
-              Today's Rhema
+              {t('rhema_today_label')}
             </button>
-            <button 
-              className={styles.segBtn} 
-              onClick={handleNext} 
+            <button
+              className={styles.segBtn}
+              onClick={handleNext}
               disabled={featuredIndex === 0}
             >
-              Next <ChevronRight size={18} />
+              {t('rhema_next')} <ChevronRight size={18} />
             </button>
           </div>
         </div>
       </div>
 
-      <PreviousRhemaGrid 
-        words={previousWords} 
-        onSelect={handleSelectPrevious} 
+      <PreviousRhemaGrid
+        words={previousWords}
+        categories={categories}
+        onSelect={handleSelectPrevious}
       />
     </>
   );

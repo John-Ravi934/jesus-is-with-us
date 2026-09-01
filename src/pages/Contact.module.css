@@ -1,8 +1,8 @@
 .hero {
   position: relative;
-  height: 500px;
-  background-image: url('https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
-  background-size: cover;
+  height: 600px;
+  background-image: url('assets/contact.png');
+  background-size: 100% 100%;
   background-position: center;
   display: flex;
   align-items: center;
@@ -115,7 +115,8 @@
   gap: 1.5rem;
 }
 
-.form input, .form textarea {
+.form input,
+.form textarea {
   width: 100%;
   padding: 1rem 1.5rem;
   border: 1px solid #ddd;
@@ -127,7 +128,8 @@
   resize: vertical;
 }
 
-.form input:focus, .form textarea:focus {
+.form input:focus,
+.form textarea:focus {
   outline: none;
   border-color: var(--color-primary-blue);
 }
@@ -160,16 +162,44 @@
   .inputGroup {
     grid-template-columns: 1fr;
   }
+
   .contactFormWrapper {
     padding: 2rem;
   }
 }
-.socialIcon:hover { transform: scale(1.15) translateY(-2px); box-shadow: 0 10px 15px rgba(0,0,0,0.1); background-color: var(--color-dark-bg) !important; color: var(--color-white) !important; }/* Added Mobile Responsiveness */
+
+.socialIcon:hover {
+  transform: scale(1.15) translateY(-2px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  background-color: var(--color-dark-bg) !important;
+  color: var(--color-white) !important;
+}
+
+/* Added Mobile Responsiveness */
 @media (max-width: 768px) {
-  .hero { padding: 6rem 5% 3rem 5%; }
-  .hero h1 { font-size: 2.2rem; }
-  .contactSection { padding: 3rem 5%; }
-  .contactGrid { grid-template-columns: 1fr; gap: 2rem; }
-  .infoCard, .formCard { padding: 1.5rem; }
-  .mapContainer { height: 300px; }
+  .hero {
+    padding: 6rem 5% 3rem 5%;
+  }
+
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .contactSection {
+    padding: 3rem 5%;
+  }
+
+  .contactGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .infoCard,
+  .formCard {
+    padding: 1.5rem;
+  }
+
+  .mapContainer {
+    height: 300px;
+  }
 }

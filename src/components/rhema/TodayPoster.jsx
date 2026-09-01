@@ -94,8 +94,7 @@ export default function TodayPoster({ posters = [], activeIndex = 0, onChangeInd
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
             WebkitOverflowScrolling: 'touch',
-            width: '100%',
-            touchAction: 'pan-x'
+            width: '100%'
           }}
         >
           {posters.map((posterUrl, idx) => (

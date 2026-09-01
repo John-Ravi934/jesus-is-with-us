@@ -18,7 +18,7 @@ export default function AddRhema() {
   const [loading, setLoading] = useState(true);
   const [dbCategories, setDbCategories] = useState(["Faith"]);
   const [saving, setSaving] = useState(false);
-  
+
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [originalPoster, setOriginalPoster] = useState(null);
@@ -27,13 +27,12 @@ export default function AddRhema() {
   const [tamilFile, setTamilFile] = useState(null);
   const [tamilPreview, setTamilPreview] = useState(null);
   const [originalTamilPoster, setOriginalTamilPoster] = useState(null);
-  
+
   const [formData, setFormData] = useState({
-    title: '',
-    tamilTitle: '',
     tamilReference: '',
     englishReference: '',
-    verse: '', 
+    verse: '',
+    verseEn: '',
     category: 'Faith',
     language: 'English',
     date: new Date().toISOString().split('T')[0],
@@ -50,24 +49,23 @@ export default function AddRhema() {
     try {
       const cats = await getCategories();
       if (cats.length > 0) {
-        setDbCategories(cats.map(c => c.name));
+        setDbCategories(cats.map(c => c.name_en || c.name));
       }
 
       if (isEditMode) {
         const data = await getRhemaById(id);
-        
-        let tamilRef = '';
-        let englishRef = data.bible_reference || '';
-        if (data.bible_reference && data.bible_reference.includes(' | ')) {
+
+        let tamilRef = data.bible_reference_ta || '';
+        let englishRef = data.bible_reference_en || data.bible_reference || '';
+        if (data.bible_reference && data.bible_reference.includes(' | ') && !data.bible_reference_en) {
           [tamilRef, englishRef] = data.bible_reference.split(' | ');
         }
-        
+
         setFormData({
-          title: data.title,
-          tamilTitle: data.tamil_title || '',
           tamilReference: tamilRef,
           englishReference: englishRef,
-          verse: data.bible_verse,
+          verse: data.bible_verse_ta || data.bible_verse || '',
+          verseEn: data.bible_verse_en || '',
           category: data.category,
           language: data.language,
           date: data.date,
@@ -82,7 +80,7 @@ export default function AddRhema() {
         setTamilPreview(getValidUrl(data.tamil_poster_url));
         setOriginalTamilPoster(getValidUrl(data.tamil_poster_url));
       } else if (cats.length > 0) {
-        setFormData(prev => ({ ...prev, category: cats[0].name }));
+        setFormData(prev => ({ ...prev, category: cats[0].name_en || cats[0].name }));
       }
     } catch (e) {
       toast.error("Failed to load details");
@@ -93,7 +91,7 @@ export default function AddRhema() {
   };
 
   const handleChange = (e) => {
-    setFormData({...formData, [e.target.name]: e.target.value});
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleImageUpload = (e) => {
@@ -135,17 +133,17 @@ export default function AddRhema() {
         const { publicUrl } = await uploadPoster(file);
         finalPosterUrl = publicUrl;
       }
-      
+
       if (tamilFile) {
         const { publicUrl } = await uploadPoster(tamilFile);
         finalTamilPosterUrl = publicUrl;
       }
 
       const payload = {
-        title: formData.title,
-        tamil_title: formData.tamilTitle,
-        bible_reference: `${formData.tamilReference} | ${formData.englishReference}`,
-        bible_verse: formData.verse,
+        bible_reference_en: formData.englishReference,
+        bible_reference_ta: formData.tamilReference,
+        bible_verse_ta: formData.verse,
+        bible_verse_en: formData.verseEn,
         category: formData.category,
         language: formData.language,
         date: formData.date,
@@ -164,7 +162,7 @@ export default function AddRhema() {
         await addRhema(payload);
         toast.success(forceDraft ? 'Draft saved!' : 'Rhema published successfully!');
       }
-      
+
       navigate('/admin/rhema/library');
     } catch (err) {
       console.error(err);
@@ -175,13 +173,13 @@ export default function AddRhema() {
   };
 
   if (loading) {
-    return <div style={{padding: '2rem'}}>Loading Rhema Details...</div>;
+    return <div style={{ padding: '2rem' }}>Loading Rhema Details...</div>;
   }
 
   return (
     <div style={{ position: 'relative' }}>
       <div className={styles.publishGrid}>
-        
+
         {/* LEFT COLUMN: Rhema Details */}
         <div className={styles.publishMainColumn}>
           <div className={styles.detailsCard}>
@@ -216,16 +214,16 @@ export default function AddRhema() {
                   </div>
                 </div>
               </div>
-              
+
               <div className={styles.formGroup}>
-                <label>Bible Verse Text</label>
+                <label>Bible Verse Text (Tamil)</label>
                 <div className={styles.textareaWrapper}>
-                  <textarea 
-                    name="verse" 
-                    required 
-                    value={formData.verse} 
-                    onChange={handleChange} 
-                    placeholder="உன் தேவனாகிய கர்த்தர் உனக்குக் கொடுத்த..." 
+                  <textarea
+                    name="verse"
+                    required
+                    value={formData.verse}
+                    onChange={handleChange}
+                    placeholder="உன் தேவனாகிய கர்த்தர் உனக்குக் கொடுத்த..."
                     rows={4}
                     maxLength={500}
                   ></textarea>
@@ -233,14 +231,19 @@ export default function AddRhema() {
                 </div>
               </div>
 
-              <div className={styles.formRow2}>
-                <div className={styles.formGroup}>
-                  <label>Poster Title (English)</label>
-                  <input type="text" name="title" required value={formData.title} onChange={handleChange} placeholder="Mount Up With Wings" className={styles.standardInput} />
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Poster Title (Tamil)</label>
-                  <input type="text" name="tamilTitle" value={formData.tamilTitle} onChange={handleChange} placeholder="சிறகுகளோடு மேலேற..." className={styles.standardInput} />
+              <div className={styles.formGroup}>
+                <label>Bible Verse Text (English)</label>
+                <div className={styles.textareaWrapper}>
+                  <textarea
+                    name="verseEn"
+                    required
+                    value={formData.verseEn}
+                    onChange={handleChange}
+                    placeholder="But they that wait upon the LORD shall renew their strength..."
+                    rows={4}
+                    maxLength={500}
+                  ></textarea>
+                  <span className={styles.charCount}>{formData.verseEn.length} / 500</span>
                 </div>
               </div>
 
@@ -281,7 +284,7 @@ export default function AddRhema() {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '1rem', padding: '1.25rem', background: formData.featured ? '#f0fdf4' : '#f8fafc', border: `1px solid ${formData.featured ? '#bbf7d0' : '#e2e8f0'}`, borderRadius: '12px', cursor: 'pointer', transition: 'all 0.2s' }} onClick={() => setFormData({...formData, featured: !formData.featured})}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '1rem', padding: '1.25rem', background: formData.featured ? '#f0fdf4' : '#f8fafc', border: `1px solid ${formData.featured ? '#bbf7d0' : '#e2e8f0'}`, borderRadius: '12px', cursor: 'pointer', transition: 'all 0.2s' }} onClick={() => setFormData({ ...formData, featured: !formData.featured })}>
                 <div style={{ width: 24, height: 24, flexShrink: 0, borderRadius: '6px', border: formData.featured ? '2px solid #10b981' : '2px solid #cbd5e1', background: formData.featured ? '#10b981' : '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}>
                   {formData.featured && <Check size={16} strokeWidth={4} color="#ffffff" />}
                 </div>
@@ -296,7 +299,7 @@ export default function AddRhema() {
 
         {/* RIGHT COLUMN: Uploads & Actions */}
         <div className={styles.publishSideColumn}>
-          
+
           <div className={styles.uploadCard}>
             <div className={styles.uploadHeader}>
               <div className={styles.uploadIconWrapperPurple}>
@@ -306,15 +309,15 @@ export default function AddRhema() {
             </div>
             {!tamilPreview ? (
               <label className={styles.uploadAreaPurple}>
-                <UploadCloud size={36} color="#a855f7" style={{marginBottom: '0.75rem'}} />
+                <UploadCloud size={36} color="#a855f7" style={{ marginBottom: '0.75rem' }} />
                 <div className={styles.uploadTextBold}>Drag & drop or click to upload</div>
                 <div className={styles.uploadTextSub}>PNG, JPG, WEBP (Max 5MB)</div>
-                <input type="file" accept="image/png, image/jpeg, image/webp" onChange={handleTamilImageUpload} style={{display: 'none'}} />
+                <input type="file" accept="image/png, image/jpeg, image/webp" onChange={handleTamilImageUpload} style={{ display: 'none' }} />
               </label>
             ) : (
               <div className={styles.previewContainer}>
                 <img src={tamilPreview} alt="Preview" className={styles.previewImageFull} />
-                <button className={styles.removeBtnOverlay} onClick={() => {setTamilPreview(null); setTamilFile(null);}}>Remove Image</button>
+                <button className={styles.removeBtnOverlay} onClick={() => { setTamilPreview(null); setTamilFile(null); }}>Remove Image</button>
               </div>
             )}
           </div>
@@ -327,7 +330,7 @@ export default function AddRhema() {
                 </div>
                 <h4 style={{ color: enableEnglish ? '#0f172a' : '#94a3b8' }}>Poster Image (English)</h4>
               </div>
-              <div style={{display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer'}} onClick={() => setEnableEnglish(!enableEnglish)}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }} onClick={() => setEnableEnglish(!enableEnglish)}>
                 <span className={styles.toggleLabel} style={{ color: enableEnglish ? '#10b981' : '#94a3b8' }}>
                   {enableEnglish ? 'Enabled' : 'Disabled'}
                 </span>
@@ -339,15 +342,15 @@ export default function AddRhema() {
             {enableEnglish && (
               !preview ? (
                 <label className={styles.uploadAreaGreen}>
-                  <UploadCloud size={36} color="#10b981" style={{marginBottom: '0.75rem'}} />
+                  <UploadCloud size={36} color="#10b981" style={{ marginBottom: '0.75rem' }} />
                   <div className={styles.uploadTextBold}>Drag & drop or click to upload</div>
                   <div className={styles.uploadTextSub}>PNG, JPG, WEBP (Max 5MB)</div>
-                  <input type="file" accept="image/png, image/jpeg, image/webp" onChange={handleImageUpload} style={{display: 'none'}} />
+                  <input type="file" accept="image/png, image/jpeg, image/webp" onChange={handleImageUpload} style={{ display: 'none' }} />
                 </label>
               ) : (
                 <div className={styles.previewContainer}>
                   <img src={preview} alt="Preview" className={styles.previewImageFull} />
-                  <button className={styles.removeBtnOverlay} onClick={() => {setPreview(null); setFile(null);}}>Remove Image</button>
+                  <button className={styles.removeBtnOverlay} onClick={() => { setPreview(null); setFile(null); }}>Remove Image</button>
                 </div>
               )
             )}

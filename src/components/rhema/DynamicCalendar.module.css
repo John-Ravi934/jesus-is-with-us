@@ -166,14 +166,69 @@
   background: #fff;
 }
 
+.customTooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: #1e293b;
+  color: #fff;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 10;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  font-weight: 500;
+}
+
+:global(.darkTheme) .customTooltip {
+  background: #334155;
+}
+
+.customTooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: #1e293b transparent transparent transparent;
+}
+
+:global(.darkTheme) .customTooltip::after {
+  border-color: #334155 transparent transparent transparent;
+}
+
+.calDay:hover .customTooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-8px);
+}
+
 @media (max-width: 768px) {
   .calendarSection {
     padding: 1.5rem;
+    height: auto;
+    margin: 2rem auto;
   }
   
+  .calDayEmpty {
+    min-height: 40px;
+  }
+
   .calDay {
-    min-height: 60px;
-    padding: 0.5rem;
+    min-height: 50px;
+    padding: 0.25rem;
+  }
+  
+  .dayNum {
+    font-size: 0.9rem;
   }
   
   .calDayHeader {

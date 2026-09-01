@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { User, Copy, Phone, Heart, Globe, BookOpen, ShieldCheck, CreditCard, Landmark, QrCode, Check } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { getDonationSettings } from '../services/settingsService';
+import { useLanguage } from '../contexts/LanguageContext';
 import styles from './Donate.module.css';
 
 export default function Donate() {
+  const { t } = useLanguage();
   const [settings, setSettings] = useState({
     upiSections: [{ upiId: 'jesusiswithus@upi', upiNumber: '98765 43210', qrCodeUrl: '' }],
     bankTransferSections: [{
@@ -60,34 +62,34 @@ export default function Donate() {
       <section className={styles.hero} data-aos="fade-in">
         <div className={styles.heroOverlay}></div>
         <div className={`container ${styles.heroContent}`}>
-          <span className="subheading animate-fade-up">Partner With Us</span>
-          <h1 data-aos="fade-up" className="animate-fade-up delay-100">Make An <span className="script-accent">Impact</span></h1>
+          <span className="subheading animate-fade-up">{t('donate_hero_label')}</span>
+          <h1 data-aos="fade-up" className="animate-fade-up delay-100">{t('donate_hero_title')}<span className="script-accent">{t('donate_hero_title_2')}</span></h1>
         </div>
       </section>
 
       <section data-aos="fade-up" className="gray-section">
         <div className="container">
           <div className={styles.introHeader}>
-            <span className="subheading">Why Give?</span>
-            <h2 data-aos="fade-up">Your Giving Changes <span className="script-accent">Lives</span></h2>
-            <p data-aos="fade-up">Every seed you sow goes directly towards advancing the Gospel, helping those in need, and supporting our various outreach programs. Together, we can make a difference.</p>
+            <span className="subheading">{t('donate_why_label')}</span>
+            <h2 data-aos="fade-up">{t('donate_why_title')}<span className="script-accent">{t('donate_why_title_2')}</span></h2>
+            <p data-aos="fade-up">{t('donate_why_desc')}</p>
           </div>
 
           <div className={styles.impactGrid}>
             <div data-aos="fade-up" className={styles.impactCard}>
               <Globe size={40} className={styles.impactIcon} />
-              <h4 data-aos="fade-up">Global Missions</h4>
-              <p data-aos="fade-up">Funding crusades and church planting in remote areas.</p>
+              <h4 data-aos="fade-up">{t('donate_impact_1_title')}</h4>
+              <p data-aos="fade-up">{t('donate_impact_1_desc')}</p>
             </div>
             <div data-aos="fade-up" className={styles.impactCard}>
               <Heart size={40} className={styles.impactIcon} />
-              <h4 data-aos="fade-up">Community Outreach</h4>
-              <p data-aos="fade-up">Feeding the hungry and providing shelter for the homeless.</p>
+              <h4 data-aos="fade-up">{t('donate_impact_2_title')}</h4>
+              <p data-aos="fade-up">{t('donate_impact_2_desc')}</p>
             </div>
             <div data-aos="fade-up" className={styles.impactCard}>
               <BookOpen size={40} className={styles.impactIcon} />
-              <h4 data-aos="fade-up">Next Generation</h4>
-              <p data-aos="fade-up">Equipping youth and children with educational resources.</p>
+              <h4 data-aos="fade-up">{t('donate_impact_3_title')}</h4>
+              <p data-aos="fade-up">{t('donate_impact_3_desc')}</p>
             </div>
           </div>
         </div>
@@ -106,11 +108,11 @@ export default function Donate() {
                     <ShieldCheck size={28} color="#fff" />
                   </div>
                   
-                  <h3 data-aos="fade-up" className={styles.cardTitle}>Scan to Pay</h3>
+                  <h3 data-aos="fade-up" className={styles.cardTitle}>{t('donate_scan_title')}</h3>
                   <p data-aos="fade-up" className={styles.cardSubtitle}>
-                    <span style={{ color: '#00B9F1' }}>Fast.</span>{' '}
-                    <span style={{ color: '#10B981' }}>Secure.</span>{' '}
-                    <span style={{ color: '#5f259f' }}>Instant.</span>
+                    <span style={{ color: '#00B9F1' }}>{t('donate_scan_sub_1')}</span>{' '}
+                    <span style={{ color: '#10B981' }}>{t('donate_scan_sub_2')}</span>{' '}
+                    <span style={{ color: '#5f259f' }}>{t('donate_scan_sub_3')}</span>
                   </p>
                   
                   <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', flexWrap: 'wrap', margin: '1.5rem 0 2.5rem' }}>
@@ -134,7 +136,7 @@ export default function Donate() {
                       )}
                     </div>
                     <div className={styles.scanBadge}>
-                      <ShieldCheck size={16} /> Scan with any UPI app
+                      <ShieldCheck size={16} /> {t('donate_scan_badge')}
                     </div>
                   </div>
                   
@@ -168,7 +170,7 @@ export default function Donate() {
 
                   <div className={styles.securityBanner}>
                     <ShieldCheck size={24} style={{ flexShrink: 0 }} />
-                    <span style={{ fontSize: '0.85rem' }}>Use any UPI app (GPay, Paytm, PhonePe, BHIM) to scan and give securely.</span>
+                    <span style={{ fontSize: '0.85rem' }}>{t('donate_scan_sec')}</span>
                     <Check size={24} style={{ flexShrink: 0, opacity: 0.5 }} />
                   </div>
                 </div>
@@ -177,7 +179,7 @@ export default function Donate() {
 
             {/* Right Column: Bank Transfer */}
             <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-              <h3 data-aos="fade-up" style={{ marginBottom: '2rem', color: 'var(--color-dark-bg)', textAlign: 'center', fontSize: '1.8rem', fontWeight: 800 }}>Other Ways To Give</h3>
+              <h3 data-aos="fade-up" style={{ marginBottom: '2rem', color: 'var(--color-dark-bg)', textAlign: 'center', fontSize: '1.8rem', fontWeight: 800 }}>{t('donate_other_ways') || 'Other Ways To Give'}</h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', flex: 1 }}>
                 {settings.bankTransferSections && settings.bankTransferSections.map((section, idx) => (
                   <div data-aos="fade-up" key={idx} className={styles.bankCard}>

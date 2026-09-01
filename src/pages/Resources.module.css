@@ -1,8 +1,8 @@
 .hero {
   position: relative;
-  min-height: 500px;
-  background-image: url('https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
-  background-size: cover;
+  min-height: 600px;
+  background-image: url('assets/resources.png');
+  background-size: 100% 100%;
   background-position: center;
   display: flex;
   align-items: center;
@@ -76,7 +76,8 @@
   transition: all var(--transition-fast);
 }
 
-.catBtn:hover, .catBtn.active {
+.catBtn:hover,
+.catBtn.active {
   background: var(--color-primary-blue);
   color: var(--color-white);
   border-color: var(--color-primary-blue);
@@ -99,7 +100,8 @@
 .folderCard {
   position: relative;
   width: 100%;
-  padding-top: 15px; /* Space for the tab */
+  padding-top: 15px;
+  /* Space for the tab */
   transition: transform var(--transition-fast);
   cursor: pointer;
 }
@@ -140,7 +142,7 @@
   border-radius: 0 8px 8px 8px;
   padding: 1rem;
   z-index: 2;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
 }
 
 .folderImageWrapper {
@@ -149,7 +151,7 @@
   border-radius: 6px;
   overflow: hidden;
   margin-bottom: 1rem;
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
 }
 
 .folderImageWrapper img {
@@ -206,13 +208,40 @@
     grid-template-columns: 1fr;
   }
 }
+
 /* Added Mobile Responsiveness */
 @media (max-width: 768px) {
-  .hero { padding: 6rem 5% 3rem 5%; }
-  .hero h1 { font-size: 2.2rem; }
-  .resourcesSection { padding: 2rem 5%; }
-  .tabsContainer { flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
-  .tabBtn { width: 100%; padding: 0.8rem; }
-  .booksGrid, .mediaGrid { grid-template-columns: 1fr; gap: 1.5rem; }
-  .bookCard, .mediaCard { padding: 1.5rem; }
+  .hero {
+    padding: 6rem 5% 3rem 5%;
+  }
+
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .resourcesSection {
+    padding: 2rem 5%;
+  }
+
+  .tabsContainer {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .tabBtn {
+    width: 100%;
+    padding: 0.8rem;
+  }
+
+  .booksGrid,
+  .mediaGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .bookCard,
+  .mediaCard {
+    padding: 1.5rem;
+  }
 }
