@@ -1,7 +1,7 @@
 .hero {
   position: relative;
   min-height: 600px;
-  background-image: url('assets/resources.png');
+  background-image: url('/assets/resources.png');
   background-size: 100% 100%;
   background-position: center;
   display: flex;

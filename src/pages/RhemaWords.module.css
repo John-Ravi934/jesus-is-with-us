@@ -75,7 +75,7 @@
 .rhemaHero {
   position: relative;
   min-height: 600px;
-  background-image: url('assets/rhema-word.png');
+  background-image: url('/assets/rhema-word.png');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -1049,11 +1049,11 @@
     grid-template-columns: 1fr 1fr;
     gap: 0.5rem;
   }
-  
+
   .tabBtn {
     justify-content: center;
   }
-  
+
   .tabBtn:last-child {
     grid-column: span 2;
   }
