@@ -3,7 +3,7 @@ import { Calendar, Clock, MapPin, Users, Heart } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useLanguage } from '../contexts/LanguageContext';
 import styles from './Fellowship.module.css';
-import heroBg from '/assets/Fellowship.png';
+import heroBg from '/assets/fellowship.png';
 import { supabase } from '../lib/supabase';
 import { saveMessage } from '../services/messageService';
 
