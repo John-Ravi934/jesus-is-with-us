@@ -3,7 +3,6 @@ import { Menu, Search, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import styles from './Header.module.css';
-import logo from '/assets/logo.png';
 
 export default function Header() {
   const location = useLocation();
@@ -24,7 +23,7 @@ export default function Header() {
     <header className={`${styles.header} ${(isScrolled || !isHomePage) ? styles.scrolled : ''} ${isLiveHeroActive ? styles.liveHeader : ''}`}>
       <div className={`container ${styles.headerContainer}`}>
         <Link to="/" className={styles.logo}>
-          <img src={logo} alt="Jesus is with us Logo" className={styles.logoImg} />
+          <img src="/assets/logo.png" alt="Jesus is with us Logo" className={styles.logoImg} />
         </Link>
         
         <nav className={`${styles.nav} ${mobileMenuOpen ? styles.navOpen : ''} ${language === 'en' ? styles.navEn : ''}`}>

@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { Home } from 'lucide-react';
-import NotFoundImage from '/assets/404-image.png';
 import styles from './NotFound.module.css';
 
 export default function NotFound() {
@@ -39,7 +38,7 @@ export default function NotFound() {
       {/* RIGHT IMAGE */}
       <div className={styles.rightContent}>
         <img data-aos="fade-up" 
-          src={NotFoundImage} 
+          src="/assets/404-image.png" 
           alt="Man at crossroads looking at cross" 
           className={styles.image}
         />

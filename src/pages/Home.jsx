@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, PlayCircle, MapPin, Phone, Mail, Calendar, Quote, Flame, Church, Users, HeartHandshake, Globe, UserCircle } from 'lucide-react';
 import styles from './Home.module.css';
-import videoBg from '/assets/Video.mp4';
 import { getEvents } from '../services/eventService';
 import AnnouncementPopup from '../components/AnnouncementPopup';
 import { getLiveStreamSettings } from '../services/settingsService';
@@ -100,7 +99,7 @@ export default function Home() {
           ></iframe>
         ) : (
           <video autoPlay loop muted playsInline className={styles.videoBg}>
-            <source src={videoBg} type="video/mp4" />
+            <source src="/assets/Video.mp4" type="video/mp4" />
           </video>
         )}
 

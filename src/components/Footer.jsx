@@ -4,7 +4,6 @@ import { FaFacebook, FaInstagram, FaYoutube } from 'react-icons/fa';
 import { useState } from 'react';
 import { subscribeEmail } from '../services/subscriberService';
 import styles from './Footer.module.css';
-import logo from '/assets/logo.png';
 import { FaSharechat } from './FaSharechat';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -40,7 +39,7 @@ export default function Footer() {
       <div className={`container ${styles.footerGrid}`}>
         <div className={styles.aboutCol}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', marginTop: '-5px' }}>
-            <img src={logo} alt="Jesus Is With Us Logo" style={{ height: '110px', objectFit: 'contain' }} />
+            <img src="/assets/logo.png" alt="Jesus Is With Us Logo" style={{ height: '110px', objectFit: 'contain' }} />
             <h2 className={styles.logoText} style={{ margin: 0, color: '#fff', fontSize: '1.6rem', fontWeight: 'bold', lineHeight: '1.2' }}>{t('hero_title_1')}<br /><span className="script-accent" style={{ color: 'var(--color-golden-accent)', fontSize: '1.8rem', fontWeight: 'normal' }}>{t('hero_title_2')}</span></h2>
           </div>
           <p className={styles.tagline}>{t('footer_tagline')}</p>
