@@ -43,7 +43,7 @@ export default function Gallery() {
       {/* 500px Hero Banner */}
       <section style={{
         height: '600px',
-        background: 'linear-gradient(rgba(9, 11, 36, 0.5), rgba(9, 11, 36, 0.7)), url(assets/photo-gallery.png) center / 100% 100%',
+        background: 'linear-gradient(rgba(9, 11, 36, 0.5), rgba(9, 11, 36, 0.7)), url(/assets/photo-gallery.png) center / 100% 100%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

@@ -3,7 +3,6 @@ import { Calendar, Clock, MapPin, Users, Heart } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useLanguage } from '../contexts/LanguageContext';
 import styles from './Fellowship.module.css';
-import heroBg from '/assets/fellowship.png';
 import { supabase } from '../lib/supabase';
 import { saveMessage } from '../services/messageService';
 
@@ -36,7 +35,7 @@ export default function Fellowship() {
 
   return (
     <>
-      <section data-aos="fade-up" className={styles.hero} style={{ backgroundImage: `url("${heroBg}")` }}>
+      <section data-aos="fade-up" className={styles.hero} style={{ backgroundImage: `url('/assets/fellowship.png')` }}>
         <div className={styles.heroOverlay}></div>
         <div className={`container ${styles.heroContent}`}>
           <span className="subheading animate-fade-up">{t('fel_hero_label')}</span>

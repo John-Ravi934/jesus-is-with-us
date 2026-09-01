@@ -5,12 +5,6 @@ import toast from 'react-hot-toast';
 import styles from './AdminStyles.module.css';
 import { Lock, Mail, Eye, EyeOff, AlertCircle, Heart, ArrowLeft } from 'lucide-react';
 
-import CrossBibleImg from '/assets/cross-bible.png';
-import JesusImg from '/assets/Jesus.png';
-import BibleIcon from '/assets/bible-icon.png';
-import CloudImg from '/assets/Cloud.png';
-import LeavesImg from '/assets/leaves.png';
-
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -101,14 +95,14 @@ export default function Login() {
     <div className={styles.loginPageWrapper}>
 
       {/* Background Decorators */}
-      <img src={CloudImg} alt="Clouds" className={styles.bgCloud} />
+      <img src="/assets/Cloud.png" alt="Clouds" className={styles.bgCloud} />
 
       <div className={styles.loginLeftPanel}>
-        <img src={CrossBibleImg} alt="Cross and Bible" className={styles.panelImage} />
+        <img src="/assets/cross-bible.png" alt="Cross and Bible" className={styles.panelImage} />
         <div className={styles.panelQuote}>
           <p>"For I know the plans I have for you,"<br />declares the Lord, "plans to prosper you<br />and not to harm you, plans to give you<br />hope and a future."</p>
           <span>— Jeremiah 29:11</span>
-          <img src={LeavesImg} alt="Leaves" className={styles.bgLeaves} />
+          <img src="/assets/leaves.png" alt="Leaves" className={styles.bgLeaves} />
         </div>
       </div>
 
@@ -116,7 +110,7 @@ export default function Login() {
         <div className={styles.loginCardNew}>
           <div className={styles.loginHeaderNew}>
             <div className={styles.headerIconWrapper}>
-              <img src={BibleIcon} alt="Bible Icon" style={{ width: '64px', height: '64px', objectFit: 'contain' }} />
+              <img src="/assets/bible-icon.png" alt="Bible Icon" style={{ width: '64px', height: '64px', objectFit: 'contain' }} />
             </div>
             <h2>Jesus is with us</h2>
             <p>Ministry Admin Portal</p>
@@ -203,7 +197,7 @@ export default function Login() {
           <p>I can do all this through him<br />who gives me strength.</p>
           <span>— Philippians 4:13</span>
         </div>
-        <img src={JesusImg} alt="Jesus Praying" className={styles.panelImageRight} />
+        <img src="/assets/Jesus.png" alt="Jesus Praying" className={styles.panelImageRight} />
       </div>
     </div>
   );
