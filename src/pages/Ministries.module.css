@@ -1,8 +1,8 @@
 .hero {
   position: relative;
-  height: 500px;
-  background-image: url('https://images.unsplash.com/photo-1529070538774-1843cb3265df?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
-  background-size: cover;
+  height: 600px;
+  background-image: url('assets/ministries.png');
+  background-size: 100% 100%;
   background-position: center;
   display: flex;
   align-items: center;
@@ -153,7 +153,7 @@
   .ministriesGrid {
     grid-template-columns: 1fr;
   }
-  
+
   .impactStats {
     grid-template-columns: 1fr 1fr;
   }
@@ -161,24 +161,63 @@
   .popupModal {
     flex-direction: column !important;
   }
-  .popupModal > div {
+
+  .popupModal>div {
     min-height: 250px !important;
   }
+
   .impactContainer {
     grid-template-columns: 1fr;
   }
 }
+
 /* Added Mobile Responsiveness */
 @media (max-width: 768px) {
-  .hero { padding: 6rem 5% 3rem 5%; }
-  .hero h1 { font-size: 2.2rem; }
-  .introBlock { padding: 3rem 5%; }
-  .introBlock h2 { font-size: 2rem; }
-  .ministriesGrid { grid-template-columns: 1fr; padding: 2rem 5%; gap: 2rem; }
-  .ministryCard { margin-bottom: 1rem; }
-  .impactSection { padding: 3rem 5%; }
-  .impactGrid { grid-template-columns: 1fr; gap: 2rem; }
-  .impactLeft h2 { font-size: 2rem; }
-  .statsGrid { grid-template-columns: 1fr; gap: 1rem; }
-  .statCard { padding: 1.5rem; }
+  .hero {
+    padding: 6rem 5% 3rem 5%;
+  }
+
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .introBlock {
+    padding: 3rem 5%;
+  }
+
+  .introBlock h2 {
+    font-size: 2rem;
+  }
+
+  .ministriesGrid {
+    grid-template-columns: 1fr;
+    padding: 2rem 5%;
+    gap: 2rem;
+  }
+
+  .ministryCard {
+    margin-bottom: 1rem;
+  }
+
+  .impactSection {
+    padding: 3rem 5%;
+  }
+
+  .impactGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .impactLeft h2 {
+    font-size: 2rem;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .statCard {
+    padding: 1.5rem;
+  }
 }

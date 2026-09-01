@@ -1,8 +1,10 @@
 import { useState, useMemo } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import styles from './DynamicCalendar.module.css';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 export default function DynamicCalendar({ filteredArchive, onSelectDate }) {
+  const { t, language } = useLanguage();
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const year = currentDate.getFullYear();
@@ -42,7 +44,8 @@ export default function DynamicCalendar({ filteredArchive, onSelectDate }) {
   const today = new Date();
   const isCurrentMonth = today.getFullYear() === year && today.getMonth() === month;
   
-  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const monthNames = t('rhema_cal_months') || ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const dayNames = t('rhema_cal_days') || ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   return (
     <div className={styles.calendarSection}>
@@ -57,7 +60,7 @@ export default function DynamicCalendar({ filteredArchive, onSelectDate }) {
       </div>
 
       <div className={styles.calendarGrid}>
-        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+        {dayNames.map(day => (
           <div key={day} className={styles.calDayHeader}>{day}</div>
         ))}
         
@@ -93,7 +96,14 @@ export default function DynamicCalendar({ filteredArchive, onSelectDate }) {
               }}
             >
               <span className={styles.dayNum}>{day}</span>
-              {hasWord && <span className={styles.wordDot}></span>}
+              {hasWord && (
+                <>
+                  <span className={styles.wordDot}></span>
+                  <div className={styles.customTooltip}>
+                    {publishedWord[`bible_reference_${language}`] || publishedWord.bible_reference_en || publishedWord.bible_reference}
+                  </div>
+                </>
+              )}
             </div>
           )
         })}

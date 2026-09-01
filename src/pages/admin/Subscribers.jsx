@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../../lib/supabase';
 import { getSubscribers, deleteSubscriber, updateSubscriberStatus } from '../../services/subscriberService';
-import { Copy, Trash2, Mail, Users, Calendar, MoreHorizontal, Search, Clock, FileWarning, BarChart2, Activity, CheckCircle, Navigation, AlertCircle, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight, Users, Mail, Activity, CheckCircle, Copy, Clock, FileWarning, Calendar, MoreHorizontal } from 'lucide-react';
 import { LineChart, Line, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import ConfirmModal from '../../components/admin/ConfirmModal';
+import adminStyles from './AdminStyles.module.css';
 import toast from 'react-hot-toast';
 
 // Sparkline Mock Data
@@ -113,16 +114,6 @@ export default function Subscribers() {
       console.error("Failed to load analytics", err);
     } finally {
       setAnalyticsLoading(false);
-    }
-  };
-
-  const getStatusColor = (status) => {
-    switch(status?.toLowerCase()) {
-      case 'delivered': return { bg: '#dcfce7', text: '#166534' };
-      case 'opened': return { bg: '#dbeafe', text: '#1e40af' };
-      case 'clicked': return { bg: '#f3e8ff', text: '#6b21a8' };
-      case 'bounced': return { bg: '#fee2e2', text: '#991b1b' };
-      default: return { bg: '#f1f5f9', text: '#475569' };
     }
   };
 
@@ -297,7 +288,7 @@ NOTIFY pgrst, 'reload schema';
       </div>
 
       {/* Stats Grid (4 columns) */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem', marginBottom: '2rem' }}>
+      <div className={adminStyles.responsiveGrid4} style={{ marginBottom: '2rem' }}>
         
         {/* Total Subscribers */}
         <div style={{ background: '#ffffff', border: '1px solid #f1f5f9', borderRadius: '12px', padding: '1.5rem 1.5rem 0 1.5rem', display: 'flex', flexDirection: 'column', boxShadow: '0 1px 2px rgba(0,0,0,0.05)', position: 'relative', overflow: 'hidden' }}>
@@ -417,86 +408,88 @@ NOTIFY pgrst, 'reload schema';
           </div>
         </div>
 
-        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-          <thead>
-            <tr style={{ borderBottom: '1px solid #e2e8f0' }}>
-              <th style={{ padding: '1.2rem 1.5rem', fontWeight: 600, color: '#475569', fontSize: '0.8rem', letterSpacing: '0.5px', textTransform: 'uppercase' }}>SUBSCRIBER</th>
-              <th style={{ padding: '1.2rem 1.5rem', fontWeight: 600, color: '#475569', fontSize: '0.8rem', letterSpacing: '0.5px', textTransform: 'uppercase' }}>EMAIL ADDRESS</th>
-              <th style={{ padding: '1.2rem 1.5rem', fontWeight: 600, color: '#475569', fontSize: '0.8rem', letterSpacing: '0.5px', textTransform: 'uppercase' }}>SUBSCRIBED ON</th>
-              <th style={{ padding: '1.2rem 1.5rem', fontWeight: 600, color: '#475569', fontSize: '0.8rem', letterSpacing: '0.5px', textTransform: 'uppercase' }}>STATUS</th>
-              <th style={{ padding: '1.2rem 1.5rem', fontWeight: 600, color: '#475569', fontSize: '0.8rem', letterSpacing: '0.5px', textTransform: 'uppercase', textAlign: 'right' }}>ACTION</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              <tr>
-                <td colSpan="5" style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>Loading subscribers...</td>
+        <div className={adminStyles.responsiveTableContainer}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+            <thead>
+              <tr style={{ borderBottom: '1px solid #e2e8f0' }}>
+                <th style={{ padding: '1.2rem 1.5rem', fontWeight: 600, color: '#475569', fontSize: '0.8rem', letterSpacing: '0.5px', textTransform: 'uppercase' }}>SUBSCRIBER</th>
+                <th style={{ padding: '1.2rem 1.5rem', fontWeight: 600, color: '#475569', fontSize: '0.8rem', letterSpacing: '0.5px', textTransform: 'uppercase' }}>EMAIL ADDRESS</th>
+                <th style={{ padding: '1.2rem 1.5rem', fontWeight: 600, color: '#475569', fontSize: '0.8rem', letterSpacing: '0.5px', textTransform: 'uppercase' }}>SUBSCRIBED ON</th>
+                <th style={{ padding: '1.2rem 1.5rem', fontWeight: 600, color: '#475569', fontSize: '0.8rem', letterSpacing: '0.5px', textTransform: 'uppercase' }}>STATUS</th>
+                <th style={{ padding: '1.2rem 1.5rem', fontWeight: 600, color: '#475569', fontSize: '0.8rem', letterSpacing: '0.5px', textTransform: 'uppercase', textAlign: 'right' }}>ACTION</th>
               </tr>
-            ) : paginatedSubscribers.length === 0 ? (
-              <tr>
-                <td colSpan="5" style={{ padding: '4rem', textAlign: 'center', color: '#64748b' }}>
-                  <Mail size={40} style={{ margin: '0 auto 1rem', opacity: 0.3 }} />
-                  No subscribers found.
-                </td>
-              </tr>
-            ) : (
-              paginatedSubscribers.map((sub) => {
-                const initial = sub.email.charAt(0).toUpperCase();
-                const status = sub.status || 'Active';
-                return (
-                  <tr key={sub.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                    <td style={{ padding: '1.2rem 1.5rem' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                        <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '1.1rem' }}>
-                          {initial}
+            </thead>
+            <tbody>
+              {loading ? (
+                <tr>
+                  <td colSpan="5" style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>Loading subscribers...</td>
+                </tr>
+              ) : paginatedSubscribers.length === 0 ? (
+                <tr>
+                  <td colSpan="5" style={{ padding: '4rem', textAlign: 'center', color: '#64748b' }}>
+                    <Mail size={40} style={{ margin: '0 auto 1rem', opacity: 0.3 }} />
+                    No subscribers found.
+                  </td>
+                </tr>
+              ) : (
+                paginatedSubscribers.map((sub) => {
+                  const initial = sub.email.charAt(0).toUpperCase();
+                  const status = sub.status || 'Active';
+                  return (
+                    <tr key={sub.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                      <td style={{ padding: '1.2rem 1.5rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                          <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '1.1rem' }}>
+                            {initial}
+                          </div>
+                          <strong style={{ color: '#0f172a', fontWeight: 600, fontSize: '0.9rem' }}>{sub.email}</strong>
                         </div>
-                        <strong style={{ color: '#0f172a', fontWeight: 600, fontSize: '0.9rem' }}>{sub.email}</strong>
-                      </div>
-                    </td>
-                    <td style={{ padding: '1.2rem 1.5rem', color: '#475569', fontSize: '0.9rem' }}>
-                      {sub.email}
-                    </td>
-                    <td style={{ padding: '1.2rem 1.5rem' }}>
-                      <div style={{ color: '#0f172a', fontWeight: 600, fontSize: '0.9rem', marginBottom: '0.2rem' }}>
-                        {new Date(sub.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
-                      </div>
-                      <div style={{ color: '#64748b', fontSize: '0.8rem' }}>
-                        {new Date(sub.created_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
-                      </div>
-                    </td>
-                    <td style={{ padding: '1.2rem 1.5rem' }}>
-                      <span style={{ display: 'inline-block', padding: '0.2rem 0.8rem', borderRadius: '12px', background: status === 'Active' ? '#dcfce7' : '#fee2e2', color: status === 'Active' ? '#166534' : '#991b1b', fontSize: '0.75rem', fontWeight: 600 }}>
-                        {status}
-                      </span>
-                    </td>
-                    <td style={{ padding: '1.2rem 1.5rem', textAlign: 'right', position: 'relative' }}>
-                      <button 
-                        onClick={() => setActiveDropdown(activeDropdown === sub.id ? null : sub.id)}
-                        style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '6px', color: '#94a3b8', padding: '0.4rem 0.8rem', cursor: 'pointer' }}
-                      >
-                        <MoreHorizontal size={16} />
-                      </button>
-                      
-                      {activeDropdown === sub.id && (
-                        <div ref={dropdownRef} style={{ position: 'absolute', top: '3.5rem', right: '1.5rem', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '8px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)', zIndex: 10, width: '120px', overflow: 'hidden' }}>
-                          <button onClick={() => { setConfirmStatusId(sub.id); setConfirmStatusValue('Active'); setActiveDropdown(null); }} style={{ display: 'block', width: '100%', padding: '0.6rem 1rem', textAlign: 'left', background: 'none', border: 'none', borderBottom: '1px solid #f1f5f9', cursor: 'pointer', fontSize: '0.85rem', color: '#0f172a' }}>
-                            Active
-                          </button>
-                          <button onClick={() => { setConfirmStatusId(sub.id); setConfirmStatusValue('Deactive'); setActiveDropdown(null); }} style={{ display: 'block', width: '100%', padding: '0.6rem 1rem', textAlign: 'left', background: 'none', border: 'none', borderBottom: '1px solid #f1f5f9', cursor: 'pointer', fontSize: '0.85rem', color: '#0f172a' }}>
-                            Deactive
-                          </button>
-                          <button onClick={() => { setActiveDropdown(null); setDeleteId(sub.id); }} style={{ display: 'block', width: '100%', padding: '0.6rem 1rem', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.85rem', color: '#ef4444' }}>
-                            Delete
-                          </button>
+                      </td>
+                      <td style={{ padding: '1.2rem 1.5rem', color: '#475569', fontSize: '0.9rem' }}>
+                        {sub.email}
+                      </td>
+                      <td style={{ padding: '1.2rem 1.5rem' }}>
+                        <div style={{ color: '#0f172a', fontWeight: 600, fontSize: '0.9rem', marginBottom: '0.2rem' }}>
+                          {new Date(sub.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                         </div>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })
-            )}
-          </tbody>
-        </table>
+                        <div style={{ color: '#64748b', fontSize: '0.8rem' }}>
+                          {new Date(sub.created_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                        </div>
+                      </td>
+                      <td style={{ padding: '1.2rem 1.5rem' }}>
+                        <span style={{ display: 'inline-block', padding: '0.2rem 0.8rem', borderRadius: '12px', background: status === 'Active' ? '#dcfce7' : '#fee2e2', color: status === 'Active' ? '#166534' : '#991b1b', fontSize: '0.75rem', fontWeight: 600 }}>
+                          {status}
+                        </span>
+                      </td>
+                      <td style={{ padding: '1.2rem 1.5rem', textAlign: 'right', position: 'relative' }}>
+                        <button 
+                          onClick={() => setActiveDropdown(activeDropdown === sub.id ? null : sub.id)}
+                          style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '6px', color: '#94a3b8', padding: '0.4rem 0.8rem', cursor: 'pointer' }}
+                        >
+                          <MoreHorizontal size={16} />
+                        </button>
+                        
+                        {activeDropdown === sub.id && (
+                          <div ref={dropdownRef} style={{ position: 'absolute', top: '3.5rem', right: '1.5rem', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '8px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)', zIndex: 10, width: '120px', overflow: 'hidden' }}>
+                            <button onClick={() => { setConfirmStatusId(sub.id); setConfirmStatusValue('Active'); setActiveDropdown(null); }} style={{ display: 'block', width: '100%', padding: '0.6rem 1rem', textAlign: 'left', background: 'none', border: 'none', borderBottom: '1px solid #f1f5f9', cursor: 'pointer', fontSize: '0.85rem', color: '#0f172a' }}>
+                              Active
+                            </button>
+                            <button onClick={() => { setConfirmStatusId(sub.id); setConfirmStatusValue('Deactive'); setActiveDropdown(null); }} style={{ display: 'block', width: '100%', padding: '0.6rem 1rem', textAlign: 'left', background: 'none', border: 'none', borderBottom: '1px solid #f1f5f9', cursor: 'pointer', fontSize: '0.85rem', color: '#0f172a' }}>
+                              Deactive
+                            </button>
+                            <button onClick={() => { setActiveDropdown(null); setDeleteId(sub.id); }} style={{ display: 'block', width: '100%', padding: '0.6rem 1rem', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.85rem', color: '#ef4444' }}>
+                              Delete
+                            </button>
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
 
         {/* Pagination */}
         <div style={{ padding: '1.25rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -558,7 +551,7 @@ NOTIFY pgrst, 'reload schema';
             </div>
 
             {/* Charts & Usage Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem', marginBottom: '2rem' }}>
+            <div className={adminStyles.responsiveGrid2_1} style={{ marginBottom: '2rem' }}>
               
               {/* Graph Section */}
               <div style={{ background: '#ffffff', padding: '2rem', borderRadius: '12px', border: '1px solid #f1f5f9', boxShadow: '0 1px 2px rgba(0,0,0,0.05)', height: '400px', display: 'flex', flexDirection: 'column' }}>
@@ -660,7 +653,7 @@ NOTIFY pgrst, 'reload schema';
             {/* Recent Emails Table */}
             <div style={{ background: '#ffffff', border: '1px solid #f1f5f9', borderRadius: '12px', boxShadow: '0 1px 2px rgba(0,0,0,0.05)', overflow: 'hidden', marginBottom: '2rem' }}>
               <div style={{ padding: '1.5rem', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>Recent Emails Sent</h3>
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0f172a', margin: '0 0 1.5rem 0' }}>Recent Emails Sent</h3>
                 
                 <div style={{ position: 'relative' }}>
                   <select
@@ -681,7 +674,7 @@ NOTIFY pgrst, 'reload schema';
                   </div>
                 </div>
               </div>
-              <div style={{ overflowX: 'auto' }}>
+              <div className={adminStyles.responsiveTableContainer}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.9rem' }}>
                   <thead>
                     <tr style={{ borderBottom: '1px solid #e2e8f0' }}>

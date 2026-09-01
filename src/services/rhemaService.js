@@ -2,7 +2,8 @@ import { supabase } from '../lib/supabase';
 
 // Helper to generate a slug from the title and date
 const generateSlug = (title, date) => {
-  const baseSlug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+  const safeTitle = typeof title === 'string' ? title : '';
+  const baseSlug = safeTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
   return `${baseSlug}-${date}`;
 };
 
@@ -22,7 +23,7 @@ export const getRhemaWords = async (filters = {}) => {
 };
 
 export const addRhema = async (data) => {
-  const slug = generateSlug(data.title || data.reference, data.date);
+  const slug = generateSlug(data.title || data.bible_reference_en || data.bible_reference_ta || data.reference, data.date);
   
   // If featured is true, un-feature any other records for this date
   if (data.featured) {

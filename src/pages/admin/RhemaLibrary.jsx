@@ -38,7 +38,7 @@ export default function RhemaLibrary() {
       
       const map = {};
       catResult.forEach(c => {
-        map[c.name] = { color: c.color, iconName: c.icon };
+        map[c.name_en || c.name] = { color: c.color, iconName: c.icon };
       });
       setCategoryMap(map);
     } catch (e) {
@@ -62,8 +62,9 @@ export default function RhemaLibrary() {
   };
 
   const filteredData = data.filter(r => {
-    const matchesSearch = r.bible_reference.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          r.title?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = (r.bible_reference_en && r.bible_reference_en.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                          (r.bible_reference_ta && r.bible_reference_ta.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                          (r.bible_reference && r.bible_reference.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesCategory = filterCategory === 'All' || r.category === filterCategory;
     return matchesSearch && matchesCategory;
   }).sort((a, b) => {
@@ -124,7 +125,7 @@ export default function RhemaLibrary() {
             <Search size={18} className={styles.searchIcon} />
             <input 
               type="text" 
-              placeholder="Search by reference or title..." 
+              placeholder="Search by bible reference..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className={styles.searchInput}
@@ -184,9 +185,9 @@ export default function RhemaLibrary() {
                       <img src={thumbUrl} alt="thumb" className={styles.gridRhemaThumb} />
                       <div className={styles.gridRhemaText}>
                         <div className={styles.gridRhemaTitle}>
-                          {r.bible_reference ? (r.bible_reference.includes(' | ') ? r.bible_reference.split(' | ')[1].trim() : r.bible_reference) : r.title}
+                          {r.bible_reference_en || r.bible_reference_ta || r.bible_reference || 'Unknown Reference'}
                         </div>
-                        <div className={styles.gridRhemaSub}>{r.title || r.bible_verse?.substring(0,40)+'...'}</div>
+                        <div className={styles.gridRhemaSub}>{(r.bible_verse_en || r.bible_verse_ta || r.bible_verse || '')?.substring(0,40)+'...'}</div>
                       </div>
                     </div>
                     

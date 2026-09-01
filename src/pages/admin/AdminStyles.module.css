@@ -2848,12 +2848,14 @@
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .libraryGridHeader {
   display: grid;
   grid-template-columns: 2.5fr 1.5fr 1fr 100px 120px 140px;
+  min-width: 900px;
   gap: 1rem;
   padding: 1rem 1.5rem;
   border-bottom: 1px solid #f1f5f9;
@@ -2872,6 +2874,7 @@
 .libraryGridRow {
   display: grid;
   grid-template-columns: 2.5fr 1.5fr 1fr 100px 120px 140px;
+  min-width: 900px;
   gap: 1rem;
   padding: 1rem 1.5rem;
   align-items: center;
@@ -3060,6 +3063,7 @@
 /* --- POPUPS REDESIGN --- */
 .statsBanner {
   display: flex;
+  flex-wrap: wrap;
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
@@ -3067,7 +3071,7 @@
 }
 
 .statCard {
-  flex: 1;
+  flex: 1 1 200px;
   display: flex;
   align-items: center;
   gap: 1.5rem;
@@ -3124,6 +3128,7 @@
 .popupGridHeader {
   display: grid;
   grid-template-columns: 2fr 2fr 150px 100px;
+  min-width: 900px;
   gap: 1rem;
   padding: 1rem 1.5rem;
   border-bottom: 1px solid #f1f5f9;
@@ -3137,6 +3142,7 @@
 .popupGridRow {
   display: grid;
   grid-template-columns: 2fr 2fr 150px 100px;
+  min-width: 900px;
   gap: 1rem;
   padding: 1.5rem;
   align-items: center;
@@ -4150,4 +4156,55 @@
 }
 .modalBtnCancel:hover {
   background: #f1f5f9;
+}
+
+
+/* Responsive Utilities */
+.responsiveGrid4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+.responsiveGrid3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.responsiveGrid2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+.responsiveGrid2_1 {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+}
+.responsiveGrid_Engagement {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 2rem;
+}
+.responsiveTableContainer {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 1024px) {
+  .responsiveGrid4,
+  .responsiveGrid3,
+  .responsiveGrid2,
+  .responsiveGrid2_1,
+  .responsiveGrid_Engagement,
+  .categoryLayout,
+  .addGrid {
+    grid-template-columns: 1fr !important;
+  }
+  .statsBanner {
+    flex-direction: column;
+  }
+  .statDivider {
+    display: none;
+  }
 }

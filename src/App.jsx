@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { AuthProvider } from './contexts/AuthContext';
+import { LanguageProvider } from './contexts/LanguageContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import ScrollToTop from './components/ScrollToTop';
 
@@ -59,8 +60,9 @@ function App() {
   }, []);
 
   return (
-    <AuthProvider>
-      {!isOnline && (
+    <LanguageProvider>
+      <AuthProvider>
+        {!isOnline && (
         <div style={{
           position: 'fixed', top: 0, left: 0, right: 0, zIndex: 99999,
           backgroundColor: '#ef4444', color: 'white', textAlign: 'center', padding: '0.75rem',
@@ -117,7 +119,8 @@ function App() {
 
         </Routes>
       </Router>
-    </AuthProvider>
+      </AuthProvider>
+    </LanguageProvider>
   );
 }
 

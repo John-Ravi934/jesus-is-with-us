@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import styles from './CategoryScroll.module.css';
+import CategoryIcon from '../categories/CategoryIcon';
 
 export default function CategoryScroll({ categories, selectedCategory, onSelect }) {
   const scrollRef = useRef(null);
@@ -56,15 +57,30 @@ export default function CategoryScroll({ categories, selectedCategory, onSelect 
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
       >
-        {categories.map(cat => (
-          <button 
-            key={cat} 
-            className={`${styles.categoryBtn} ${selectedCategory === cat ? styles.active : ''}`}
-            onClick={(e) => handleSelect(e, cat)}
-          >
-            {cat}
-          </button>
-        ))}
+        {categories.map(cat => {
+          const isObject = typeof cat === 'object';
+          const catValue = isObject ? cat.value : cat;
+          const catLabel = isObject ? cat.label : cat;
+
+          return (
+            <button 
+              key={catValue} 
+              className={`${styles.categoryBtn} ${selectedCategory === catValue ? styles.active : ''}`}
+              onClick={(e) => handleSelect(e, catValue)}
+            >
+              {isObject && cat.icon && (
+                <CategoryIcon 
+                  icon={cat.icon} 
+                  color={selectedCategory === catValue ? '#fff' : (cat.color || '#64748b')} 
+                  size={20} 
+                  iconSize={16}
+                  transparentBg={true}
+                />
+              )}
+              {catLabel}
+            </button>
+          );
+        })}
       </div>
     </div>
   );

@@ -1,29 +1,37 @@
 import { useState, useEffect } from 'react';
 import { Calendar, Clock, MapPin, Users, Heart } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useLanguage } from '../contexts/LanguageContext';
 import styles from './Fellowship.module.css';
-import heroBg from '/assets/youth-meeting.png';
+import heroBg from '/assets/Fellowship.png';
 import { supabase } from '../lib/supabase';
 import { saveMessage } from '../services/messageService';
 
 export default function Fellowship() {
+  const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (window.location.hash === '#form' || window.location.hash === '#join-form') {
       const section = document.getElementById('join-form');
-      if (section) section.scrollIntoView({ behavior: 'smooth' });
+      if (section) {
+        const y = section.getBoundingClientRect().top + window.scrollY - 100;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
     } else if (window.location.hash === '#whatsapp') {
       const section = document.getElementById('whatsapp');
-      if (section) section.scrollIntoView({ behavior: 'smooth' });
+      if (section) {
+        const y = section.getBoundingClientRect().top + window.scrollY - 100;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
     }
   }, []);
 
   const groups = [
-    { title: "Revival Igniter's Fellowship", time: "Saturdays, 8:00 AM", location: "Main Hall", desc: "Building strong men of faith through brotherhood and the Word." },
-    { title: "Women's Fellowship", time: "Saturdays, 10:00 AM", location: "Chapel", desc: "Empowering women to live out their God-given purpose." },
-    { title: "Youth Fellowship", time: "Fridays, 6:30 PM", location: "Youth Center", desc: "A passionate community of young people seeking God." },
-    { title: "Bible Study", time: "Wednesdays, 7:00 PM", location: "Online & In-Person", desc: "Deep diving into the scriptures to grow in wisdom." },
+    { title: t('fel_group_1_title'), time: t('fel_group_1_time'), location: t('fel_group_1_loc'), desc: t('fel_group_1_desc') },
+    { title: t('fel_group_2_title'), time: t('fel_group_2_time'), location: t('fel_group_2_loc'), desc: t('fel_group_2_desc') },
+    { title: t('fel_group_3_title'), time: t('fel_group_3_time'), location: t('fel_group_3_loc'), desc: t('fel_group_3_desc') },
+    { title: t('fel_group_4_title'), time: t('fel_group_4_time'), location: t('fel_group_4_loc'), desc: t('fel_group_4_desc') },
   ];
 
   return (
@@ -31,17 +39,17 @@ export default function Fellowship() {
       <section data-aos="fade-up" className={styles.hero} style={{ backgroundImage: `url("${heroBg}")` }}>
         <div className={styles.heroOverlay}></div>
         <div className={`container ${styles.heroContent}`}>
-          <span className="subheading animate-fade-up">Do Life Together</span>
-          <h1 data-aos="fade-up" className="animate-fade-up delay-100">Our <span className="script-accent">Fellowship</span></h1>
+          <span className="subheading animate-fade-up">{t('fel_hero_label')}</span>
+          <h1 data-aos="fade-up" className="animate-fade-up delay-100">{t('fel_hero_title')}<span className="script-accent">{t('fel_hero_title_2')}</span></h1>
         </div>
       </section>
 
       <section data-aos="fade-up" className="light-section">
         <div className="container">
           <div className={styles.headerText}>
-            <span className="subheading">Community Groups</span>
-            <h2 data-aos="fade-up">Grow In <span className="script-accent">Faith</span> Together</h2>
-            <p data-aos="fade-up">We were not meant to walk this journey alone. Join a fellowship group to connect with others, study the Word, and experience authentic community.</p>
+            <span className="subheading">{t('fel_intro_label')}</span>
+            <h2 data-aos="fade-up">{t('fel_intro_title')}<span className="script-accent">{t('fel_intro_title_2')}</span>{t('fel_intro_title_3')}</h2>
+            <p data-aos="fade-up">{t('fel_intro_desc')}</p>
           </div>
 
           <div className={styles.groupsGrid} data-aos="fade-up">
@@ -65,10 +73,14 @@ export default function Fellowship() {
                   onClick={(e) => {
                     // Smooth scroll
                     e.preventDefault();
-                    document.getElementById('join-form').scrollIntoView({ behavior: 'smooth' });
+                    const section = document.getElementById('join-form');
+                    if (section) {
+                      const y = section.getBoundingClientRect().top + window.scrollY - 100;
+                      window.scrollTo({ top: y, behavior: 'smooth' });
+                    }
                   }}
                 >
-                  Join Group
+                  {t('fel_join_group_btn')}
                 </a>
               </div>
             ))}
@@ -79,8 +91,8 @@ export default function Fellowship() {
       <section data-aos="fade-up" className="gray-section">
         <div className={`container ${styles.joinContainer}`} id="join-form">
           <div className={styles.joinForm}>
-            <h3 data-aos="fade-up">Join A Fellowship</h3>
-            <p data-aos="fade-up">Fill out the form below and our team will connect you with a group.</p>
+            <h3 data-aos="fade-up" style={{ color: '#090b24' }}>{t('fel_form_title')}</h3>
+            <p data-aos="fade-up">{t('fel_form_desc')}</p>
             <form
               onSubmit={async (e) => {
                 e.preventDefault();
@@ -125,31 +137,31 @@ export default function Fellowship() {
               className={styles.form}
             >
               <div className={styles.inputGroup}>
-                <input type="text" placeholder="Full Name" required />
-                <input type="email" placeholder="Email Address" required />
+                <input type="text" placeholder={t('fel_form_name')} required />
+                <input type="email" placeholder={t('fel_form_email')} required />
               </div>
-              <input type="tel" placeholder="Phone Number" required />
+              <input type="tel" placeholder={t('fel_form_phone')} required />
               <select required>
-                <option value="">Select Fellowship Interest</option>
-                <option value="men">Revival Igniter's Fellowship</option>
-                <option value="women">Women's Fellowship</option>
-                <option value="youth">Youth Fellowship</option>
-                <option value="bible">Bible Study</option>
-                <option value="volunteer">Volunteer</option>
-                <option value="sunday">Join as sunday</option>
+                <option value="">{t('fel_form_select')}</option>
+                <option value="men">{t('fel_form_select_opt1')}</option>
+                <option value="women">{t('fel_form_select_opt2')}</option>
+                <option value="youth">{t('fel_form_select_opt3')}</option>
+                <option value="bible">{t('fel_form_select_opt4')}</option>
+                <option value="volunteer">{t('fel_form_select_opt5')}</option>
+                <option value="sunday">{t('fel_form_select_opt6')}</option>
               </select>
-              <textarea placeholder="Your Message (Optional)" rows="4" style={{ width: '100%', marginBottom: '1.5rem', padding: '1rem', borderRadius: '8px', border: '1px solid #e2e8f0', fontFamily: 'inherit', resize: 'vertical' }}></textarea>
+              <textarea placeholder={t('fel_form_msg')} rows="4" style={{ resize: 'vertical' }}></textarea>
               <button data-aos="fade-up" type="submit" className="btn btn-primary" style={{ width: '100%' }} disabled={isSubmitting}>
-                {isSubmitting ? 'Submitting...' : 'Submit Request'}
+                {isSubmitting ? t('fel_form_submitting') : t('fel_form_submit')}
               </button>
             </form>
           </div>
           <div data-aos="fade-up" className={styles.whatsappCard} id="whatsapp">
             <Heart size={48} color="#fff" style={{ marginBottom: '1rem', position: 'relative', zIndex: 2 }} />
-            <h3 data-aos="fade-up">Join Our WhatsApp Community</h3>
-            <p data-aos="fade-up">Get daily encouragements, prayer points, and stay updated with fellowship activities directly on your phone.</p>
+            <h3 data-aos="fade-up">{t('fel_whatsapp_title')}</h3>
+            <p data-aos="fade-up">{t('fel_whatsapp_desc')}</p>
             <a data-aos="fade-up" href="https://chat.whatsapp.com/your-invite-link" target="_blank" rel="noreferrer" className={styles.whatsappBtn}>
-              Join WhatsApp Group
+              {t('fel_whatsapp_btn')}
             </a>
           </div>
         </div>

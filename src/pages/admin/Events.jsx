@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from '../../lib/supabase';
 import { getEvents, createEvent, updateEvent, deleteEvent } from '../../services/eventService';
+import { translateText } from '../../services/translationService';
+import adminStyles from './AdminStyles.module.css';
 import {
   Plus, Edit2, Trash2, Calendar, MapPin, X, Copy, Check,
   Search, ChevronDown, ChevronLeft, ChevronRight, Upload, Clock,
@@ -13,7 +15,8 @@ const SQL_SCRIPT = `
 CREATE TABLE IF NOT EXISTS public.events (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   title TEXT NOT NULL,
-  description TEXT,
+  description_en TEXT,
+  description_ta TEXT,
   event_date DATE NOT NULL,
   event_time TEXT,
   location TEXT,
@@ -48,7 +51,7 @@ function getNextEvent(events) {
 }
 
 function getUniqueLocations(events) {
-  return [...new Set(events.map(e => e.location).filter(Boolean))];
+  return [...new Set(events.map(e => e.location_en || e.location).filter(Boolean))];
 }
 
 function getThisMonthCount(events) {
@@ -160,8 +163,8 @@ export default function Events() {
   const filtered = events
     .filter(e => {
       const q = search.toLowerCase();
-      const matchSearch = !q || e.title?.toLowerCase().includes(q) || e.location?.toLowerCase().includes(q);
-      const matchLoc = !filterLocation || e.location === filterLocation;
+      const matchSearch = !q || e.title_en?.toLowerCase().includes(q) || (e.location_en || e.location)?.toLowerCase().includes(q);
+      const matchLoc = !filterLocation || (e.location_en || e.location) === filterLocation;
       const matchStatus = !filterStatus || e.status === filterStatus;
       return matchSearch && matchLoc && matchStatus;
     })
@@ -183,8 +186,8 @@ export default function Events() {
 
   const openModalForEdit = (event) => {
     setEditingEvent(event);
-    setTitle(event.title);
-    const desc = event.description || '';
+    setTitle(event.title_en || event.title || '');
+    const desc = event.description_en || event.description || '';
     if (desc.startsWith('<!--HIDDEN-->')) {
       setDescription(desc.replace('<!--HIDDEN-->', ''));
       setHideDescription(true);
@@ -194,7 +197,7 @@ export default function Events() {
     }
     setEventDate(event.event_date);
     setEventTime(event.event_time || '');
-    setLocation(event.location || '');
+    setLocation(event.location_en || event.location || '');
     setLearnMoreUrl(event.learn_more_url || '');
     setImageFile(null);
     setImagePreview(event.image_url || '');
@@ -237,10 +240,19 @@ export default function Events() {
     let finalImageUrl = imagePreview;
     try {
       if (imageFile) finalImageUrl = await uploadImage(imageFile);
+      
+      const [titleTa, descTa, locTa] = await Promise.all([
+        translateText(title),
+        translateText(hideDescription ? `<!--HIDDEN-->${description}` : description),
+        location ? translateText(location) : Promise.resolve('')
+      ]);
+
       const eventData = {
-        title,
-        description: hideDescription ? `<!--HIDDEN-->${description}` : description,
-        event_date: eventDate, event_time: eventTime, location,
+        title_en: title,
+        title_ta: titleTa,
+        description_en: hideDescription ? `<!--HIDDEN-->${description}` : description,
+        description_ta: descTa,
+        event_date: eventDate, event_time: eventTime, location_en: location, location_ta: locTa,
         learn_more_url: learnMoreUrl, is_announcement: false,
         status: 'published', image_url: finalImageUrl
       };
@@ -367,7 +379,7 @@ export default function Events() {
               <p style={{ fontWeight: 600, color: '#475569', margin: '0 0 0.5rem' }}>No events found</p>
               <p style={{ fontSize: '0.85rem', margin: 0 }}>Try adjusting filters or add a new event.</p>
             </div>
-          ) : (
+          ) : (          <div className={adminStyles.responsiveTableContainer}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr style={{ borderBottom: '2px solid #f1f5f9', background: '#fafbfc' }}>
@@ -387,15 +399,20 @@ export default function Events() {
                     <td style={{ padding: '1rem 1.5rem' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                         {event.image_url ? (
-                          <img src={event.image_url} alt={event.title} style={{ width: 72, height: 50, objectFit: 'cover', borderRadius: '8px', flexShrink: 0 }} />
+                          <img src={event.image_url} alt={event.title_en} style={{ width: 72, height: 50, objectFit: 'cover', borderRadius: '8px', flexShrink: 0 }} />
                         ) : (
                           <div style={{ width: 72, height: 50, borderRadius: '8px', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                             <Calendar size={20} style={{ color: '#cbd5e1' }} />
                           </div>
                         )}
                         <div>
-                          <div style={{ fontWeight: 600, color: '#1a2940', fontSize: '0.95rem' }}>{event.title}</div>
-                          {event.description && !event.description.startsWith('<!--HIDDEN-->') && (
+                          <div style={{ fontWeight: 600, color: '#1a2940', fontSize: '0.95rem' }}>{event.title_en}</div>
+                          {event.description_en && !event.description_en.startsWith('<!--HIDDEN-->') && (
+                            <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: '0.2rem', maxWidth: 320, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                              {event.description_en}
+                            </div>
+                          )}
+                          {!event.description_en && event.description && !event.description.startsWith('<!--HIDDEN-->') && (
                             <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: '0.2rem', maxWidth: 320, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                               {event.description}
                             </div>
@@ -411,10 +428,10 @@ export default function Events() {
                       <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: '0.2rem', paddingLeft: '1.2rem' }}>{event.event_time || 'All Day'}</div>
                     </td>
                     <td style={{ padding: '1rem' }}>
-                      {event.location ? (
+                      {(event.location_en || event.location) ? (
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#475569', fontSize: '0.9rem' }}>
                           <MapPin size={15} style={{ color: '#94a3b8', flexShrink: 0 }} />
-                          {event.location}
+                          {event.location_en || event.location}
                         </div>
                       ) : <span style={{ color: '#cbd5e1', fontSize: '0.85rem' }}>—</span>}
                     </td>
@@ -436,6 +453,7 @@ export default function Events() {
                 ))}
               </tbody>
             </table>
+          </div>
           )}
 
           {/* Pagination */}

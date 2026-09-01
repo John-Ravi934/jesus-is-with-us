@@ -2,8 +2,10 @@ import { Heart } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import styles from './RhemaComponents.module.css';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 export default function FavoriteButton({ wordId }) {
+  const { t } = useLanguage();
   const [isFavorite, setIsFavorite] = useState(false);
   const [animating, setAnimating] = useState(false);
 
@@ -34,9 +36,9 @@ export default function FavoriteButton({ wordId }) {
 
     // Toast
     if (added) {
-      toast.success("Saved to Favorites", { icon: '❤️' });
+      toast.success(t('rhema_toast_fav_add') || "Saved to Favorites", { icon: '❤️' });
     } else {
-      toast("Removed from Favorites", { icon: '💔' });
+      toast(t('rhema_toast_fav_remove') || "Removed from Favorites", { icon: '💔' });
     }
   };
 
@@ -51,7 +53,7 @@ export default function FavoriteButton({ wordId }) {
         fill={isFavorite ? "currentColor" : "none"} 
         className={animating ? styles.heartAnimate : ''} 
       /> 
-      {isFavorite ? 'Favorited' : 'Favorite'}
+      {isFavorite ? (t('rhema_btn_favorited') || 'Favorited') : (t('rhema_btn_favorite') || 'Favorite')}
     </button>
   );
 }

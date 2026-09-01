@@ -1,9 +1,11 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Search, FolderOpen, AlertCircle, Eye } from 'lucide-react';
 import { getPlaylists, incrementPlaylistViews } from '../services/playlistService';
+import { useLanguage } from '../contexts/LanguageContext';
 import styles from './Resources.module.css';
 
 export default function Resources() {
+  const { t, language } = useLanguage();
   const [playlists, setPlaylists] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -13,7 +15,14 @@ export default function Resources() {
   const [searchQuery, setSearchQuery] = useState("");
   const [displayCount, setDisplayCount] = useState(8);
 
-  const categories = ["All", "Sermons", "Bible Studies", "Devotionals", "Worship", "E-Books"];
+  const categoriesMap = [
+    { key: 'All', label: t('res_tab_all') },
+    { key: 'Sermons', label: t('res_tab_sermons') },
+    { key: 'Bible Studies', label: t('res_tab_bible') },
+    { key: 'Devotionals', label: t('res_tab_devotionals') },
+    { key: 'Worship', label: t('res_tab_worship') },
+    { key: 'E-Books', label: t('res_tab_ebooks') }
+  ];
 
   useEffect(() => {
     async function loadPlaylists() {
@@ -32,12 +41,13 @@ export default function Resources() {
 
   const filteredPlaylists = useMemo(() => {
     return playlists.filter(pl => {
-      const matchesTab = activeTab === "All" || pl.category === activeTab;
-      const matchesSearch = pl.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      const plTitle = pl[`title_${language}`] || pl.title_en || pl.title || '';
+      const matchesTab = activeTab === 'All' || pl.category === activeTab;
+      const matchesSearch = plTitle.toLowerCase().includes(searchQuery.toLowerCase()) || 
                             (pl.category && pl.category.toLowerCase().includes(searchQuery.toLowerCase()));
       return matchesTab && matchesSearch;
     });
-  }, [playlists, activeTab, searchQuery]);
+  }, [playlists, activeTab, searchQuery, t]);
 
   const visiblePlaylists = filteredPlaylists.slice(0, displayCount);
   const hasMore = displayCount < filteredPlaylists.length;
@@ -72,8 +82,8 @@ export default function Resources() {
       <section className={styles.hero} data-aos="fade-in">
         <div className={styles.heroOverlay}></div>
         <div className={`container ${styles.heroContent}`}>
-          <span className="subheading animate-fade-up">Equip Yourself</span>
-          <h1 data-aos="fade-up" className="animate-fade-up delay-100">Media & <span className="script-accent">Playlists</span></h1>
+          <span className="subheading animate-fade-up">{t('res_hero_label')}</span>
+          <h1 data-aos="fade-up" className="animate-fade-up delay-100">{t('res_hero_title')}<span className="script-accent">{t('res_hero_title_2')}</span></h1>
         </div>
       </section>
 
@@ -83,33 +93,33 @@ export default function Resources() {
             <Search className={styles.searchIcon} size={20} />
             <input 
               type="text" 
-              placeholder="Search playlists, sermons, topics..." 
+              placeholder={t('res_search_placeholder')} 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <button data-aos="fade-up" className="btn btn-primary">Search</button>
+            <button data-aos="fade-up" className="btn btn-primary">{t('res_search_btn')}</button>
           </div>
 
           <div className={styles.categories}>
-            {categories.map((cat, idx) => (
+            {categoriesMap.map((cat, idx) => (
               <button
                 key={idx} 
-                className={`${styles.catBtn} ${activeTab === cat ? styles.active : ''}`}
+                className={`${styles.catBtn} ${activeTab === cat.key ? styles.active : ''}`}
                 onClick={() => {
-                  setActiveTab(cat);
+                  setActiveTab(cat.key);
                   setDisplayCount(8); // Reset pagination on tab change
                 }}
               >
-                {cat}
+                {cat.label}
               </button>
             ))}
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-            <h2 data-aos="fade-up" className={styles.sectionTitle} style={{ marginBottom: 0 }}>Playlists</h2>
+            <h2 data-aos="fade-up" className={styles.sectionTitle} style={{ marginBottom: 0 }}>{t('res_title_playlists')}</h2>
             {!loading && !error && (
               <span style={{ color: '#64748b', fontSize: '0.9rem' }}>
-                Showing {visiblePlaylists.length} of {filteredPlaylists.length}
+                {t('res_showing')} {visiblePlaylists.length} {t('res_of')} {filteredPlaylists.length}
               </span>
             )}
           </div>
@@ -117,19 +127,19 @@ export default function Resources() {
           {loading ? (
             <div style={{ textAlign: 'center', padding: '4rem', color: '#64748b' }}>
               <div className="spinner" style={{ margin: '0 auto 1rem', width: '40px', height: '40px', border: '3px solid #f3f4f6', borderTopColor: '#f59e0b', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
-              Loading resources...
+              {t('res_loading')}
             </div>
           ) : error ? (
              <div style={{ textAlign: 'center', padding: '4rem', color: '#ef4444', background: '#fef2f2', borderRadius: '12px' }}>
               <AlertCircle size={48} style={{ margin: '0 auto 1rem' }} />
-              <h3>Database Setup Required</h3>
-              <p>The Playlists table hasn't been created yet. Please run the SQL script in your Supabase dashboard.</p>
+              <h3>{t('res_db_setup')}</h3>
+              <p>{t('res_db_setup_desc')}</p>
             </div>
           ) : visiblePlaylists.length === 0 ? (
              <div style={{ textAlign: 'center', padding: '4rem', color: '#64748b', background: '#f8fafc', borderRadius: '12px', border: '2px dashed #e2e8f0' }}>
               <FolderOpen size={48} color="#cbd5e1" style={{ margin: '0 auto 1rem' }} />
-              <h3>No Playlists Found</h3>
-              <p>Try adjusting your search or category filters.</p>
+              <h3>{t('res_empty_title')}</h3>
+              <p>{t('res_empty_desc')}</p>
             </div>
           ) : (
             <div className={styles.playlistGrid}>
@@ -138,9 +148,9 @@ export default function Resources() {
                   <div className={styles.folderTab}></div>
                   <div className={styles.folderBody}>
                     <div className={styles.folderImageWrapper}>
-                      <img src={pl.image_url || 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&w=400&q=80'} alt={pl.title} />
+                      <img src={pl.image_url || 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&w=400&q=80'} alt={pl[`title_${language}`] || pl.title_en || pl.title} />
                     </div>
-                    <h3>{pl.title}</h3>
+                    <h3>{pl[`title_${language}`] || pl.title_en || pl.title}</h3>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.5rem' }}>
                       <a 
                         href={pl.link_url || '#'} 
@@ -149,7 +159,7 @@ export default function Resources() {
                         className={styles.viewPlaylist}
                         onClick={(e) => handleViewPlaylist(pl, e)}
                       >
-                        View full playlist
+                        {t('res_view_playlist')}
                       </a>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: '#94a3b8', fontSize: '0.85rem' }}>
                         <Eye size={16} />
@@ -164,7 +174,7 @@ export default function Resources() {
           
           {!loading && !error && hasMore && (
             <div className={styles.loadMore}>
-              <button data-aos="fade-up" className="btn btn-secondary" onClick={handleLoadMore}>Load More Playlists</button>
+              <button data-aos="fade-up" className="btn btn-secondary" onClick={handleLoadMore}>{t('res_load_more')}</button>
             </div>
           )}
         </div>

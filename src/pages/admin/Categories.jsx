@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getCategories, addCategory, deleteCategory, updateCategory } from '../../services/categoryService';
 import { getRhemaWords } from '../../services/rhemaService';
+import { translateText } from '../../services/translationService';
 import { Plus, Trash2, Edit2, Search, ChevronDown, ChevronLeft, ChevronRight, Lightbulb, MoreHorizontal, Sparkles, Check, Save, ArrowRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 import styles from './AdminStyles.module.css';
@@ -74,11 +75,12 @@ export default function Categories() {
 
     setSubmitting(true);
     try {
+      const nameTa = await translateText(newCat.name);
       if (editingId) {
-        await updateCategory(editingId, newCat.name, newCat.color, newCat.icon);
+        await updateCategory(editingId, newCat.name, newCat.color, newCat.icon, nameTa);
         toast.success("Category updated!");
       } else {
-        await addCategory(newCat.name, newCat.color, newCat.icon);
+        await addCategory(newCat.name, newCat.color, newCat.icon, nameTa);
         toast.success("Category added!");
       }
       setNewCat({ name: '', color: '#22c55e', icon: mainIcons[0].iconName });
@@ -93,7 +95,7 @@ export default function Categories() {
 
   const handleEdit = (cat) => {
     setEditingId(cat.id);
-    setNewCat({ name: cat.name, color: cat.color, icon: cat.icon || mainIcons[0].iconName });
+    setNewCat({ name: cat.name_en || cat.name || '', color: cat.color, icon: cat.icon || mainIcons[0].iconName });
   };
 
   const cancelEdit = () => {
@@ -114,17 +116,21 @@ export default function Categories() {
     }
   };
 
-  const filteredCategories = categories.filter(c => 
-    c.name.toLowerCase().includes(searchQuery.toLowerCase())
-  ).filter(c => {
+  const filteredCategories = categories.filter(c => {
+    const catName = c.name_en || c.name || '';
+    return catName.toLowerCase().includes(searchQuery.toLowerCase());
+  }).filter(c => {
+    const catName = c.name_en || c.name || '';
     if (filter === 'All') return true;
-    const count = categoryCounts[c.name] || 0;
+    const count = categoryCounts[catName] || 0;
     if (filter === 'Active') return count > 0;
     if (filter === 'Inactive') return count === 0;
     return true;
   }).sort((a, b) => {
-    if (sortBy === 'A-Z') return a.name.localeCompare(b.name);
-    return b.name.localeCompare(a.name);
+    const nameA = a.name_en || a.name || '';
+    const nameB = b.name_en || b.name || '';
+    if (sortBy === 'A-Z') return nameA.localeCompare(nameB);
+    return nameB.localeCompare(nameA);
   });
   
   const totalPages = Math.ceil(filteredCategories.length / itemsPerPage);
@@ -320,13 +326,13 @@ export default function Categories() {
                 className={`${styles.filterPill} ${filter === 'Active' ? styles.active : ''}`}
                 onClick={() => setFilter('Active')}
               >
-                Active ({categories.filter(c => (categoryCounts[c.name] || 0) > 0).length})
+                Active ({categories.filter(c => (categoryCounts[c.name_en || c.name] || 0) > 0).length})
               </button>
               <button 
                 className={`${styles.filterPill} ${filter === 'Inactive' ? styles.active : ''}`}
                 onClick={() => setFilter('Inactive')}
               >
-                Inactive ({categories.filter(c => (categoryCounts[c.name] || 0) === 0).length})
+                Inactive ({categories.filter(c => (categoryCounts[c.name_en || c.name] || 0) === 0).length})
               </button>
             </div>
             <div 
@@ -347,13 +353,14 @@ export default function Categories() {
               </div>
               <div className={styles.categoryListPremium}>
                 {paginatedCategories.map(c => {
-                  const count = categoryCounts[c.name] || 0;
+                  const catName = c.name_en || c.name || '';
+                  const count = categoryCounts[catName] || 0;
                   return (
                     <div key={c.id} className={styles.categoryRowGrid}>
                       <div className={styles.categoryColMain}>
                         <CategoryIcon icon={c.icon} color={c.color} size={38} iconSize={18} className={styles.categoryDot} />
                         <div className={styles.categoryRowContent}>
-                          <div className={styles.categoryRowName}>{c.name}</div>
+                          <div className={styles.categoryRowName}>{catName}</div>
                           <div className={styles.categoryRowSlug}>{c.slug}</div>
                         </div>
                       </div>

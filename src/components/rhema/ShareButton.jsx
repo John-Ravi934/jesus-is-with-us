@@ -3,17 +3,22 @@ import { Share2, X, Link2, Mail } from 'lucide-react';
 import { FaWhatsapp, FaFacebookF, FaTwitter, FaTelegramPlane } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import styles from './RhemaComponents.module.css';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 export default function ShareButton({ word }) {
+  const { t, language } = useLanguage();
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleShareClick = async () => {
     if (!word) return;
     
+    const ref = word[`bible_reference_${language}`] || word.bible_reference_en || word.bible_reference || '';
+    
+    const verseToShare = word[`bible_verse_${language}`] || word.bible_verse_ta || word.bible_verse_en || word.bible_verse || '';
     // Fallback share data (text only)
     const shareData = {
-      title: `Daily Rhema: ${word.title || word.bible_reference}`,
-      text: `"${word.bible_verse}" - ${word.bible_reference}`,
+      title: `Daily Rhema: ${ref}`,
+      text: `"${verseToShare}" - ${ref}`,
       url: window.location.href,
     };
 
@@ -39,7 +44,7 @@ export default function ShareButton({ word }) {
           ctx.drawImage(imageBitmap, 0, 0);
           
           const jpgBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.9));
-          const file = new File([jpgBlob], `Rhema-${word.bible_reference.replace(/[^a-zA-Z0-9]/g, '_')}.jpg`, { type: 'image/jpeg' });
+          const file = new File([jpgBlob], `Rhema-${ref.replace(/[^a-zA-Z0-9]/g, '_')}.jpg`, { type: 'image/jpeg' });
           
           // Check if the browser can share this file
           if (navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -55,7 +60,7 @@ export default function ShareButton({ word }) {
         }
 
         await navigator.share(shareData);
-        toast.success("Shared successfully!");
+        toast.success(t('rhema_toast_share') || "Shared successfully!");
       } else {
         // Fallback to custom modal
         setModalOpen(true);
@@ -67,27 +72,28 @@ export default function ShareButton({ word }) {
     }
   };
 
-  const shareText = `Daily Rhema: ${word?.title || word?.bible_reference} - ${window.location.href}`;
+  const ref = word?.[`bible_reference_${language}`] || word?.bible_reference_en || word?.bible_reference || '';
+  const shareText = `Daily Rhema: ${ref} - ${window.location.href}`;
   const encodedText = encodeURIComponent(shareText);
   const currentUrl = encodeURIComponent(window.location.href);
 
   const copyLink = () => {
     navigator.clipboard.writeText(window.location.href);
-    toast.success("Link copied to clipboard!");
+    toast.success(t('rhema_toast_copy') || "Link copied to clipboard!");
     setModalOpen(false);
   };
 
   return (
     <>
       <button className={styles.toolbarBtn} onClick={handleShareClick}>
-        <Share2 size={20} /> Share
+        <Share2 size={20} /> {t('rhema_btn_share') || 'Share'}
       </button>
 
       {modalOpen && (
         <div className={styles.shareDialogOverlay} onClick={() => setModalOpen(false)}>
           <div className={styles.shareDialog} onClick={e => e.stopPropagation()}>
             <div className={styles.shareHeader}>
-              <h3>Share this Rhema</h3>
+              <h3>{t('rhema_share_title') || 'Share this Rhema'}</h3>
               <button className={styles.shareCloseBtn} onClick={() => setModalOpen(false)}>
                 <X size={20} />
               </button>
@@ -139,7 +145,7 @@ export default function ShareButton({ word }) {
               <a 
                 className={styles.shareOption} 
                 style={{textDecoration: 'none'}}
-                href={`https://t.me/share/url?url=${currentUrl}&text=${encodeURIComponent(word?.title || word?.bible_reference)}`} 
+                href={`https://t.me/share/url?url=${currentUrl}&text=${encodeURIComponent(ref)}`} 
                 target="_blank" 
                 rel="noreferrer"
                 onClick={() => setModalOpen(false)}
@@ -153,7 +159,7 @@ export default function ShareButton({ word }) {
               <a 
                 className={styles.shareOption} 
                 style={{textDecoration: 'none'}}
-                href={`mailto:?subject=Daily Rhema: ${encodeURIComponent(word?.title || word?.bible_reference)}&body=${encodedText}`} 
+                href={`mailto:?subject=Daily Rhema: ${encodeURIComponent(ref)}&body=${encodedText}`} 
                 target="_blank" 
                 rel="noreferrer"
                 onClick={() => setModalOpen(false)}

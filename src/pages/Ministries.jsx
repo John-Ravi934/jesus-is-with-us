@@ -1,16 +1,18 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Users, Heart, BookOpen, Music, Home, Globe, X } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 import styles from './Ministries.module.css';
 
 export default function Ministries() {
+  const { t } = useLanguage();
   const ministries = [
-    { title: 'Gospel Outreach', icon: <Globe size={40} />, img: '/assets/gospel-outreach.png', desc: 'Taking the message of hope across nations through mass crusades.' },
-    { title: 'Village Ministries', icon: <Home size={40} />, img: '/assets/village-ministries.png', desc: 'Supporting and uplifting remote communities with the love of Christ.' },
-    { title: 'Children Ministries', icon: <Heart size={40} />, img: '/assets/children-ministries.png', desc: 'Nurturing the faith of the next generation through Sunday School.' },
-    { title: 'Youth Ministries', icon: <Users size={40} />, img: '/assets/youth-meeting.png', desc: 'Empowering young adults to live passionately for Jesus.' },
-    { title: 'Family Ministries', icon: <Users size={40} />, img: '/assets/family-ministries.png', desc: 'Building strong, Christ-centered homes and marriages.' },
-    { title: 'Worship Ministries', icon: <Music size={40} />, img: '/assets/worship-ministries.png', desc: 'Creating an atmosphere for the Holy Spirit to move.' }
+    { title: t('min_list_gospel'), icon: <Globe size={40} />, img: '/assets/gospel-outreach.png', desc: t('min_list_gospel_desc') },
+    { title: t('min_list_village'), icon: <Home size={40} />, img: '/assets/village-ministries.png', desc: t('min_list_village_desc') },
+    { title: t('min_list_children'), icon: <Heart size={40} />, img: '/assets/children-ministries.png', desc: t('min_list_children_desc') },
+    { title: t('min_list_youth'), icon: <Users size={40} />, img: '/assets/youth-meeting.png', desc: t('min_list_youth_desc') },
+    { title: t('min_list_family'), icon: <Users size={40} />, img: '/assets/family-ministries.png', desc: t('min_list_family_desc') },
+    { title: t('min_list_worship'), icon: <Music size={40} />, img: '/assets/worship-ministries.png', desc: t('min_list_worship_desc') }
   ];
 
   const [selectedMinistry, setSelectedMinistry] = useState(null);
@@ -20,17 +22,17 @@ export default function Ministries() {
       <section className={styles.hero} data-aos="fade-in">
         <div className={styles.heroOverlay}></div>
         <div className={`container ${styles.heroContent}`}>
-          <span className="subheading animate-fade-up">Get Involved</span>
-          <h1 data-aos="fade-up" className="animate-fade-up delay-100">Our <span className="script-accent">Ministries</span></h1>
+          <span className="subheading animate-fade-up">{t('min_hero_label')}</span>
+          <h1 data-aos="fade-up" className="animate-fade-up delay-100">{t('min_hero_title')}<span className="script-accent">{t('min_hero_title_2')}</span></h1>
         </div>
       </section>
 
       <section data-aos="fade-up" className="gray-section">
         <div className="container">
           <div className={styles.intro}>
-            <span className="subheading">Serving Together</span>
-            <h2 data-aos="fade-up">Find Your <span className="script-accent">Calling</span></h2>
-            <p data-aos="fade-up">God has given each of us unique gifts to serve His kingdom. Explore our various ministries and find where you belong. We believe that everyone has a role to play in the body of Christ.</p>
+            <span className="subheading">{t('min_intro_label')}</span>
+            <h2 data-aos="fade-up">{t('min_intro_title')}<span className="script-accent">{t('min_intro_title_2')}</span></h2>
+            <p data-aos="fade-up">{t('min_intro_desc')}</p>
           </div>
 
           <div className={styles.ministriesGrid} data-aos="fade-up">
@@ -46,7 +48,7 @@ export default function Ministries() {
                   <a data-aos="fade-up" href="#" className={styles.learnMore} onClick={(e) => {
                     e.preventDefault();
                     setSelectedMinistry(min);
-                  }}>Learn More <ArrowRight size={16} /></a>
+                  }}>{t('min_learn_more')} <ArrowRight size={16} /></a>
                 </div>
               </div>
             ))}
@@ -57,27 +59,27 @@ export default function Ministries() {
       <section data-aos="fade-up" className="dark-section">
         <div className={`container ${styles.impactContainer}`}>
           <div className={styles.impactText}>
-            <span className="subheading">Our Impact</span>
-            <h2 data-aos="fade-up">Changing Lives <span className="script-accent">Globally</span></h2>
-            <p data-aos="fade-up">Through our various ministries, we have seen incredible testimonies of healing, restoration, and salvation. Your participation makes this possible.</p>
-            <Link data-aos="fade-up" to="/fellowship#form" className="btn btn-primary" style={{marginTop: '2rem', textDecoration: 'none'}}>Volunteer With Us</Link>
+            <span className="subheading">{t('min_impact_label')}</span>
+            <h2 data-aos="fade-up">{t('min_impact_title')}<span className="script-accent">{t('min_impact_title_2')}</span></h2>
+            <p data-aos="fade-up">{t('min_impact_desc')}</p>
+            <Link data-aos="fade-up" to="/fellowship#form" className="btn btn-primary" style={{marginTop: '2rem', textDecoration: 'none'}}>{t('min_impact_btn')}</Link>
           </div>
           <div className={styles.impactStats}>
             <div className={`glass-dark ${styles.statBox}`}>
-              <h3 data-aos="fade-up">10K+</h3>
-              <p data-aos="fade-up">Lives Touched</p>
+              <h3 data-aos="fade-up">{t('min_stat_1_val')}</h3>
+              <p data-aos="fade-up">{t('min_stat_1_label')}</p>
             </div>
             <div className={`glass-dark ${styles.statBox}`}>
-              <h3 data-aos="fade-up">200+</h3>
-              <p data-aos="fade-up">Active Volunteers</p>
+              <h3 data-aos="fade-up">{t('min_stat_2_val')}</h3>
+              <p data-aos="fade-up">{t('min_stat_2_label')}</p>
             </div>
             <div className={`glass-dark ${styles.statBox}`}>
-              <h3 data-aos="fade-up">12</h3>
-              <p data-aos="fade-up">Global Outreach Trips</p>
+              <h3 data-aos="fade-up">{t('min_stat_3_val')}</h3>
+              <p data-aos="fade-up">{t('min_stat_3_label')}</p>
             </div>
             <div className={`glass-dark ${styles.statBox}`}>
-              <h3 data-aos="fade-up">24/7</h3>
-              <p data-aos="fade-up">Prayer Chain</p>
+              <h3 data-aos="fade-up">{t('min_stat_4_val')}</h3>
+              <p data-aos="fade-up">{t('min_stat_4_label')}</p>
             </div>
           </div>
         </div>
@@ -118,16 +120,16 @@ export default function Ministries() {
               </div>
               
               <div style={{ marginBottom: '16px', fontSize: '0.95rem', color: '#475569' }}>
-                <p data-aos="fade-up" style={{ margin: '0 0 8px 0' }}><strong>Time:</strong> Weekly Meetings</p>
-                <p data-aos="fade-up" style={{ margin: '0' }}><strong>Place:</strong> Main Church Campus</p>
+                <p data-aos="fade-up" style={{ margin: '0 0 8px 0' }}><strong>{t('min_popup_time_label')}</strong> {t('min_popup_time')}</p>
+                <p data-aos="fade-up" style={{ margin: '0' }}><strong>{t('min_popup_place_label')}</strong> {t('min_popup_place')}</p>
               </div>
 
               <p data-aos="fade-up" style={{ color: '#475569', fontSize: '1rem', lineHeight: 1.6, marginBottom: '24px' }}>
-                {selectedMinistry.desc} Join us in making a difference and discovering your God-given purpose. Everyone is welcome to participate and serve.
+                {selectedMinistry.desc}{t('min_popup_desc_suffix')}
               </p>
               
               <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                <Link data-aos="fade-up" to="/fellowship#whatsapp" className="btn btn-primary" style={{ textDecoration: 'none', padding: '10px 20px' }}>Get Involved Today</Link>
+                <Link data-aos="fade-up" to="/fellowship#whatsapp" className="btn btn-primary" style={{ textDecoration: 'none', padding: '10px 20px' }}>{t('min_popup_btn')}</Link>
               </div>
             </div>
           </div>

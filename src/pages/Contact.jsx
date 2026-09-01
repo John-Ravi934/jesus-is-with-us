@@ -3,9 +3,11 @@ import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { supabase } from '../lib/supabase';
 import { saveMessage } from '../services/messageService';
+import { useLanguage } from '../contexts/LanguageContext';
 import styles from './Contact.module.css';
 
 export default function Contact() {
+  const { t } = useLanguage();
   const [formType, setFormType] = useState('General Inquiry');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -13,13 +15,22 @@ export default function Contact() {
     if (window.location.hash === '#prayer') {
       setFormType('Prayer Request');
       const formSection = document.getElementById('contact-form-section');
-      if (formSection) formSection.scrollIntoView({ behavior: 'smooth' });
+      if (formSection) {
+        const y = formSection.getBoundingClientRect().top + window.scrollY - 100;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
     } else if (window.location.hash === '#contact-form') {
       const formSection = document.getElementById('contact-form-section');
-      if (formSection) formSection.scrollIntoView({ behavior: 'smooth' });
+      if (formSection) {
+        const y = formSection.getBoundingClientRect().top + window.scrollY - 100;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
     } else if (window.location.hash === '#map') {
       const mapSection = document.getElementById('map');
-      if (mapSection) mapSection.scrollIntoView({ behavior: 'smooth' });
+      if (mapSection) {
+        const y = mapSection.getBoundingClientRect().top + window.scrollY - 100;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
     }
   }, []);
   return (
@@ -27,47 +38,45 @@ export default function Contact() {
       <section className={styles.hero} data-aos="fade-in">
         <div className={styles.heroOverlay}></div>
         <div className={`container ${styles.heroContent}`}>
-          <span className="subheading animate-fade-up">Get In Touch</span>
-          <h1 data-aos="fade-up" className="animate-fade-up delay-100">Contact <span className="script-accent">Us</span></h1>
+          <span className="subheading animate-fade-up">{t('con_hero_label')}</span>
+          <h1 data-aos="fade-up" className="animate-fade-up delay-100">{t('con_hero_title')}<span className="script-accent">{t('con_hero_title_2')}</span></h1>
         </div>
       </section>
 
       <section data-aos="fade-up" className="light-section">
         <div className={`container ${styles.contactGrid}`}>
           <div className={styles.contactInfo}>
-            <span className="subheading">We'd Love To Hear From You</span>
-            <h2 data-aos="fade-up">Reach Out To Our <span className="script-accent">Team</span></h2>
-            <p data-aos="fade-up" className={styles.introText}>Whether you have a question, a prayer request, or you're planning a visit, we are here for you.</p>
+            <span className="subheading">{t('con_intro_label')}</span>
+            <h2 data-aos="fade-up">{t('con_intro_title')}<span className="script-accent">{t('con_intro_title_2')}</span></h2>
+            <p data-aos="fade-up" className={styles.introText}>{t('con_intro_desc')}</p>
 
             <div data-aos="fade-up" className={styles.infoCards}>
               <div data-aos="fade-up" className={styles.infoCard}>
                 <MapPin className={styles.icon} size={32} />
                 <div>
-                  <h4 data-aos="fade-up">Visit Us</h4>
-                  <p data-aos="fade-up">Jesus Is With Us Church
-                    M3FC+8C9, Kollapatty,
-                    Salem, <br></br>Tamil Nadu 636030</p>
+                  <h4 data-aos="fade-up">{t('con_card_visit')}</h4>
+                  <p data-aos="fade-up" style={{ whiteSpace: 'pre-line' }}>{t('con_card_visit_desc')}</p>
                 </div>
               </div>
               <div data-aos="fade-up" className={styles.infoCard}>
                 <Phone className={styles.icon} size={32} />
                 <div>
-                  <h4 data-aos="fade-up">Call Us</h4>
-                  <p data-aos="fade-up">+1 (234) 567-8900<br />+1 (987) 654-3210</p>
+                  <h4 data-aos="fade-up">{t('con_card_call')}</h4>
+                  <p data-aos="fade-up" style={{ whiteSpace: 'pre-line' }}>{t('con_card_call_desc')}</p>
                 </div>
               </div>
               <div data-aos="fade-up" className={styles.infoCard}>
                 <Mail className={styles.icon} size={32} />
                 <div>
-                  <h4 data-aos="fade-up">Email Us</h4>
-                  <p data-aos="fade-up"> jiwcministry033@gmail.com <br />prayer@jesusiswithus.org</p>
+                  <h4 data-aos="fade-up">{t('con_card_email')}</h4>
+                  <p data-aos="fade-up" style={{ whiteSpace: 'pre-line' }}>{t('con_card_email_desc')}</p>
                 </div>
               </div>
               <div data-aos="fade-up" className={styles.infoCard}>
                 <Clock className={styles.icon} size={32} />
                 <div>
-                  <h4 data-aos="fade-up">Church Hours</h4>
-                  <p data-aos="fade-up">Mon-Fri: 9:00 AM - 5:00 PM<br />Sun: 8:00 AM - 2:00 PM</p>
+                  <h4 data-aos="fade-up">{t('con_card_hours')}</h4>
+                  <p data-aos="fade-up" style={{ whiteSpace: 'pre-line' }}>{t('con_card_hours_desc')}</p>
                 </div>
               </div>
             </div>
@@ -80,14 +89,14 @@ export default function Contact() {
                 onClick={() => setFormType('General Inquiry')}
                 type="button"
               >
-                General Inquiry
+                {t('con_toggle_general')}
               </button>
               <button 
                 className={`${styles.toggleBtn} ${formType === 'Prayer Request' ? styles.active : ''}`}
                 onClick={() => setFormType('Prayer Request')}
                 type="button"
               >
-                Prayer Request
+                {t('con_toggle_prayer')}
               </button>
             </div>
 
@@ -133,28 +142,28 @@ export default function Contact() {
               {formType === 'General Inquiry' ? (
                 <>
                   <div className={styles.inputGroup}>
-                    <input type="text" name="fullName" placeholder="Your Name" required />
-                    <input type="email" name="email" placeholder="Your Email" required />
+                    <input type="text" name="fullName" placeholder={t('con_form_name')} required />
+                    <input type="email" name="email" placeholder={t('con_form_email')} required />
                   </div>
-                  <input type="text" name="subject" placeholder="Subject" required />
-                  <textarea name="message" placeholder="Text or Testimony" rows="6" required></textarea>
+                  <input type="text" name="subject" placeholder={t('con_form_subject')} required />
+                  <textarea name="message" placeholder={t('con_form_msg_gen')} rows="6" required></textarea>
                 </>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1rem' }}>
-                  <input type="text" name="fullName" placeholder="Your Name" required />
-                  <input type="email" name="email" placeholder="Your Email" required />
-                  <input type="tel" name="phone" placeholder="Phone Number" required />
-                  <input type="text" name="place" placeholder="Place" required />
-                  <textarea name="message" placeholder="Your Prayer Request" rows="6" required></textarea>
+                  <input type="text" name="fullName" placeholder={t('con_form_name')} required />
+                  <input type="email" name="email" placeholder={t('con_form_email')} required />
+                  <input type="tel" name="phone" placeholder={t('con_form_phone')} required />
+                  <input type="text" name="place" placeholder={t('con_form_place')} required />
+                  <textarea name="message" placeholder={t('con_form_msg_prayer')} rows="6" required></textarea>
                 </div>
               )}
               <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-                {isSubmitting ? 'Submitting...' : <><Send size={18} style={{ marginRight: '8px' }} /> Send Message</>}
+                {isSubmitting ? t('con_form_submitting') : <><Send size={18} style={{ marginRight: '8px' }} /> {t('con_form_submit')}</>}
               </button>
             </form>
 
             <div style={{ marginTop: '3rem', textAlign: 'center', borderTop: '1px solid #eee', paddingTop: '2rem' }}>
-              <h4 data-aos="fade-up" style={{ marginBottom: '1.5rem', color: '#666', fontSize: '1.1rem' }}>Connect With Us</h4>
+              <h4 data-aos="fade-up" style={{ marginBottom: '1.5rem', color: '#666', fontSize: '1.1rem' }}>{t('con_connect')}</h4>
               <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
                 <a data-aos="fade-up" href="https://www.facebook.com/share/1BqSmZKf3S/"  target="_blank" rel="noopener noreferrer" className={styles.socialIcon} style={{ padding: '0.8rem', background: '#f5f5f5', borderRadius: '50%', color: 'var(--color-primary-blue)', display: 'inline-flex', transition: 'all 0.3s ease' }}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>

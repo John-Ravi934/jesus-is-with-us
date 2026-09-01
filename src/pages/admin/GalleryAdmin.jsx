@@ -1,14 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../../lib/supabase';
 import { getGalleryImages, addGalleryImage, deleteGalleryImage } from '../../services/galleryService';
+import { translateText } from '../../services/translationService';
 import { Plus, Trash2, X, Image as ImageIcon, MoreHorizontal, Search, ArrowUpDown, ChevronLeft, ChevronRight, Eye, Calendar, UploadCloud, ImagePlus, Upload, Edit2, EyeOff, Copy, Check, AlertTriangle, Database, Folder, Settings, Grid, List } from 'lucide-react';
 import styles from './AdminStyles.module.css';
 import ConfirmModal from '../../components/admin/ConfirmModal';
+import toast from 'react-hot-toast';
 
 export default function GalleryAdmin() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleteId, setDeleteId] = useState(null);
+  const [deleteAlbumPhotos, setDeleteAlbumPhotos] = useState(null);
 
   // Filter/Sort State
   const [searchTerm, setSearchTerm] = useState('');
@@ -90,15 +93,16 @@ export default function GalleryAdmin() {
       // Instant UI update
       setImages(prev => prev.map(img => {
         if (photos.some(p => p.id === img.id)) {
-          return { ...img, title: newName };
+          return { ...img, title_en: newName };
         }
         return img;
       }));
       setEditingAlbumData(prev => prev ? { ...prev, albumName: newName, newTitle: newName } : null);
       
       // Update all photos in this album
+      const newTitleTa = await translateText(newName);
       for (const photo of photos) {
-        await updateGalleryImage(photo.id, { title: newName });
+        await updateGalleryImage(photo.id, { title_en: newName, title_ta: newTitleTa });
       }
       toast.success("Album renamed successfully!");
       fetchImages();
@@ -109,16 +113,16 @@ export default function GalleryAdmin() {
     }
   };
 
-  const handleDeleteAlbum = async (photos) => {
-    if(!window.confirm('Are you sure you want to delete this entire album?')) return;
+  const confirmDeleteAlbum = async () => {
+    if (!deleteAlbumPhotos) return;
     try {
       setUploading(true);
       const { deleteGalleryImage } = await import('../../services/galleryService');
       
       // Instant UI update
-      setImages(prev => prev.filter(img => !photos.some(p => p.id === img.id)));
+      setImages(prev => prev.filter(img => !deleteAlbumPhotos.some(p => p.id === img.id)));
       
-      for (const photo of photos) {
+      for (const photo of deleteAlbumPhotos) {
         await deleteGalleryImage(photo.id);
       }
       toast.success("Album deleted successfully!");
@@ -128,6 +132,7 @@ export default function GalleryAdmin() {
       toast.error("Failed to delete album");
     } finally {
       setUploading(false);
+      setDeleteAlbumPhotos(null);
     }
   };
 
@@ -176,12 +181,16 @@ export default function GalleryAdmin() {
       }
 
       if (editingId) {
-        const updates = { title, status };
+        const titleTa = await translateText(title);
+        const updates = { title_en: title, title_ta: titleTa, status };
         if (imageUrl) updates.image_url = imageUrl;
         const { updateGalleryImage } = await import('../../services/galleryService');
         await updateGalleryImage(editingId, updates);
+        toast.success('Album text updated!');
       } else {
-        await addGalleryImage(imageUrl, title, status);
+        const titleTa = await translateText(title);
+        await addGalleryImage(imageUrl, title, titleTa, status);
+        toast.success('Image added successfully!');
       }
 
       setIsModalOpen(false);
@@ -206,7 +215,7 @@ export default function GalleryAdmin() {
 
   const handleEdit = (img) => {
     setEditingId(img.id);
-    setTitle(img.title || '');
+    setTitle(img.title_en || img.title || '');
     setStatus(img.status || 'published');
     setImagePreview(img.image_url);
     setImageFile(null);
@@ -254,7 +263,7 @@ export default function GalleryAdmin() {
 
   // Filter and Sort
   const filteredImages = images.filter(img => {
-    const searchMatch = img.title?.toLowerCase().includes(searchTerm.toLowerCase());
+    const searchMatch = img.title_en?.toLowerCase().includes(searchTerm.toLowerCase());
     const statusMatch = filterStatus === 'All'
       ? true
       : filterStatus === 'Visible'
@@ -268,7 +277,7 @@ export default function GalleryAdmin() {
   });
 
   const groupedAlbums = filteredImages.reduce((acc, img) => {
-    const album = img.title || 'General';
+    const album = img.title_en || img.title || 'General';
     if (!acc[album]) acc[album] = [];
     acc[album].push(img);
     return acc;
@@ -423,7 +432,7 @@ export default function GalleryAdmin() {
                       </div>
                       
                       {/* Right: Info & Actions */}
-                      <div style={{ flex: 1, minWidth: '300px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                      <div style={{ flex: 1, minWidth: '200px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                           <div>
                             <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0f172a', margin: '0 0 0.5rem 0' }}>{albumName}</h3>
@@ -681,8 +690,8 @@ export default function GalleryAdmin() {
                  ))}
                </div>
                
-               <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '2.5rem', borderTop: '1px solid #f1f5f9', paddingTop: '1.5rem', alignItems: 'center' }}>
-                 <button type="button" onClick={() => handleDeleteAlbum(editingAlbumData.photos)} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#fef2f2', color: '#ef4444', border: '1px solid #fecaca', padding: '0.6rem 1rem', borderRadius: '8px', fontWeight: 600, cursor: 'pointer', fontSize: '0.9rem' }}>
+               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid #e2e8f0' }}>
+                 <button type="button" onClick={() => { setDeleteAlbumPhotos(editingAlbumData.photos); setEditingAlbumData(null); }} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#fef2f2', color: '#ef4444', border: '1px solid #fecaca', padding: '0.6rem 1rem', borderRadius: '8px', fontWeight: 600, cursor: 'pointer', fontSize: '0.9rem' }}>
                    <Trash2 size={16} /> Delete Album
                  </button>
                  
@@ -706,6 +715,13 @@ export default function GalleryAdmin() {
         message="Are you sure you want to remove this image from the gallery?"
         onConfirm={confirmDelete}
         onCancel={() => setDeleteId(null)}
+      />
+      <ConfirmModal
+        isOpen={!!deleteAlbumPhotos}
+        title="Delete Album"
+        message="Are you sure you want to delete this entire album? All photos in this album will be permanently deleted."
+        onConfirm={confirmDeleteAlbum}
+        onCancel={() => setDeleteAlbumPhotos(null)}
       />
     </>
   );

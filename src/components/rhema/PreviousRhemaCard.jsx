@@ -1,6 +1,17 @@
 import styles from './RhemaComponents.module.css';
+import { useLanguage } from '../../contexts/LanguageContext';
+import CategoryIcon from '../categories/CategoryIcon';
 
-export default function PreviousRhemaCard({ word, onClick }) {
+export default function PreviousRhemaCard({ word, categories = [], onClick }) {
+  const { language } = useLanguage();
+
+  const categoryData = categories.find(c => c.name === word.category || c.name_en === word.category);
+
+  const translatedCategory = () => {
+    if (language === 'ta' && categoryData && categoryData.name_ta) return categoryData.name_ta;
+    return categoryData ? (categoryData.name_en || categoryData.name) : word.category;
+  };
+
   if (!word) return null;
 
   const isValidUrl = (url) => url && typeof url === 'string' && url.startsWith('http');
@@ -8,26 +19,19 @@ export default function PreviousRhemaCard({ word, onClick }) {
 
   return (
     <div className={styles.prevCard} onClick={onClick}>
-      <img src={thumbUrl} alt={word.bible_reference} className={styles.prevThumb} loading="lazy" />
+      <img src={thumbUrl} alt={word[`bible_reference_${language}`] || word.bible_reference_en || word.bible_reference} className={styles.prevThumb} loading="lazy" />
       <div className={styles.prevInfo}>
         <div className={styles.prevDateCat}>
-          <span>{new Date(word.date).toLocaleDateString('en-GB', {month: 'short', day: 'numeric', year: 'numeric'})}</span>
-          <span className={styles.prevCatBadge}>{word.category}</span>
+          <span>{new Date(word.date).toLocaleDateString(language === 'ta' ? 'ta-IN' : 'en-GB', {month: 'short', day: 'numeric', year: 'numeric'})}</span>
+          <span className={styles.prevCatBadge} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+            {categoryData && categoryData.icon && (
+              <CategoryIcon icon={categoryData.icon} color="#C8A646" size={12} iconSize={10} transparentBg={true} />
+            )}
+            {translatedCategory()}
+          </span>
         </div>
-        <h4 className={styles.prevTitle}>
-          {word.bible_reference ? (() => {
-            if (word.bible_reference.includes('|')) {
-              const parts = word.bible_reference.split('|');
-              return (
-                <>
-                  <span style={{ fontWeight: 400 }}>{parts[0].trim()}</span>
-                  <strong style={{ fontWeight: 'bold', margin: '0 4px', color: '#15a349' }}>|</strong>
-                  <span style={{ fontWeight: 400 }}>{parts[1].trim()}</span>
-                </>
-              );
-            }
-            return <span style={{ fontWeight: 400 }}>{word.bible_reference}</span>;
-          })() : word.title}
+        <h4 className={styles.prevTitle} style={{ fontWeight: 'normal' }}>
+          {word[`bible_reference_${language}`] || word.bible_reference_en || word.bible_reference || 'Reference'}
         </h4>
       </div>
     </div>
