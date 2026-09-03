@@ -43,9 +43,13 @@ serve(async (req) => {
     let totalOpened = 0
     let totalClicked = 0
     let totalBounced = 0
+    let totalSentThisMonth = 0
     
     // Time-series data for the graph (group by day)
     const metricsByDay: Record<string, { delivered: number, opened: number, clicked: number }> = {}
+
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
 
     emails.forEach((email: any) => {
       const status = email.last_event || 'sent'
@@ -55,8 +59,12 @@ serve(async (req) => {
       if (status === 'clicked') { totalDelivered++; totalOpened++; totalClicked++ } // Clicked implies opened
       if (status === 'bounced') totalBounced++
 
-      // Group by day for the chart (format: MMM DD)
       const date = new Date(email.created_at)
+      if (date.getTime() >= startOfMonth) {
+        totalSentThisMonth++
+      }
+
+      // Group by day for the chart (format: MMM DD)
       const dayLabel = date.toLocaleDateString('en-US', { month: 'short', day: '2-digit' })
 
       if (!metricsByDay[dayLabel]) {
@@ -94,7 +102,7 @@ serve(async (req) => {
           deliverabilityRate
         },
         usage: {
-          transactional: { used: Math.max(totalSent, 39), limit: 3000 },
+          transactional: { used: totalSentThisMonth, limit: 3000 },
           marketing: { used: 0, limit: 100 }
         },
         graphData

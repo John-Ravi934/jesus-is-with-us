@@ -3,7 +3,8 @@ import { getAppStatistics, getStorageStats } from '../../services/statisticsServ
 import { 
   getLiveStreamSettings, updateLiveStreamSettings, 
   getDonationSettings, updateDonationSettings,
-  getEmailSettings, updateEmailSettings 
+  getEmailSettings, updateEmailSettings,
+  getQuickAccessSettings, updateQuickAccessSettings
 } from '../../services/settingsService';
 import { uploadImage } from '../../services/storageService';
 import {
@@ -185,6 +186,10 @@ export default function Settings() {
   });
   const [savingEmail, setSavingEmail] = useState(false);
 
+  // Quick Access Settings
+  const [quickAccessButtons, setQuickAccessButtons] = useState([]);
+  const [savingQuickAccess, setSavingQuickAccess] = useState(false);
+
   useEffect(() => {
     loadData();
   }, []);
@@ -254,6 +259,11 @@ export default function Settings() {
       const mailData = await getEmailSettings();
       if (mailData) {
         setEmailSettings(mailData);
+      }
+
+      const quickAccessData = await getQuickAccessSettings();
+      if (quickAccessData) {
+        setQuickAccessButtons(quickAccessData);
       }
 
       setDbError(false);
@@ -519,6 +529,7 @@ export default function Settings() {
         <TabBtn id="live" icon={<Video size={17} />} label="Live Stream" />
         <TabBtn id="donation" icon={<CreditCard size={17} />} label="Donation Page" />
         <TabBtn id="analytics" icon={<BarChart2 size={17} />} label="Analytics" />
+        <TabBtn id="quick_access" icon={<PlusCircle size={17} />} label="Quick Access" />
         <TabBtn id="system" icon={<SettingsIcon size={17} />} label="System" />
       </div>
 
@@ -1164,6 +1175,133 @@ export default function Settings() {
           )}
         </div>
       )}
+
+      {/* ═══════════════════════════════════════════════════════════════════════
+           QUICK ACCESS TAB
+           ═══════════════════════════════════════════════════════════════════════ */}
+      {activeTab === 'quick_access' && (
+        <div>
+          <div style={{ marginBottom: '1.75rem' }}>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#1a2940', margin: 0 }}>Quick Access Buttons</h2>
+            <p style={{ color: '#8898aa', margin: '0.3rem 0 0', fontSize: '0.9rem' }}>Manage the floating action buttons displayed on the bottom right of the website.</p>
+          </div>
+          
+          <div style={{ ...cardStyle, padding: '1.75rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+              <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#1a2940' }}>Configure Buttons</h3>
+              <button 
+                onClick={() => setQuickAccessButtons([...quickAccessButtons, { id: Date.now(), icon: 'LinkIcon', link: '', color: '#3b82f6', tooltip: 'New Link', isExternal: false }])}
+                style={{ ...outlineBtnStyle, padding: '0.5rem 1rem' }}
+              >
+                <Plus size={16} /> Add Button
+              </button>
+            </div>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {quickAccessButtons.map((btn, index) => (
+                <div key={btn.id} style={{ display: 'grid', gridTemplateColumns: '1.5fr 2fr 1fr 1fr auto', gap: '1rem', alignItems: 'center', padding: '1rem', background: '#f8fafc', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
+                  
+                  <div>
+                    <label style={labelStyle}>Tooltip Label</label>
+                    <input 
+                      style={{...inputStyle, padding: '0.5rem'}} 
+                      value={btn.tooltip} 
+                      onChange={(e) => {
+                        const newBtns = [...quickAccessButtons];
+                        newBtns[index].tooltip = e.target.value;
+                        setQuickAccessButtons(newBtns);
+                      }} 
+                    />
+                  </div>
+
+                  <div>
+                    <label style={labelStyle}>Link URL</label>
+                    <input 
+                      style={{...inputStyle, padding: '0.5rem'}} 
+                      value={btn.link} 
+                      onChange={(e) => {
+                        const newBtns = [...quickAccessButtons];
+                        newBtns[index].link = e.target.value;
+                        setQuickAccessButtons(newBtns);
+                      }} 
+                    />
+                  </div>
+
+                  <div>
+                    <label style={labelStyle}>Color / Gradient</label>
+                    <input 
+                      style={{...inputStyle, padding: '0.5rem'}} 
+                      value={btn.color} 
+                      onChange={(e) => {
+                        const newBtns = [...quickAccessButtons];
+                        newBtns[index].color = e.target.value;
+                        setQuickAccessButtons(newBtns);
+                      }} 
+                    />
+                  </div>
+                  
+                  <div>
+                    <label style={labelStyle}>Icon Name</label>
+                    <select 
+                      style={{...inputStyle, padding: '0.5rem'}}
+                      value={btn.icon}
+                      onChange={(e) => {
+                        const newBtns = [...quickAccessButtons];
+                        newBtns[index].icon = e.target.value;
+                        setQuickAccessButtons(newBtns);
+                      }}
+                    >
+                      <option value="MessageCircle">Message (WhatsApp)</option>
+                      <option value="Heart">Heart</option>
+                      <option value="Music">Music</option>
+                      <option value="LinkIcon">Link</option>
+                      <option value="Phone">Phone</option>
+                      <option value="Mail">Mail</option>
+                      <option value="MapPin">Location</option>
+                      <option value="Globe">Globe</option>
+                    </select>
+                  </div>
+
+                  <button 
+                    onClick={() => {
+                      const newBtns = quickAccessButtons.filter((_, i) => i !== index);
+                      setQuickAccessButtons(newBtns);
+                    }}
+                    style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', marginTop: '1.5rem', padding: '0.5rem' }}
+                  >
+                    <Trash2 size={18} />
+                  </button>
+
+                </div>
+              ))}
+              
+              {quickAccessButtons.length === 0 && (
+                <div style={{ textAlign: 'center', padding: '2rem', color: '#64748b' }}>No quick access buttons configured.</div>
+              )}
+            </div>
+
+            <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'flex-end' }}>
+              <button 
+                onClick={async () => {
+                  setSavingQuickAccess(true);
+                  try {
+                    await updateQuickAccessSettings(quickAccessButtons);
+                    toast.success('Quick Access buttons saved!');
+                  } catch (e) {
+                    toast.error('Failed to save settings');
+                  }
+                  setSavingQuickAccess(false);
+                }}
+                disabled={savingQuickAccess}
+                style={{ ...greenBtnStyle, width: 'auto', opacity: savingQuickAccess ? 0.7 : 1 }}
+              >
+                {savingQuickAccess ? 'Saving...' : 'Save Quick Access Settings'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
 
       {/* ═══════════════════════════════════════════════════════════════════════
            SYSTEM TAB

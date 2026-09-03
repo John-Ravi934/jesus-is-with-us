@@ -4,38 +4,82 @@
   right: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  align-items: center;
   z-index: 999;
 }
 
-.floatBtn {
-  width: 56px;
-  height: 56px;
+.buttonsWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  pointer-events: none;
+}
+
+.floatBtnItem {
+  opacity: 0;
+  transform: translateY(20px) scale(0.5);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none;
+}
+
+.buttonsWrapper.open {
+  pointer-events: auto;
+}
+
+.buttonsWrapper.open .floatBtnItem {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.floatBtnInner {
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--color-white);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: transform 0.2s;
+}
+
+.floatBtnInner:hover {
+  transform: scale(1.1);
+}
+
+.mainToggleBtn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--gradient-primary, linear-gradient(135deg, #2e7d32 0%, #15803d 100%));
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: all var(--transition-smooth);
-  box-shadow: var(--shadow-dark);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.whatsapp {
-  background: #25D366;
+.mainToggleBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
 }
 
-.prayer {
-  background: var(--gradient-primary);
+.mainToggleBtn.open {
+  background: #ef4444; /* red when open to act as close button */
 }
 
-.worship {
-  background: var(--color-primary-blue);
+.toggleIcon {
+  transition: transform 0.3s ease;
 }
 
-.floatBtn:hover {
-  transform: translateY(-5px) scale(1.1);
+.mainToggleBtn.open .toggleIcon {
+  transform: rotate(45deg);
 }
 
 @media (max-width: 768px) {
@@ -43,8 +87,12 @@
     right: 1rem;
     bottom: 1rem;
   }
-  .floatBtn {
-    width: 48px;
-    height: 48px;
+  .mainToggleBtn {
+    width: 54px;
+    height: 54px;
+  }
+  .floatBtnInner {
+    width: 44px;
+    height: 44px;
   }
 }
