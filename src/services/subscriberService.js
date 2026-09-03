@@ -11,10 +11,9 @@ export const getSubscribers = async () => {
 };
 
 export const subscribeEmail = async (email) => {
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("subscribers")
-    .insert([{ email }])
-    .select();
+    .insert([{ email }]);
 
   if (error) {
     if (error.code === '23505') { // PostgreSQL unique violation code
