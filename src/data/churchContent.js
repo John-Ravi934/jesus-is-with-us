@@ -702,7 +702,7 @@ export const churchContent = {
     rhema_lang_en: 'ஆங்கிலம்',
     rhema_lang_ta: 'தமிழ்',
     rhema_cal_months: ['ஜனவரி', 'பிப்ரவரி', 'மார்ச்', 'ஏப்ரல்', 'மே', 'ஜூன்', 'ஜூலை', 'ஆகஸ்ட்', 'செப்டம்பர்', 'அக்டோபர்', 'நவம்பர்', 'டிசம்பர்'],
-    rhema_cal_days: ['ஞாயிறு', 'திங்கள்', 'செவ்வாய்', 'புதன்', 'வியாழன்', 'வெள்ளி', 'சனி'],
+    rhema_cal_days: ['ஞாயி', 'திங்', 'செவ்', 'புதன்', 'வியா', 'வெள்', 'சனி'],
 
     // Resources Page
     res_hero_label: 'உங்களை ஆயத்தப்படுத்துங்கள்',
@@ -717,7 +717,7 @@ export const churchContent = {
     res_tab_worship: 'ஆராதனை',
     res_tab_ebooks: 'மின்-புத்தகங்கள்',
     res_title_playlists: 'பட்டியல்கள்',
-    res_showing: 'காண்பிக்கப்படுகின்றன',
+    res_showing: 'மொத்தமுள்ள',
     res_of: 'இல்',
     res_loading: 'வளங்கள் ஏற்றப்படுகின்றன...',
     res_db_setup: 'தரவுத்தள அமைப்பு தேவை',
