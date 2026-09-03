@@ -27,7 +27,7 @@ export const churchContent = {
     intro_btn_loc: 'Location',
     intro_btn_contact: 'Contact',
     intro_started: 'Started At',
-    intro_started_val: 'Salem, Tamil Nadu',
+    intro_started_val: 'Year of 1996',
     intro_loc: 'Location',
     intro_loc_val: 'Kollapatty, Sarkar Gollappatti, Tamil Nadu 636030',
 
@@ -419,7 +419,7 @@ export const churchContent = {
     intro_btn_loc: 'இடம்',
     intro_btn_contact: 'தொடர்பு',
     intro_started: 'ஆரம்பிக்கப்பட்டது',
-    intro_started_val: 'சேலம், தமிழ்நாடு',
+    intro_started_val: '1996 ஆம் ஆண்டு',
     intro_loc: 'இடம்',
     intro_loc_val: 'கொல்லப்பட்டி, சர்க்கார் கொல்லப்பட்டி, தமிழ்நாடு 636030',
 
