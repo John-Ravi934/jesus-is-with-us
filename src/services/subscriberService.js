@@ -21,7 +21,7 @@ export const subscribeEmail = async (email) => {
     }
     throw error;
   }
-  return data[0];
+  return true;
 };
 
 export const deleteSubscriber = async (id) => {
