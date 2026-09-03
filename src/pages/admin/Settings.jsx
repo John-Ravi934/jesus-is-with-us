@@ -11,7 +11,7 @@ import {
   Settings as SettingsIcon, Database, Activity, ShieldCheck, Video, Save, Check, Copy,
   CreditCard, Upload, Link as LinkIcon, MessageCircle, Eye, Download, HardDrive,
   Building2, User, Hash, GitBranch, MapPin, Mail, FolderOpen, Lock, MoreVertical,
-  Plus, Trash2, Edit2, X, Clipboard, Calendar, Radio, HelpCircle, Monitor, Shield,
+  Plus, PlusCircle, Trash2, Edit2, X, Clipboard, Calendar, Radio, HelpCircle, Monitor, Shield,
   Wand2, Cloud, ChevronUp, ChevronDown, CheckCircle2, Info, Lightbulb, Play, BarChart2,
   Users, Smartphone, IndianRupee, Phone, Globe, Clock
 } from 'lucide-react';
