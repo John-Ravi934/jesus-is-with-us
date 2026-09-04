@@ -99,7 +99,7 @@ export default function Home() {
           ></iframe>
         ) : (
           <video autoPlay loop muted playsInline className={styles.videoBg}>
-            <source src="/assets/Video.mp4" type="video/mp4" />
+            <source src="/assets/heaven-video.mp4" type="video/mp4" />
           </video>
         )}
 
@@ -144,8 +144,8 @@ export default function Home() {
               </div>
             </div>
             <div data-aos="fade-up" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', position: 'relative' }}>
-              <img
-                src="/assets/churchimage.png"
+              <img 
+                src="/assets/churchimage.webp"
                 alt="Jesus Is With Us Church"
                 style={{ width: '100%', maxWidth: '500px', display: 'block', margin: '-3rem auto -2rem auto', position: 'relative', zIndex: 1 }}
               />
@@ -197,19 +197,19 @@ export default function Home() {
               <div style={{ marginTop: 'auto' }}>
                 <div data-aos="fade-up" data-aos-delay="300" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '1.5rem' }}>
                   <a href="https://www.youtube.com/@jesusiswithusministries7844/featured" target="_blank" rel="noreferrer" style={{ display: 'block', position: 'relative', borderRadius: '8px', overflow: 'hidden' }}>
-                    <img src="/assets/pastor-poster1.png" alt="Message 1" style={{ width: '100%', display: 'block', aspectRatio: '16/9', objectFit: 'cover' }} />
+                    <img src="/assets/pastor-poster1.webp" alt="Message 1" style={{ width: '100%', display: 'block', aspectRatio: '16/9', objectFit: 'cover' }} />
                     <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.3)' }}>
                       <PlayCircle size={32} color="#ffffff" />
                     </div>
                   </a>
                   <a href="https://www.youtube.com/@jesusiswithusministries7844/featured" target="_blank" rel="noreferrer" style={{ display: 'block', position: 'relative', borderRadius: '8px', overflow: 'hidden' }}>
-                    <img src="/assets/pastor-poster2.png" alt="Message 2" style={{ width: '100%', display: 'block', aspectRatio: '16/9', objectFit: 'cover' }} />
+                    <img src="/assets/pastor-poster2.webp" alt="Message 2" style={{ width: '100%', display: 'block', aspectRatio: '16/9', objectFit: 'cover' }} />
                     <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.3)' }}>
                       <PlayCircle size={32} color="#ffffff" />
                     </div>
                   </a>
                   <a href="https://www.youtube.com/@jesusiswithusministries7844/featured" target="_blank" rel="noreferrer" style={{ display: 'block', position: 'relative', borderRadius: '8px', overflow: 'hidden' }}>
-                    <img src="/assets/pastor-poster3.png" alt="Message 3" style={{ width: '100%', display: 'block', aspectRatio: '16/9', objectFit: 'cover' }} />
+                    <img src="/assets/pastor-poster3.webp" alt="Message 3" style={{ width: '100%', display: 'block', aspectRatio: '16/9', objectFit: 'cover' }} />
                     <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.3)' }}>
                       <PlayCircle size={32} color="#ffffff" />
                     </div>

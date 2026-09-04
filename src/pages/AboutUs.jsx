@@ -39,7 +39,7 @@ export default function AboutUs() {
         <div className={styles.sectionBgGray}>
           <div className={`container ${styles.aboutBlock} ${styles.reverseBlock}`} style={{ marginTop: 0, marginBottom: 0 }}>
             <div className={styles.aboutImageLeft}>
-              <img data-aos="fade-up" src="/assets/church-image.png" alt="Church Dedication" className={styles.roundedOrganicAlt} />
+              <img data-aos="fade-up" src="/assets/church-image.webp" alt="Church Dedication" className={styles.roundedOrganicAlt} />
             </div>
             <div className={styles.aboutText}>
               <h2 data-aos="fade-up">{t('about_dedication_heading')}<span className="script-accent">{t('about_dedication_heading_2')}</span></h2>

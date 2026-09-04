@@ -164,10 +164,10 @@ export const churchContent = {
 
     // Timeline Data (Dynamic Array for About page)
     timeline_events: [
-      { year: '1970', title: 'The Humble Beginning', description: 'Started as a small prayer group in a living room with just 5 members under Pastor Israel Raj.', image: '/assets/family-ministries.png' },
-      { year: '1985', title: 'First Church Building', description: 'By God\'s grace, we moved into our first dedicated sanctuary, accommodating over 500 members.', image: '/assets/family-ministries.png' },
-      { year: '2005', title: 'Global Outreach Launched', description: 'Initiated our first international mission trips and established community support programs.', image: '/assets/family-ministries.png' },
-      { year: '2021', title: 'New Leadership Era', description: 'Pastor Yoseppu took over the leadership, bringing a renewed focus on youth ministry and digital evangelism.', image: '/assets/family-ministries.png' }
+      { year: '1970', title: 'The Humble Beginning', description: 'Started as a small prayer group in a living room with just 5 members under Pastor Israel Raj.', image: '/assets/family-ministries.webp' },
+      { year: '1985', title: 'First Church Building', description: 'By God\'s grace, we moved into our first dedicated sanctuary, accommodating over 500 members.', image: '/assets/family-ministries.webp' },
+      { year: '2005', title: 'Global Outreach Launched', description: 'Initiated our first international mission trips and established community support programs.', image: '/assets/family-ministries.webp' },
+      { year: '2021', title: 'New Leadership Era', description: 'Pastor Yoseppu took over the leadership, bringing a renewed focus on youth ministry and digital evangelism.', image: '/assets/family-ministries.webp' }
     ],
 
     // Ministries Page
@@ -558,10 +558,10 @@ export const churchContent = {
 
     // Timeline Data (Dynamic Array for About page)
     timeline_events: [
-      { year: '1970', title: 'எளிய ஆரம்பம்', description: 'போதகர் இஸ்ரவேல் ராஜ் அவர்களின் தலைமையில் வெறும் 5 உறுப்பினர்களுடன் ஒரு சிறிய அறையில் ஒரு சிறிய ஜெபக் குழுவாகத் தொடங்கப்பட்டது.', image: '/assets/family-ministries.png' },
-      { year: '1985', title: 'முதல் தேவாலய கட்டிடம்', description: 'தேவ கிருபையால், 500-க்கும் மேற்பட்ட உறுப்பினர்களுக்கு இடமளிக்கும் வகையில் எங்களது முதல் புதிய தேவாலயத்திற்கு மாறினோம்.', image: '/assets/family-ministries.png' },
-      { year: '2005', title: 'உலகளாவிய நற்செய்தி ஊழியம்', description: 'சர்வதேச மிஷனரி பயணங்கள் மற்றும் சமூக ஆதரவு திட்டங்களை முதலில் தொடங்கினோம்.', image: '/assets/family-ministries.png' },
-      { year: '2021', title: 'புதிய தலைமை', description: 'போதகர் யோசேப்பு தலைமைப் பொறுப்பை ஏற்றுக்கொண்டார். அவர் இளைஞர் ஊழியம் மற்றும் டிஜிட்டல் நற்செய்தி ஊழியங்களில் புதிய கவனத்தை ஈர்த்தார்.', image: '/assets/family-ministries.png' }
+      { year: '1970', title: 'எளிய ஆரம்பம்', description: 'போதகர் இஸ்ரவேல் ராஜ் அவர்களின் தலைமையில் வெறும் 5 உறுப்பினர்களுடன் ஒரு சிறிய அறையில் ஒரு சிறிய ஜெபக் குழுவாகத் தொடங்கப்பட்டது.', image: '/assets/family-ministries.webp' },
+      { year: '1985', title: 'முதல் தேவாலய கட்டிடம்', description: 'தேவ கிருபையால், 500-க்கும் மேற்பட்ட உறுப்பினர்களுக்கு இடமளிக்கும் வகையில் எங்களது முதல் புதிய தேவாலயத்திற்கு மாறினோம்.', image: '/assets/family-ministries.webp' },
+      { year: '2005', title: 'உலகளாவிய நற்செய்தி ஊழியம்', description: 'சர்வதேச மிஷனரி பயணங்கள் மற்றும் சமூக ஆதரவு திட்டங்களை முதலில் தொடங்கினோம்.', image: '/assets/family-ministries.webp' },
+      { year: '2021', title: 'புதிய தலைமை', description: 'போதகர் யோசேப்பு தலைமைப் பொறுப்பை ஏற்றுக்கொண்டார். அவர் இளைஞர் ஊழியம் மற்றும் டிஜிட்டல் நற்செய்தி ஊழியங்களில் புதிய கவனத்தை ஈர்த்தார்.', image: '/assets/family-ministries.webp' }
     ],
 
     // Ministries Page

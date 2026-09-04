@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { getGalleryImages } from '../services/galleryService';
 import { Image as ImageIcon, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import ImageWithBlurhash from '../components/ImageWithBlurhash';
 
 export default function Gallery() {
   const { t, language } = useLanguage();
@@ -43,7 +44,7 @@ export default function Gallery() {
       {/* 500px Hero Banner */}
       <section style={{
         height: '600px',
-        background: 'linear-gradient(rgba(9, 11, 36, 0.5), rgba(9, 11, 36, 0.7)), url(/assets/photo-gallery.png) center / 100% 100%',
+        background: 'linear-gradient(rgba(9, 11, 36, 0.5), rgba(9, 11, 36, 0.7)), url(/assets/photo-gallery.webp) center / 100% 100%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -96,14 +97,14 @@ export default function Gallery() {
                   data-aos="fade-up"
                 >
                   {catImages.length > 0 && (
-                    <img
+                    <ImageWithBlurhash
                       src={(catImages.find(p => p.status === 'published-cover') || catImages[0]).image_url}
+                      hash={(catImages.find(p => p.status === 'published-cover') || catImages[0]).blurhash}
                       alt={category}
                       style={{
                         width: '100%',
                         height: '100%',
-                        objectFit: 'cover',
-                        transition: 'transform 0.5s ease',
+                        transition: 'transform 0.5s ease, opacity 0.5s ease',
                         opacity: 0.8
                       }}
                       onMouseOver={(e) => {
@@ -162,14 +163,18 @@ export default function Gallery() {
           </div>
 
           <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <img
+            <ImageWithBlurhash
               src={selectedAlbum.photos[activePhotoIndex].image_url}
+              hash={selectedAlbum.photos[activePhotoIndex].blurhash}
               alt="Fullscreen View"
               style={{
                 maxWidth: '90vw',
                 maxHeight: '80vh',
-                objectFit: 'contain',
-                borderRadius: '8px'
+                borderRadius: '8px',
+                overflow: 'hidden'
+              }}
+              imgStyle={{
+                objectFit: 'contain'
               }}
             />
 

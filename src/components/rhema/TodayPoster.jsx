@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { Maximize2, ChevronLeft, ChevronRight } from 'lucide-react';
 import styles from './RhemaComponents.module.css';
+import ImageWithBlurhash from '../ImageWithBlurhash';
 
 export default function TodayPoster({ posters = [], activeIndex = 0, onChangeIndex }) {
   const scrollContainerRef = useRef(null);
@@ -98,7 +99,7 @@ export default function TodayPoster({ posters = [], activeIndex = 0, onChangeInd
           }}
         >
           {posters.map((posterUrl, idx) => (
-            <img 
+            <ImageWithBlurhash 
               key={idx}
               src={posterUrl} 
               alt={`Today's Rhema Poster ${idx + 1}`} 
@@ -108,9 +109,11 @@ export default function TodayPoster({ posters = [], activeIndex = 0, onChangeInd
                 width: '100%',
                 flexShrink: 0,
                 scrollSnapAlign: 'center',
-                objectFit: 'contain',
                 userSelect: 'none',
                 WebkitUserSelect: 'none'
+              }}
+              imgStyle={{
+                objectFit: 'contain'
               }}
             />
           ))}

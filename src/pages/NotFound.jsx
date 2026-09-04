@@ -5,20 +5,20 @@ import styles from './NotFound.module.css';
 export default function NotFound() {
   return (
     <div className={styles.container}>
-      
+
       {/* LEFT CONTENT */}
       <div className={styles.leftContent}>
-        
+
         <h1 data-aos="fade-up" className={styles.title}>404</h1>
-        
-        <h2 data-aos="fade-up" className={styles.subtitle}>Looks like you've taken a<br/>wrong turn.</h2>
+
+        <h2 data-aos="fade-up" className={styles.subtitle}>Looks like you've taken a<br />wrong turn.</h2>
 
         <p data-aos="fade-up" className={styles.description}>
-          Let's help you get back on<br/>the right path.
+          Let's help you get back on<br />the right path.
         </p>
-        
-        <Link 
-          to="/" 
+
+        <Link
+          to="/"
           className={styles.homeButton}
         >
           <Home size={20} />
@@ -29,7 +29,7 @@ export default function NotFound() {
         <div className={styles.quoteBox}>
           <span className={styles.quoteMark}>“</span>
           <p data-aos="fade-up" className={styles.quoteText}>
-            Whether you turn to the right or<br/>to the left, your ears will hear a<br/>voice behind you, saying,<br/>'This is the way; walk in it.'
+            Whether you turn to the right or<br />to the left, your ears will hear a<br />voice behind you, saying,<br />'This is the way; walk in it.'
           </p>
           <p data-aos="fade-up" className={styles.quoteRef}>— Isaiah 30:21</p>
         </div>
@@ -37,9 +37,9 @@ export default function NotFound() {
 
       {/* RIGHT IMAGE */}
       <div className={styles.rightContent}>
-        <img data-aos="fade-up" 
-          src="/assets/404-image.png" 
-          alt="Man at crossroads looking at cross" 
+        <img data-aos="fade-up"
+          src="/assets/404-image.webp"
+          alt="Man at crossroads looking at cross"
           className={styles.image}
         />
       </div>

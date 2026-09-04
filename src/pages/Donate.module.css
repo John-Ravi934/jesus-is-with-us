@@ -1,7 +1,7 @@
 .hero {
   position: relative;
   height: 600px;
-  background-image: url('/assets/donate-us.png');
+  background-image: url('/assets/donate-us.webp');
   background-size: 100% 100%;
   background-position: center;
   display: flex;

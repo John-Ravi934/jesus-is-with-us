@@ -23,18 +23,18 @@ export default function Header() {
     <header className={`${styles.header} ${(isScrolled || !isHomePage) ? styles.scrolled : ''} ${isLiveHeroActive ? styles.liveHeader : ''}`}>
       <div className={`container ${styles.headerContainer}`}>
         <Link to="/" className={styles.logo}>
-          <img src="/assets/logo.png" alt="Jesus is with us Logo" className={styles.logoImg} />
+          <img src="/assets/logo.webp" alt="Jesus is with us Logo" className={styles.logoImg} />
         </Link>
-        
+
         <nav className={`${styles.nav} ${mobileMenuOpen ? styles.navOpen : ''} ${language === 'en' ? styles.navEn : ''}`}>
-          <NavLink to="/" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? styles.activeLink : ""}>{t('nav_home')}</NavLink>
-          <NavLink to="/about" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? styles.activeLink : ""}>{t('nav_about')}</NavLink>
-          <NavLink to="/ministries" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? styles.activeLink : ""}>{t('nav_ministries')}</NavLink>
-          <NavLink to="/fellowship" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? styles.activeLink : ""}>{t('nav_fellowship')}</NavLink>
-          <NavLink to="/rhema" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? styles.activeLink : ""}>{t('nav_rhema')}</NavLink>
-          <NavLink to="/gallery" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? styles.activeLink : ""}>{t('nav_gallery')}</NavLink>
-          <NavLink to="/resources" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? styles.activeLink : ""}>{t('nav_resources')}</NavLink>
-          <NavLink to="/contact" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => isActive ? styles.activeLink : ""}>{t('nav_contact')}</NavLink>
+          <NavLink to="/" onClick={() => setMobileMenuOpen(false)} className={({ isActive }) => isActive ? styles.activeLink : ""}>{t('nav_home')}</NavLink>
+          <NavLink to="/about" onClick={() => setMobileMenuOpen(false)} className={({ isActive }) => isActive ? styles.activeLink : ""}>{t('nav_about')}</NavLink>
+          <NavLink to="/ministries" onClick={() => setMobileMenuOpen(false)} className={({ isActive }) => isActive ? styles.activeLink : ""}>{t('nav_ministries')}</NavLink>
+          <NavLink to="/fellowship" onClick={() => setMobileMenuOpen(false)} className={({ isActive }) => isActive ? styles.activeLink : ""}>{t('nav_fellowship')}</NavLink>
+          <NavLink to="/rhema" onClick={() => setMobileMenuOpen(false)} className={({ isActive }) => isActive ? styles.activeLink : ""}>{t('nav_rhema')}</NavLink>
+          <NavLink to="/gallery" onClick={() => setMobileMenuOpen(false)} className={({ isActive }) => isActive ? styles.activeLink : ""}>{t('nav_gallery')}</NavLink>
+          <NavLink to="/resources" onClick={() => setMobileMenuOpen(false)} className={({ isActive }) => isActive ? styles.activeLink : ""}>{t('nav_resources')}</NavLink>
+          <NavLink to="/contact" onClick={() => setMobileMenuOpen(false)} className={({ isActive }) => isActive ? styles.activeLink : ""}>{t('nav_contact')}</NavLink>
           <Link to="/donate" className="btn btn-primary" onClick={() => setMobileMenuOpen(false)}>{t('nav_donate')}</Link>
         </nav>
 

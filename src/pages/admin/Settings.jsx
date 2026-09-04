@@ -452,8 +452,15 @@ export default function Settings() {
       executeRemoveUpiSection(deleteContext.index);
     } else if (deleteContext?.type === 'bank') {
       executeRemoveBankSection(deleteContext.index);
+    } else if (deleteContext?.type === 'quick_access') {
+      executeRemoveQuickAccess(deleteContext.index);
     }
     setDeleteContext(null);
+  };
+
+  const executeRemoveQuickAccess = (index) => {
+    const newBtns = quickAccessButtons.filter((_, i) => i !== index);
+    setQuickAccessButtons(newBtns);
   };
 
   // Derived storage values
@@ -1263,10 +1270,7 @@ export default function Settings() {
                   </div>
 
                   <button 
-                    onClick={() => {
-                      const newBtns = quickAccessButtons.filter((_, i) => i !== index);
-                      setQuickAccessButtons(newBtns);
-                    }}
+                    onClick={() => setDeleteContext({ type: 'quick_access', index })}
                     style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', marginTop: '1.5rem', padding: '0.5rem' }}
                   >
                     <Trash2 size={18} />
@@ -1492,7 +1496,7 @@ export default function Settings() {
     <ConfirmModal 
       isOpen={!!deleteContext}
       title="Remove Section"
-      message={`Are you sure you want to remove this ${deleteContext?.type === 'upi' ? 'UPI' : 'Bank'} section?`}
+      message={`Are you sure you want to remove this ${deleteContext?.type === 'upi' ? 'UPI' : deleteContext?.type === 'bank' ? 'Bank' : 'Quick Access'} section?`}
       onConfirm={confirmDelete}
       onCancel={() => setDeleteContext(null)}
     />

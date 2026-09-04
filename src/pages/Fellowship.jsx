@@ -35,7 +35,7 @@ export default function Fellowship() {
 
   return (
     <>
-      <section data-aos="fade-up" className={styles.hero} style={{ backgroundImage: `url('/assets/Fellowship.png')` }}>
+      <section data-aos="fade-up" className={styles.hero} style={{ backgroundImage: `url('/assets/Fellowship.webp')` }}>
         <div className={styles.heroOverlay}></div>
         <div className={`container ${styles.heroContent}`}>
           <span className="subheading animate-fade-up">{t('fel_hero_label')}</span>
