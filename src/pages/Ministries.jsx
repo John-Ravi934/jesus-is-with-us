@@ -7,12 +7,12 @@ import styles from './Ministries.module.css';
 export default function Ministries() {
   const { t } = useLanguage();
   const ministries = [
-    { title: t('min_list_gospel'), icon: <Globe size={40} />, img: '/assets/gospel-outreach.png', desc: t('min_list_gospel_desc') },
-    { title: t('min_list_village'), icon: <Home size={40} />, img: '/assets/village-ministries.png', desc: t('min_list_village_desc') },
-    { title: t('min_list_children'), icon: <Heart size={40} />, img: '/assets/children-ministries.png', desc: t('min_list_children_desc') },
-    { title: t('min_list_youth'), icon: <Users size={40} />, img: '/assets/youth-meeting.png', desc: t('min_list_youth_desc') },
-    { title: t('min_list_family'), icon: <Users size={40} />, img: '/assets/family-ministries.png', desc: t('min_list_family_desc') },
-    { title: t('min_list_worship'), icon: <Music size={40} />, img: '/assets/worship-ministries.png', desc: t('min_list_worship_desc') }
+    { title: t('min_list_gospel'), icon: <Globe size={40} />, img: '/assets/gospel-outreach.webp', desc: t('min_list_gospel_desc') },
+    { title: t('min_list_village'), icon: <Home size={40} />, img: '/assets/village-ministries.webp', desc: t('min_list_village_desc') },
+    { title: t('min_list_children'), icon: <Heart size={40} />, img: '/assets/children-ministries.webp', desc: t('min_list_children_desc') },
+    { title: t('min_list_youth'), icon: <Users size={40} />, img: '/assets/youth-meeting.webp', desc: t('min_list_youth_desc') },
+    { title: t('min_list_family'), icon: <Users size={40} />, img: '/assets/family-ministries.webp', desc: t('min_list_family_desc') },
+    { title: t('min_list_worship'), icon: <Music size={40} />, img: '/assets/worship-ministries.webp', desc: t('min_list_worship_desc') }
   ];
 
   const [selectedMinistry, setSelectedMinistry] = useState(null);
@@ -55,14 +55,14 @@ export default function Ministries() {
           </div>
         </div>
       </section>
-      
+
       <section data-aos="fade-up" className="dark-section">
         <div className={`container ${styles.impactContainer}`}>
           <div className={styles.impactText}>
             <span className="subheading">{t('min_impact_label')}</span>
             <h2 data-aos="fade-up">{t('min_impact_title')}<span className="script-accent">{t('min_impact_title_2')}</span></h2>
             <p data-aos="fade-up">{t('min_impact_desc')}</p>
-            <Link data-aos="fade-up" to="/fellowship#form" className="btn btn-primary" style={{marginTop: '2rem', textDecoration: 'none'}}>{t('min_impact_btn')}</Link>
+            <Link data-aos="fade-up" to="/fellowship#form" className="btn btn-primary" style={{ marginTop: '2rem', textDecoration: 'none' }}>{t('min_impact_btn')}</Link>
           </div>
           <div className={styles.impactStats}>
             <div className={`glass-dark ${styles.statBox}`}>
@@ -88,7 +88,7 @@ export default function Ministries() {
       {/* Ministry Popup Modal */}
       {selectedMinistry && (
         <div style={{
-          position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', 
+          position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
           backgroundColor: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)',
           display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: '20px'
         }} onClick={() => setSelectedMinistry(null)}>
@@ -98,7 +98,7 @@ export default function Ministries() {
             boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)',
             display: 'flex', flexDirection: 'row', padding: '24px', gap: '32px'
           }} onClick={e => e.stopPropagation()} className={styles.popupModal}>
-            <button data-aos="fade-up" 
+            <button data-aos="fade-up"
               onClick={() => setSelectedMinistry(null)}
               style={{
                 position: 'absolute', top: '16px', right: '16px', zIndex: 10,
@@ -118,7 +118,7 @@ export default function Ministries() {
                 </div>
                 <h2 data-aos="fade-up" style={{ margin: 0, color: '#0f172a', fontSize: '1.8rem' }}>{selectedMinistry.title}</h2>
               </div>
-              
+
               <div style={{ marginBottom: '16px', fontSize: '0.95rem', color: '#475569' }}>
                 <p data-aos="fade-up" style={{ margin: '0 0 8px 0' }}><strong>{t('min_popup_time_label')}</strong> {t('min_popup_time')}</p>
                 <p data-aos="fade-up" style={{ margin: '0' }}><strong>{t('min_popup_place_label')}</strong> {t('min_popup_place')}</p>
@@ -127,7 +127,7 @@ export default function Ministries() {
               <p data-aos="fade-up" style={{ color: '#475569', fontSize: '1rem', lineHeight: 1.6, marginBottom: '24px' }}>
                 {selectedMinistry.desc}{t('min_popup_desc_suffix')}
               </p>
-              
+
               <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                 <Link data-aos="fade-up" to="/fellowship#whatsapp" className="btn btn-primary" style={{ textDecoration: 'none', padding: '10px 20px' }}>{t('min_popup_btn')}</Link>
               </div>

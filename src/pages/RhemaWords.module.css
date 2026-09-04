@@ -75,7 +75,7 @@
 .rhemaHero {
   position: relative;
   min-height: 600px;
-  background-image: url('/assets/rhema-word.png');
+  background-image: url('/assets/rhema-word.webp');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
