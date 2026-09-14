@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { User, Copy, Phone, Heart, Globe, BookOpen, ShieldCheck, CreditCard, Landmark, QrCode, Check } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { getDonationSettings } from '../services/settingsService';
+import { useRealtimeSync } from '../hooks/useRealtimeSync';
 import { useLanguage } from '../contexts/LanguageContext';
 import styles from './Donate.module.css';
+import SEO from '../components/seo/SEO';
+import { JsonLd, generateBreadcrumbSchema } from '../components/seo/JsonLd';
 
 export default function Donate() {
   const { t } = useLanguage();
@@ -25,7 +28,7 @@ export default function Donate() {
     toast.success(`${type} copied to clipboard!`);
   };
 
-  useEffect(() => {
+  const fetchSettings = useCallback(() => {
     getDonationSettings().then(data => {
       if (data) {
         let newData = { ...data };
@@ -57,8 +60,20 @@ export default function Donate() {
       }
     }).catch(err => console.error(err));
   }, []);
+
+  useEffect(() => {
+    fetchSettings();
+  }, [fetchSettings]);
+
+  useRealtimeSync('site_settings', fetchSettings, "setting_key=eq.donation_settings");
   return (
     <>
+      <SEO 
+        title="Donate & Give | Jesus Is With Us Church"
+        description="Support the ministries and outreach of Jesus Is With Us Church. Find details for UPI and Bank Transfer donations to further the Gospel."
+        url="/donate"
+      />
+      <JsonLd schema={generateBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Donate", url: "/donate" }])} />
       <section className={styles.hero} data-aos="fade-in">
         <div className={styles.heroOverlay}></div>
         <div className={`container ${styles.heroContent}`}>

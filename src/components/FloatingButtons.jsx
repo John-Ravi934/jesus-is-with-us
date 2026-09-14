@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { MessageCircle, Heart, Music, Link as LinkIcon, Phone, Mail, MapPin, Globe, Plus, X } from 'lucide-react';
 import styles from './FloatingButtons.module.css';
 import { Link } from 'react-router-dom';
 import { getQuickAccessSettings } from '../services/settingsService';
-import { supabase } from '../lib/supabase';
+import { useRealtimeSync } from '../hooks/useRealtimeSync';
 
 const iconMap = {
   MessageCircle,
@@ -20,31 +20,22 @@ export default function FloatingButtons() {
   const [buttons, setButtons] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    fetchButtons();
-
-    const channel = supabase
-      .channel('settings_changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'site_settings', filter: "setting_key=eq.quick_access_buttons" }, () => {
-        fetchButtons();
-      })
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
-
-  const fetchButtons = async () => {
+  const fetchButtons = useCallback(async () => {
     try {
       const data = await getQuickAccessSettings();
-      if (data) {
+      if (data && Array.isArray(data)) {
         setButtons(data);
       }
-    } catch (e) {
-      console.error('Failed to fetch floating buttons', e);
+    } catch (err) {
+      console.error("Failed to load quick access buttons:", err);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchButtons();
+  }, [fetchButtons]);
+
+  useRealtimeSync('site_settings', fetchButtons, "setting_key=eq.quick_access_buttons");
 
   const toggleMenu = () => setIsOpen(!isOpen);
 

@@ -5,6 +5,18 @@ import { supabase } from '../lib/supabase';
 import { saveMessage } from '../services/messageService';
 import { useLanguage } from '../contexts/LanguageContext';
 import styles from './Contact.module.css';
+import SEO from '../components/seo/SEO';
+import { JsonLd, generateBreadcrumbSchema } from '../components/seo/JsonLd';
+import { z } from 'zod';
+
+const contactSchema = z.object({
+  fullName: z.string().min(2, "Name must be at least 2 characters").max(100, "Name is too long").regex(/^[A-Za-z\s\-'.]+$/, "Name contains invalid characters"),
+  email: z.string().email("Please provide a valid email address"),
+  subject: z.string().max(150, "Subject is too long").optional().nullable(),
+  phone: z.string().regex(/^\+?[\d\s-]{10,15}$/, "Invalid phone number format").optional().nullable().or(z.literal('')),
+  place: z.string().max(100, "Place name is too long").optional().nullable(),
+  message: z.string().min(10, "Message must be at least 10 characters").max(2000, "Message is too long")
+});
 
 export default function Contact() {
   const { t } = useLanguage();
@@ -35,6 +47,12 @@ export default function Contact() {
   }, []);
   return (
     <>
+      <SEO 
+        title="Contact Jesus Is With Us Church | Location & Service Times"
+        description="Contact Jesus Is With Us Ministries in Salem. Find our address, phone number, service times, and submit prayer requests."
+        url="/contact"
+      />
+      <JsonLd schema={generateBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Contact", url: "/contact" }])} />
       <section className={styles.hero} data-aos="fade-in">
         <div className={styles.heroOverlay}></div>
         <div className={`container ${styles.heroContent}`}>
@@ -108,13 +126,24 @@ export default function Contact() {
                 const formData = new FormData(e.target);
                 const payload = {
                   formType,
-                  fullName: formData.get('fullName'),
-                  email: formData.get('email'),
-                  subject: formData.get('subject'),
-                  phone: formData.get('phone'),
-                  place: formData.get('place'),
-                  message: formData.get('message')
+                  fullName: formData.get('fullName')?.trim(),
+                  email: formData.get('email')?.trim(),
+                  subject: formData.get('subject')?.trim() || null,
+                  phone: formData.get('phone')?.trim() || null,
+                  place: formData.get('place')?.trim() || null,
+                  message: formData.get('message')?.trim()
                 };
+
+                try {
+                  contactSchema.parse({
+                    ...payload,
+                    phone: payload.phone || ''
+                  });
+                } catch (validationError) {
+                  toast.error(validationError.errors[0].message);
+                  setIsSubmitting(false);
+                  return;
+                }
 
                 try {
                   // Save to DB so admin can see notifications
