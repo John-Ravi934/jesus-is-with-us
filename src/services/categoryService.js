@@ -11,7 +11,7 @@ export const getCategories = async () => {
     .select('*')
     .order('name_en', { ascending: true, nullsFirst: false });
     
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(error.message || 'An unexpected service error occurred.');
   return data;
 };
 
@@ -24,7 +24,7 @@ export const addCategory = async (name, color = '#2E7D32', icon = 'Tag', name_ta
     .select()
     .single();
 
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(error.message || 'An unexpected service error occurred.');
   return data;
 };
 
@@ -38,7 +38,7 @@ export const deleteCategory = async (id) => {
     if (error.code === '23503') { // Foreign key violation
       throw new Error("Cannot delete category because it is in use by one or more Rhema words.");
     }
-    throw new Error(error.message);
+    throw new Error(error.message || 'An unexpected service error occurred.');
   }
   return true;
 };
@@ -53,6 +53,6 @@ export const updateCategory = async (id, name, color, icon = 'Tag', name_ta = ''
     .select()
     .single();
 
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(error.message || 'An unexpected service error occurred.');
   return data;
 };

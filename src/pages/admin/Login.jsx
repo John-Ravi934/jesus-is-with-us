@@ -6,83 +6,57 @@ import styles from './AdminStyles.module.css';
 import { Lock, Mail, Eye, EyeOff, AlertCircle, Heart, ArrowLeft } from 'lucide-react';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(localStorage.getItem('lockedEmail') || '');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [lockoutTime, setLockoutTime] = useState(() => {
+    const saved = localStorage.getItem('lockoutTime');
+    return saved && new Date().getTime() < parseInt(saved) ? parseInt(saved) : null;
+  });
+  const [timeLeft, setTimeLeft] = useState('');
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
-  const [attempts, setAttempts] = useState(() => {
-    return parseInt(localStorage.getItem('adminLoginAttempts') || '0', 10);
-  });
-  const [timeLeft, setTimeLeft] = useState(0);
-  const MAX_ATTEMPTS = 3;
-  const LOCKOUT_DURATION = 2 * 60 * 1000; // 2 minutes
 
   useEffect(() => {
-    const lockoutUntil = parseInt(localStorage.getItem('adminLockoutUntil') || '0', 10);
-    const now = Date.now();
-    let intervalId;
+    if (!lockoutTime) return;
 
-    if (lockoutUntil > now) {
-      setAttempts(MAX_ATTEMPTS);
-      setTimeLeft(Math.ceil((lockoutUntil - now) / 1000));
+    const updateTimer = () => {
+      const now = new Date().getTime();
+      const distance = lockoutTime - now;
 
-      intervalId = setInterval(() => {
-        const currentNow = Date.now();
-        if (lockoutUntil <= currentNow) {
-          setAttempts(0);
-          setTimeLeft(0);
-          localStorage.removeItem('adminLoginAttempts');
-          localStorage.removeItem('adminLockoutUntil');
-          clearInterval(intervalId);
-        } else {
-          setTimeLeft(Math.ceil((lockoutUntil - currentNow) / 1000));
-        }
-      }, 1000);
+      if (distance <= 0) {
+        setLockoutTime(null);
+        setTimeLeft('');
+        localStorage.removeItem('lockoutTime');
+        return;
+      }
 
-      return () => clearInterval(intervalId);
-    } else if (lockoutUntil > 0 && lockoutUntil <= now) {
-      setAttempts(0);
-      setTimeLeft(0);
-      localStorage.removeItem('adminLoginAttempts');
-      localStorage.removeItem('adminLockoutUntil');
-    }
-  }, []);
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      setTimeLeft(`${minutes}m ${seconds}s`);
+    };
+
+    updateTimer();
+    const interval = setInterval(updateTimer, 1000);
+    return () => clearInterval(interval);
+  }, [lockoutTime]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setLockoutTime(null);
     try {
       await adminLogin(email, password);
       toast.success('Login Successful!');
-      setAttempts(0);
-      localStorage.removeItem('adminLoginAttempts');
-      localStorage.removeItem('adminLockoutUntil');
       navigate('/admin/dashboard');
     } catch (err) {
-      const newAttempts = attempts + 1;
-      setAttempts(newAttempts);
-      localStorage.setItem('adminLoginAttempts', newAttempts);
-
-      if (newAttempts >= MAX_ATTEMPTS) {
-        toast.error('Maximum login attempts reached. Please try again later.');
-        const lockoutUntil = Date.now() + LOCKOUT_DURATION;
-        localStorage.setItem('adminLockoutUntil', lockoutUntil.toString());
-        setTimeLeft(LOCKOUT_DURATION / 1000);
-
-        const intervalId = setInterval(() => {
-          const now = Date.now();
-          if (lockoutUntil <= now) {
-            setAttempts(0);
-            setTimeLeft(0);
-            localStorage.removeItem('adminLoginAttempts');
-            localStorage.removeItem('adminLockoutUntil');
-            clearInterval(intervalId);
-          } else {
-            setTimeLeft(Math.ceil((lockoutUntil - now) / 1000));
-          }
-        }, 1000);
+      if (err.lockedUntil) {
+        const time = new Date(err.lockedUntil).getTime();
+        setLockoutTime(time);
+        localStorage.setItem('lockoutTime', time.toString());
+        localStorage.setItem('lockedEmail', email);
+        toast.error('Account is locked due to too many failed attempts.');
       } else {
         toast.error(err.message || 'Login failed');
       }
@@ -141,7 +115,6 @@ export default function Login() {
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  disabled={attempts >= MAX_ATTEMPTS}
                   style={{ paddingRight: '2.5rem' }}
                 />
                 <button
@@ -155,29 +128,17 @@ export default function Login() {
               </div>
             </div>
 
-            {attempts > 0 && attempts < MAX_ATTEMPTS && (
-              <div style={{ color: '#ef4444', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem' }}>
-                <AlertCircle size={16} /> You have {MAX_ATTEMPTS - attempts} attempt{MAX_ATTEMPTS - attempts > 1 ? 's' : ''} remaining.
-              </div>
-            )}
-
-            {attempts >= MAX_ATTEMPTS && (
-              <div style={{ color: '#ef4444', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', flexDirection: 'column' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <AlertCircle size={16} /> Account locked due to failed attempts.
-                </div>
-                {timeLeft > 0 && (
-                  <div style={{ fontWeight: 'bold' }}>
-                    Try again in {Math.floor(timeLeft / 60).toString().padStart(2, '0')}:{Math.floor(timeLeft % 60).toString().padStart(2, '0')}
-                  </div>
-                )}
-              </div>
-            )}
-
-            <button type="submit" className={styles.primaryBtnNew} disabled={loading || attempts >= MAX_ATTEMPTS}>
+            <button type="submit" className={styles.primaryBtnNew} disabled={loading || !!lockoutTime}>
               <Lock size={16} />
               {loading ? 'Authenticating...' : 'Secure Login'}
             </button>
+
+            {lockoutTime && (
+              <div style={{ marginTop: '15px', color: '#dc2626', textAlign: 'center', fontSize: '0.9rem', fontWeight: '500', background: '#fef2f2', padding: '10px', borderRadius: '8px', border: '1px solid #fecaca', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                <AlertCircle size={18} />
+                Account Locked. Try again in: {timeLeft}
+              </div>
+            )}
 
             <div className={styles.loginFooterNew}>
               <div className={styles.footerLine}></div>

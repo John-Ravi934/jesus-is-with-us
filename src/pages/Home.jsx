@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import { useRealtimeSync } from '../hooks/useRealtimeSync';
 import { ArrowRight, PlayCircle, MapPin, Phone, Mail, Calendar, Quote, Flame, Church, Users, HeartHandshake, Globe, UserCircle } from 'lucide-react';
 import styles from './Home.module.css';
 import { getEvents } from '../services/eventService';
@@ -8,6 +9,8 @@ import { getLiveStreamSettings } from '../services/settingsService';
 import { useLanguage } from '../contexts/LanguageContext';
 import SpecialMinistries from '../components/SpecialMinistries';
 import PrayerCTA from '../components/PrayerCTA';
+import SEO from '../components/seo/SEO';
+import { JsonLd, churchSchema } from '../components/seo/JsonLd';
 
 export default function Home() {
   const { t, setIsLiveHeroActive, language } = useLanguage();
@@ -47,30 +50,33 @@ export default function Home() {
     if (isDragging.current) handleDragEnd(e.clientX);
   };
 
+  const fetchHomeEvents = useCallback(async () => {
+    try {
+      const data = await getEvents({ status: 'published', is_announcement: false });
+      setEvents(data || []);
+    } catch (err) {
+      console.error("Error fetching events:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const fetchLiveSettings = useCallback(async () => {
+    try {
+      const data = await getLiveStreamSettings();
+      if (data) setLiveSettings(data);
+    } catch (err) {
+      console.error("Error fetching live settings:", err);
+    }
+  }, []);
+
   useEffect(() => {
-    const fetchHomeEvents = async () => {
-      try {
-        const data = await getEvents({ status: 'published', is_announcement: false });
-        setEvents(data || []);
-      } catch (err) {
-        console.error("Error fetching events:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    const fetchLiveSettings = async () => {
-      try {
-        const data = await getLiveStreamSettings();
-        if (data) setLiveSettings(data);
-      } catch (err) {
-        console.error("Error fetching live settings:", err);
-      }
-    };
-
     fetchHomeEvents();
     fetchLiveSettings();
-  }, []);
+  }, [fetchHomeEvents, fetchLiveSettings]);
+
+  useRealtimeSync('events', fetchHomeEvents);
+  useRealtimeSync('site_settings', fetchLiveSettings);
 
   // Separate the active event as featured, and next 3 as list
   const featuredEvent = events.length > 0 ? events[activeEventIndex] : null;
@@ -85,6 +91,12 @@ export default function Home() {
 
   return (
     <>
+      <SEO 
+        title="Jesus Is With Us Church | Christian Church in Salem"
+        description="Welcome to Jesus Is With Us Ministries. Join our vibrant Christian community in Salem for worship, fellowship, and spreading the Gospel. Pastor Israel Raj."
+        url="/"
+      />
+      <JsonLd schema={churchSchema} />
       <AnnouncementPopup />
       {/* 1. Hero Section with Video */}
       <section className={`${styles.hero} ${showLiveHero ? styles.liveHeroContainer : ''}`} data-aos="fade-in">
@@ -99,7 +111,7 @@ export default function Home() {
           ></iframe>
         ) : (
           <video autoPlay loop muted playsInline className={styles.videoBg}>
-            <source src="/assets/heaven-video.mp4" type="video/mp4" />
+            <source src="/assets/gold-heaven-video.webm" type="video/mp4" />
           </video>
         )}
 
@@ -144,7 +156,7 @@ export default function Home() {
               </div>
             </div>
             <div data-aos="fade-up" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', position: 'relative' }}>
-              <img 
+              <img
                 src="/assets/churchimage.webp"
                 alt="Jesus Is With Us Church"
                 style={{ width: '100%', maxWidth: '500px', display: 'block', margin: '-3rem auto -2rem auto', position: 'relative', zIndex: 1 }}

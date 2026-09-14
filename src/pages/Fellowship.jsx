@@ -5,6 +5,17 @@ import { useLanguage } from '../contexts/LanguageContext';
 import styles from './Fellowship.module.css';
 import { supabase } from '../lib/supabase';
 import { saveMessage } from '../services/messageService';
+import SEO from '../components/seo/SEO';
+import { JsonLd, generateBreadcrumbSchema } from '../components/seo/JsonLd';
+import { z } from 'zod';
+
+const fellowshipSchema = z.object({
+  fullName: z.string().min(2, "Name must be at least 2 characters").max(100, "Name is too long").regex(/^[A-Za-z\s\-'.]+$/, "Name contains invalid characters"),
+  email: z.string().email("Please provide a valid email address"),
+  phone: z.string().regex(/^\+?[\d\s-]{10,15}$/, "Invalid phone number format").optional().nullable().or(z.literal('')),
+  interest: z.string().optional(),
+  message: z.string().max(2000, "Message is too long").optional().nullable()
+});
 
 export default function Fellowship() {
   const { t } = useLanguage();
@@ -35,6 +46,12 @@ export default function Fellowship() {
 
   return (
     <>
+      <SEO 
+        title="Fellowship & Small Groups | Jesus Is With Us Church"
+        description="Join a fellowship group at Jesus Is With Us Church. We offer Men's, Women's, Youth, and Volunteer groups for spiritual growth and community support."
+        url="/fellowship"
+      />
+      <JsonLd schema={generateBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Fellowship", url: "/fellowship" }])} />
       <section data-aos="fade-up" className={styles.hero} style={{ backgroundImage: `url('/assets/Fellowship.webp')` }}>
         <div className={styles.heroOverlay}></div>
         <div className={`container ${styles.heroContent}`}>
@@ -98,12 +115,23 @@ export default function Fellowship() {
                 setIsSubmitting(true);
 
                 const payload = {
-                  fullName: e.target[0].value,
-                  email: e.target[1].value,
-                  phone: e.target[2].value,
+                  fullName: e.target[0].value?.trim(),
+                  email: e.target[1].value?.trim(),
+                  phone: e.target[2].value?.trim(),
                   interest: e.target[3].options[e.target[3].selectedIndex].text,
-                  message: e.target[4].value
+                  message: e.target[4].value?.trim()
                 };
+
+                try {
+                  fellowshipSchema.parse({
+                    ...payload,
+                    phone: payload.phone || ''
+                  });
+                } catch (validationError) {
+                  toast.error(validationError.errors[0].message);
+                  setIsSubmitting(false);
+                  return;
+                }
 
                 try {
                   // Save to DB so admin can see notifications

@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Users, Heart, BookOpen, Music, Home, Globe, X } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import styles from './Ministries.module.css';
+import SEO from '../components/seo/SEO';
+import { JsonLd, generateBreadcrumbSchema } from '../components/seo/JsonLd';
 
 export default function Ministries() {
   const { t } = useLanguage();
@@ -19,6 +21,12 @@ export default function Ministries() {
 
   return (
     <>
+      <SEO 
+        title="Our Ministries | Jesus Is With Us Church"
+        description="Explore the diverse ministries at Jesus Is With Us Church, including Youth, Family, Worship, and Village Outreach in Salem."
+        url="/ministries"
+      />
+      <JsonLd schema={generateBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Ministries", url: "/ministries" }])} />
       <section className={styles.hero} data-aos="fade-in">
         <div className={styles.heroOverlay}></div>
         <div className={`container ${styles.heroContent}`}>

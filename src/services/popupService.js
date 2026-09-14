@@ -12,7 +12,7 @@ export const getPopups = async (filters = {}) => {
   }
 
   const { data, error } = await query;
-  if (error) throw error;
+  if (error) throw new Error('An unexpected database error occurred.');
   return data;
 };
 
@@ -23,7 +23,7 @@ export const createPopup = async (popupData) => {
     .insert([popupData])
     .select();
     
-  if (error) throw error;
+  if (error) throw new Error('An unexpected database error occurred.');
   return data[0];
 };
 
@@ -35,7 +35,7 @@ export const updatePopup = async (id, popupData) => {
     .eq('id', id)
     .select();
     
-  if (error) throw error;
+  if (error) throw new Error('An unexpected database error occurred.');
   return data[0];
 };
 
@@ -53,7 +53,7 @@ export const deletePopup = async (id) => {
     .delete()
     .eq('id', id);
     
-  if (error) throw error;
+  if (error) throw new Error('An unexpected database error occurred.');
 
   // Cleanup the image from the bucket if it exists
   if (popupData && popupData.image_url) {

@@ -63,7 +63,7 @@ export const listPosters = async () => {
       sortBy: { column: 'created_at', order: 'desc' }
     });
 
-  if (error) throw new Error(error.message);
+  if (error) throw new Error('An unexpected service error occurred.');
   
   // Exclude the placeholder file '.emptyFolderPlaceholder' if it exists
   const files = data.filter(f => f.name !== '.emptyFolderPlaceholder');
@@ -80,6 +80,6 @@ export const deletePoster = async (fileName) => {
     .from('rhema-posters')
     .remove([`posters/${fileName}`]);
 
-  if (error) throw new Error(error.message);
+  if (error) throw new Error('An unexpected service error occurred.');
   return true;
 };

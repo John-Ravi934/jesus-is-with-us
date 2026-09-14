@@ -1,8 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { useRealtimeSync } from '../hooks/useRealtimeSync';
 import { getGalleryImages } from '../services/galleryService';
 import { Image as ImageIcon, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import ImageWithBlurhash from '../components/ImageWithBlurhash';
+import SEO from '../components/seo/SEO';
+import { JsonLd, generateBreadcrumbSchema } from '../components/seo/JsonLd';
 
 export default function Gallery() {
   const { t, language } = useLanguage();
@@ -11,14 +14,8 @@ export default function Gallery() {
   const [selectedAlbum, setSelectedAlbum] = useState(null);
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    fetchImages();
-  }, []);
-
-  const fetchImages = async () => {
+  const fetchImages = useCallback(async () => {
     try {
-      setLoading(true);
       const data = await getGalleryImages();
       const visibleImages = (data || []).filter(img => img.status !== 'draft');
       setImages(visibleImages);
@@ -27,7 +24,15 @@ export default function Gallery() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    setLoading(true);
+    fetchImages();
+  }, [fetchImages]);
+
+  useRealtimeSync('gallery_images', fetchImages);
 
   // Group images by title (which acts as the event/category)
   const groupedImages = images.reduce((acc, img) => {
@@ -41,6 +46,12 @@ export default function Gallery() {
 
   return (
     <>
+      <SEO 
+        title="Photo Gallery | Jesus Is With Us Church"
+        description="View photos from events, services, and community gatherings at Jesus Is With Us Ministries."
+        url="/gallery"
+      />
+      <JsonLd schema={generateBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Gallery", url: "/gallery" }])} />
       {/* 500px Hero Banner */}
       <section style={{
         height: '600px',

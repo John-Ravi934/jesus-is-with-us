@@ -33,7 +33,7 @@ export const saveMessage = async (data) => {
       }
     ]);
 
-  if (error) throw error;
+  if (error) throw new Error('An unexpected database error occurred.');
 };
 
 export const getUnreadMessages = async () => {
@@ -48,7 +48,7 @@ export const getUnreadMessages = async () => {
       // Table doesn't exist yet, return empty
       return [];
     }
-    throw error;
+    throw new Error('An unexpected system error occurred.');
   }
   return data;
 };
@@ -59,7 +59,7 @@ export const markAsRead = async (id) => {
     .update({ status: 'read' })
     .eq('id', id);
 
-  if (error) throw error;
+  if (error) throw new Error('An unexpected database error occurred.');
 };
 
 export const markAllAsRead = async () => {
@@ -68,7 +68,7 @@ export const markAllAsRead = async () => {
     .update({ status: 'read' })
     .eq('status', 'unread');
 
-  if (error) throw error;
+  if (error) throw new Error('An unexpected database error occurred.');
 };
 
 export const getAllMessages = async () => {
@@ -81,7 +81,7 @@ export const getAllMessages = async () => {
     if (error.code === '42P01') {
       return [];
     }
-    throw error;
+    throw new Error('An unexpected system error occurred.');
   }
   return data;
 };
@@ -92,5 +92,5 @@ export const deleteMessage = async (id) => {
     .delete()
     .eq('id', id);
 
-  if (error) throw error;
+  if (error) throw new Error('An unexpected database error occurred.');
 };

@@ -6,7 +6,7 @@ export const getGalleryImages = async () => {
     .select("*")
     .order("created_at", { ascending: false });
 
-  if (error) throw error;
+  if (error) throw new Error('An unexpected database error occurred.');
   return data;
 };
 
@@ -16,7 +16,7 @@ export const addGalleryImage = async (image_url, title_en = null, title_ta = nul
     .insert([{ image_url, title_en, title_ta, status }])
     .select();
 
-  if (error) throw error;
+  if (error) throw new Error('An unexpected database error occurred.');
   return data[0];
 };
 
@@ -27,7 +27,7 @@ export const updateGalleryImage = async (id, updates) => {
     .eq("id", id)
     .select();
 
-  if (error) throw error;
+  if (error) throw new Error('An unexpected database error occurred.');
   return data[0];
 };
 
@@ -37,6 +37,6 @@ export const deleteGalleryImage = async (id) => {
     .delete()
     .eq("id", id);
 
-  if (error) throw error;
+  if (error) throw new Error('An unexpected database error occurred.');
   return true;
 };

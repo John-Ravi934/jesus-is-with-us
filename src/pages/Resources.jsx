@@ -1,8 +1,11 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Search, FolderOpen, AlertCircle, Eye } from 'lucide-react';
 import { getPlaylists, incrementPlaylistViews } from '../services/playlistService';
+import { useRealtimeSync } from '../hooks/useRealtimeSync';
 import { useLanguage } from '../contexts/LanguageContext';
 import styles from './Resources.module.css';
+import SEO from '../components/seo/SEO';
+import { JsonLd, generateBreadcrumbSchema } from '../components/seo/JsonLd';
 
 export default function Resources() {
   const { t, language } = useLanguage();
@@ -24,20 +27,23 @@ export default function Resources() {
     { key: 'E-Books', label: t('res_tab_ebooks') }
   ];
 
-  useEffect(() => {
-    async function loadPlaylists() {
-      try {
-        const data = await getPlaylists();
-        setPlaylists(data || []);
-      } catch (err) {
-        console.error("Failed to load playlists:", err);
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
+  const loadPlaylists = useCallback(async () => {
+    try {
+      const data = await getPlaylists();
+      setPlaylists(data || []);
+    } catch (err) {
+      console.error("Failed to load playlists:", err);
+      setError(true);
+    } finally {
+      setLoading(false);
     }
-    loadPlaylists();
   }, []);
+
+  useEffect(() => {
+    loadPlaylists();
+  }, [loadPlaylists]);
+
+  useRealtimeSync('playlists', loadPlaylists);
 
   const filteredPlaylists = useMemo(() => {
     return playlists.filter(pl => {
@@ -79,6 +85,12 @@ export default function Resources() {
 
   return (
     <>
+      <SEO 
+        title="Sermons & Bible Studies | Jesus Is With Us Church"
+        description="Listen to sermons, Bible studies, and worship playlists from Jesus Is With Us Ministries. Access our spiritual resources online."
+        url="/resources"
+      />
+      <JsonLd schema={generateBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Resources", url: "/resources" }])} />
       <section className={styles.hero} data-aos="fade-in">
         <div className={styles.heroOverlay}></div>
         <div className={`container ${styles.heroContent}`}>

@@ -12,7 +12,7 @@ export const getLiveStreamSettings = async () => {
     if (error.code === 'PGRST116') {
       return { is_active: false, link: '', tooltip: 'Live started in the youtube' };
     }
-    throw error;
+    throw new Error('An unexpected system error occurred.');
   }
   return data.setting_value;
 };
@@ -23,7 +23,7 @@ export const updateLiveStreamSettings = async (settingsObject) => {
     .upsert({ setting_key: 'live_stream', setting_value: settingsObject }, { onConflict: 'setting_key' })
     .select();
   
-  if (error) throw error;
+  if (error) throw new Error('An unexpected database error occurred.');
   return data[0];
 };
 
@@ -47,7 +47,7 @@ export const getDonationSettings = async () => {
         branch: 'Salem Main Branch'
       };
     }
-    throw error;
+    throw new Error('An unexpected system error occurred.');
   }
   return data.setting_value;
 };
@@ -58,7 +58,7 @@ export const updateDonationSettings = async (settingsObject) => {
     .upsert({ setting_key: 'donation_settings', setting_value: settingsObject }, { onConflict: 'setting_key' })
     .select();
   
-  if (error) throw error;
+  if (error) throw new Error('An unexpected database error occurred.');
   return data[0];
 };
 
@@ -77,7 +77,7 @@ export const getEmailSettings = async () => {
         replyToEmail: 'contact@yourdomain.com'
       };
     }
-    throw error;
+    throw new Error('An unexpected system error occurred.');
   }
   return data.setting_value;
 };
@@ -88,7 +88,7 @@ export const updateEmailSettings = async (settingsObject) => {
     .upsert({ setting_key: 'email_settings', setting_value: settingsObject }, { onConflict: 'setting_key' })
     .select();
   
-  if (error) throw error;
+  if (error) throw new Error('An unexpected database error occurred.');
   return data[0];
 };
 
@@ -107,7 +107,7 @@ export const getQuickAccessSettings = async () => {
         { id: 3, icon: 'Music', link: '/worship', color: '#2e2bcf', tooltip: 'Live Worship', isExternal: false }
       ];
     }
-    throw error;
+    throw new Error('An unexpected system error occurred.');
   }
   return data.setting_value;
 };
@@ -118,6 +118,6 @@ export const updateQuickAccessSettings = async (settingsArray) => {
     .upsert({ setting_key: 'quick_access_buttons', setting_value: settingsArray }, { onConflict: 'setting_key' })
     .select();
   
-  if (error) throw error;
+  if (error) throw new Error('An unexpected database error occurred.');
   return data[0];
 };

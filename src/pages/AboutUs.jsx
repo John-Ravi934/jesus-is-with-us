@@ -5,6 +5,8 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { churchContent } from '../data/churchContent';
 import DivineVision from '../components/DivineVision';
 import PrayerCTA from '../components/PrayerCTA';
+import SEO from '../components/seo/SEO';
+import { JsonLd, generateBreadcrumbSchema } from '../components/seo/JsonLd';
 
 export default function AboutUs() {
   const { t, language } = useLanguage();
@@ -12,6 +14,12 @@ export default function AboutUs() {
 
   return (
     <>
+      <SEO 
+        title="About Jesus Is With Us Ministries | Our Faith & Mission"
+        description="Learn about the foundation, divine vision, and history of Jesus Is With Us Ministries in Salem, Tamil Nadu under the guidance of Pastor Israel Raj."
+        url="/about"
+      />
+      <JsonLd schema={generateBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "About Us", url: "/about" }])} />
       <section className={styles.hero} data-aos="fade-in">
         <div className={styles.heroOverlay}></div>
         <div className={`container ${styles.heroContent}`}>

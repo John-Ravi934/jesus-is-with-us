@@ -8,6 +8,7 @@ import { getUnreadMessages, markAsRead } from '../services/messageService';
 import styles from './AdminLayout.module.css';
 
 import { adminLogout } from '../services/authService';
+import { Helmet } from 'react-helmet-async';
 
 export default function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -61,6 +62,10 @@ export default function AdminLayout() {
 
   return (
     <div className={styles.adminContainer}>
+      <Helmet>
+        <title>Admin Dashboard | Jesus Is With Us Ministries</title>
+        <meta name="robots" content="noindex" />
+      </Helmet>
 
       {/* Mobile Overlay */}
       {sidebarOpen && (

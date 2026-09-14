@@ -50,7 +50,7 @@ export const getAppStatistics = async (dateFilter = 'all') => {
 export const getStorageStats = async () => {
   try {
     const { data, error } = await supabase.rpc('get_storage_size');
-    if (error) throw error;
+    if (error) throw new Error('An unexpected database error occurred.');
     return data || 0;
   } catch (e) {
     console.error('Failed to fetch storage size:', e);

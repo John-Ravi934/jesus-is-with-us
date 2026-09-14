@@ -6,7 +6,7 @@ export const getSubscribers = async () => {
     .select("*")
     .order("created_at", { ascending: false });
 
-  if (error) throw error;
+  if (error) throw new Error('An unexpected database error occurred.');
   return data;
 };
 
@@ -19,7 +19,7 @@ export const subscribeEmail = async (email) => {
     if (error.code === '23505') { // PostgreSQL unique violation code
       throw new Error("This email is already subscribed!");
     }
-    throw error;
+    throw new Error('An unexpected system error occurred.');
   }
   return true;
 };
@@ -30,7 +30,7 @@ export const deleteSubscriber = async (id) => {
     .delete()
     .eq("id", id);
 
-  if (error) throw error;
+  if (error) throw new Error('An unexpected database error occurred.');
   return true;
 };
 
@@ -40,6 +40,6 @@ export const updateSubscriberStatus = async (id, status) => {
     .update({ status })
     .eq("id", id);
 
-  if (error) throw error;
+  if (error) throw new Error('An unexpected database error occurred.');
   return true;
 };

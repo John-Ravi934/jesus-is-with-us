@@ -1,5 +1,6 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useRealtimeSync } from '../hooks/useRealtimeSync';
 import { 
   Share2, Heart, Bookmark, Search, 
   Calendar as CalendarIcon, Download,
@@ -14,6 +15,8 @@ import CategoryScroll from '../components/rhema/CategoryScroll';
 import DynamicCalendar from '../components/rhema/DynamicCalendar';
 import CategoryIcon from '../components/categories/CategoryIcon';
 import { useLanguage } from '../contexts/LanguageContext';
+import SEO from '../components/seo/SEO';
+import { JsonLd, generateBreadcrumbSchema } from '../components/seo/JsonLd';
 
 const renderReference = (word, language) => {
   return word[`bible_reference_${language}`] || word.bible_reference_en || word.bible_reference || 'Reference';
@@ -79,7 +82,7 @@ export default function RhemaWords() {
     setSearchParams(params, { replace: true });
   }, [searchQuery, selectedCategory, activeTab, setSearchParams]);
 
-  useEffect(() => {
+  const fetchRhemaData = useCallback(() => {
     // Fetch live data from Supabase
     Promise.all([
       getRhemaWords({ status: 'published' }),
@@ -97,7 +100,6 @@ export default function RhemaWords() {
         }))
       ]);
       
-      // Handle ?date= param if provided
       const paramDate = searchParams.get('date');
       let featuredIdx = -1;
       
@@ -110,10 +112,18 @@ export default function RhemaWords() {
       }
       
       if (featuredIdx !== -1) {
-        setFeaturedIndex(featuredIdx);
+        setFeaturedIndex(prev => {
+          // If we haven't loaded data yet, set the featured index
+          if (prev === 0) return featuredIdx;
+          return prev;
+        });
       }
       setLoading(false);
     }).catch(console.error);
+  }, [language, searchParams]);
+
+  useEffect(() => {
+    fetchRhemaData();
 
     const loadFavorites = () => {
       const savedFavs = localStorage.getItem('rhema_favs');
@@ -143,7 +153,10 @@ export default function RhemaWords() {
       window.removeEventListener('favoritesChanged', loadFavorites);
       window.removeEventListener('statsUpdated', handleStatsUpdate);
     };
-  }, [language]);
+  }, [fetchRhemaData]);
+
+  useRealtimeSync('rhema_words', fetchRhemaData);
+  useRealtimeSync('categories', fetchRhemaData);
 
   const getTranslatedCategory = (catStr) => {
     if (!catStr) return catStr;
@@ -202,7 +215,12 @@ export default function RhemaWords() {
 
   return (
     <div className={`${styles.rhemaApp} ${darkMode ? styles.darkTheme : ''}`}>
-      
+      <SEO 
+        title="Rhema Words & Daily Devotionals | Jesus Is With Us Church"
+        description="Read daily Rhema words, Bible verses, and devotionals from Jesus Is With Us Ministries. Grow your faith with our spiritual archive."
+        url="/rhema"
+      />
+      <JsonLd schema={generateBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Rhema Words", url: "/rhema" }])} />
       {/* Hero Section */}
       <section data-aos="fade-up" className={styles.rhemaHero}>
         <div className={styles.heroOverlay}></div>

@@ -1,0 +1,81 @@
+-- Phase 3 & 5: Security Architecture - Supabase RLS Policies (Revised)
+
+-- 1. Create Real Admin Authorization Mechanism
+CREATE TABLE IF NOT EXISTS public.admin_users (
+    id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+    email TEXT NOT NULL UNIQUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+);
+
+ALTER TABLE public.admin_users ENABLE ROW LEVEL SECURITY;
+
+-- Only admins can read/manage the admin_users table
+CREATE POLICY "Admins can manage admin_users" ON public.admin_users
+    FOR ALL TO authenticated
+    USING (public.is_admin());
+
+-- Helper function to check if the current user is an admin
+CREATE OR REPLACE FUNCTION public.is_admin()
+RETURNS BOOLEAN AS $$
+BEGIN
+    RETURN (
+        (current_setting('request.jwt.claims', true)::json ->> 'email') = 'admin@jesusiswithus.org'
+        OR EXISTS (
+            SELECT 1 FROM public.admin_users WHERE id = auth.uid()
+        )
+    );
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
+
+-- Enable Row Level Security (RLS) on all tables
+ALTER TABLE rhema_words ENABLE ROW LEVEL SECURITY;
+ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
+ALTER TABLE events ENABLE ROW LEVEL SECURITY;
+ALTER TABLE gallery_images ENABLE ROW LEVEL SECURITY;
+ALTER TABLE playlists ENABLE ROW LEVEL SECURITY;
+ALTER TABLE site_settings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE contact_messages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE popups ENABLE ROW LEVEL SECURITY;
+ALTER TABLE app_statistics ENABLE ROW LEVEL SECURITY;
+ALTER TABLE subscribers ENABLE ROW LEVEL SECURITY;
+
+-- 2. Create Restrictive Policies
+
+-- RHEMA_WORDS
+CREATE POLICY "Public can read published rhema_words" ON rhema_words FOR SELECT TO public USING (status != 'draft');
+CREATE POLICY "Admins can manage rhema_words" ON rhema_words FOR ALL TO authenticated USING (public.is_admin());
+
+-- CATEGORIES
+CREATE POLICY "Public can read categories" ON categories FOR SELECT TO public USING (true);
+CREATE POLICY "Admins can manage categories" ON categories FOR ALL TO authenticated USING (public.is_admin());
+
+-- EVENTS
+CREATE POLICY "Public can read published events" ON events FOR SELECT TO public USING (status = 'published');
+CREATE POLICY "Admins can manage events" ON events FOR ALL TO authenticated USING (public.is_admin());
+
+-- GALLERY_IMAGES
+CREATE POLICY "Public can read published gallery_images" ON gallery_images FOR SELECT TO public USING (status != 'draft');
+CREATE POLICY "Admins can manage gallery_images" ON gallery_images FOR ALL TO authenticated USING (public.is_admin());
+
+-- PLAYLISTS
+CREATE POLICY "Public can read playlists" ON playlists FOR SELECT TO public USING (true);
+CREATE POLICY "Admins can manage playlists" ON playlists FOR ALL TO authenticated USING (public.is_admin());
+
+-- SITE_SETTINGS
+CREATE POLICY "Public can read site_settings" ON site_settings FOR SELECT TO public USING (true);
+CREATE POLICY "Admins can manage site_settings" ON site_settings FOR ALL TO authenticated USING (public.is_admin());
+
+-- CONTACT_MESSAGES
+CREATE POLICY "Public can insert contact_messages" ON contact_messages FOR INSERT TO public WITH CHECK (true);
+CREATE POLICY "Admins can manage contact_messages" ON contact_messages FOR ALL TO authenticated USING (public.is_admin());
+
+-- POPUPS
+CREATE POLICY "Public can read active popups" ON popups FOR SELECT TO public USING (is_active = true);
+CREATE POLICY "Admins can manage popups" ON popups FOR ALL TO authenticated USING (public.is_admin());
+
+-- APP_STATISTICS (Internal Only)
+CREATE POLICY "Admins can manage app_statistics" ON app_statistics FOR ALL TO authenticated USING (public.is_admin());
+
+-- SUBSCRIBERS
+CREATE POLICY "Public can insert subscribers" ON subscribers FOR INSERT TO public WITH CHECK (true);
+CREATE POLICY "Admins can manage subscribers" ON subscribers FOR ALL TO authenticated USING (public.is_admin());

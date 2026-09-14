@@ -18,7 +18,7 @@ export const getRhemaWords = async (filters = {}) => {
   if (filters.limit) query = query.limit(filters.limit);
 
   const { data, error } = await query;
-  if (error) throw new Error(error.message);
+  if (error) throw new Error('An unexpected service error occurred.');
   return data;
 };
 
@@ -44,7 +44,7 @@ export const addRhema = async (data) => {
     .select()
     .single();
 
-  if (error) throw new Error(error.message);
+  if (error) throw new Error('An unexpected service error occurred.');
   return newRecord;
 };
 
@@ -62,7 +62,7 @@ export const deleteRhema = async (id) => {
     .delete()
     .eq('id', id);
 
-  if (error) throw new Error(error.message);
+  if (error) throw new Error('An unexpected service error occurred.');
 
   // 3. Clean up the storage bucket by deleting the image file
   if (record && record.poster_url) {
@@ -92,7 +92,7 @@ export const getRhemaById = async (id) => {
     .eq('id', id)
     .single();
     
-  if (error) throw new Error(error.message);
+  if (error) throw new Error('An unexpected service error occurred.');
   return data;
 };
 
@@ -111,7 +111,7 @@ export const updateRhema = async (id, updates) => {
     .select()
     .single();
 
-  if (error) throw new Error(error.message);
+  if (error) throw new Error('An unexpected service error occurred.');
   return data;
 };
 

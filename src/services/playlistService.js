@@ -6,7 +6,7 @@ export const getPlaylists = async () => {
     .select('*')
     .order('created_at', { ascending: false });
   
-  if (error) throw error;
+  if (error) throw new Error('An unexpected database error occurred.');
   return data;
 };
 
@@ -16,7 +16,7 @@ export const createPlaylist = async (playlistData) => {
     .insert([playlistData])
     .select();
   
-  if (error) throw error;
+  if (error) throw new Error('An unexpected database error occurred.');
   return data[0];
 };
 
@@ -27,7 +27,7 @@ export const updatePlaylist = async (id, playlistData) => {
     .eq('id', id)
     .select();
   
-  if (error) throw error;
+  if (error) throw new Error('An unexpected database error occurred.');
   return data[0];
 };
 
@@ -37,7 +37,7 @@ export const deletePlaylist = async (id) => {
     .delete()
     .eq('id', id);
   
-  if (error) throw error;
+  if (error) throw new Error('An unexpected database error occurred.');
   return true;
 };
 
@@ -47,6 +47,6 @@ export const incrementPlaylistViews = async (id, currentViews) => {
     .update({ views: (currentViews || 0) + 1 })
     .eq('id', id);
     
-  if (error) throw error;
+  if (error) throw new Error('An unexpected database error occurred.');
   return true;
 };

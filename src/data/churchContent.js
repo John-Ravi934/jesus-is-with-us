@@ -84,8 +84,8 @@ export const churchContent = {
     services_title: 'Our',
     services_title_2: 'Services',
     service_1: 'Sunday 1st Service:',
-    service_2: 'Sunday 2nd Service:',
-    service_3: 'Bible Study (Tuesday):',
+    service_2: 'Womens Fasting Prayer:',
+    service_3: 'Bible Study (Wednesday):',
     service_4: 'Friday Fasting Prayer:',
     service_5: 'Saturday Night Worship:',
     service_highlight: 'Free & Open to All - Join Us Live on YouTube!',
@@ -164,9 +164,9 @@ export const churchContent = {
 
     // Timeline Data (Dynamic Array for About page)
     timeline_events: [
-      { year: '1970', title: 'The Humble Beginning', description: 'Started as a small prayer group in a living room with just 5 members under Pastor Israel Raj.', image: '/assets/family-ministries.webp' },
-      { year: '1985', title: 'First Church Building', description: 'By God\'s grace, we moved into our first dedicated sanctuary, accommodating over 500 members.', image: '/assets/family-ministries.webp' },
-      { year: '2005', title: 'Global Outreach Launched', description: 'Initiated our first international mission trips and established community support programs.', image: '/assets/family-ministries.webp' },
+      { year: '1997 - 2003', title: 'The Humble Beginning', description: 'Started as a small prayer group in a living room with just 5 members under Pastor Israel Raj.', image: '/assets/family-ministries.webp' },
+      { year: '2004 - 2009', title: 'First Church Building', description: 'By God\'s grace, we moved into our first dedicated sanctuary, accommodating over 500 members.', image: '/assets/family-ministries.webp' },
+      { year: '2009 - Current', title: 'Global Outreach Launched', description: 'Initiated our first international mission trips and established community support programs.', image: '/assets/family-ministries.webp' },
       { year: '2021', title: 'New Leadership Era', description: 'Pastor Yoseppu took over the leadership, bringing a renewed focus on youth ministry and digital evangelism.', image: '/assets/family-ministries.webp' }
     ],
 
@@ -221,7 +221,7 @@ export const churchContent = {
     fel_intro_title_3: ' Together',
     fel_intro_desc: 'We were not meant to walk this journey alone. Join a fellowship group to connect with others, study the Word, and experience authentic community.',
     fel_join_group_btn: 'Join Group',
-    fel_group_1_title: "Revival Igniter's Fellowship",
+    fel_group_1_title: "Children Fellowship",
     fel_group_1_time: "Saturdays, 8:00 AM",
     fel_group_1_loc: "Main Hall",
     fel_group_1_desc: "Building strong men of faith through brotherhood and the Word.",
@@ -229,7 +229,7 @@ export const churchContent = {
     fel_group_2_time: "Saturdays, 10:00 AM",
     fel_group_2_loc: "Chapel",
     fel_group_2_desc: "Empowering women to live out their God-given purpose.",
-    fel_group_3_title: "Youth Fellowship",
+    fel_group_3_title: "Teen's Fellowship",
     fel_group_3_time: "Fridays, 6:30 PM",
     fel_group_3_loc: "Youth Center",
     fel_group_3_desc: "A passionate community of young people seeking God.",
@@ -348,7 +348,7 @@ export const churchContent = {
     con_card_email: 'Email Us',
     con_card_email_desc: 'jiwcministry033@gmail.com\nprayer@jesusiswithus.org',
     con_card_hours: 'Church Hours',
-    con_card_hours_desc: 'Mon-Fri: 9:00 AM - 5:00 PM\nSun: 8:00 AM - 2:00 PM',
+    con_card_hours_desc: 'Mon-Sat: 9:00 AM - 7:00 PM\nSun: 8:00 AM - 9:00 PM',
     con_toggle_general: 'General Inquiry',
     con_toggle_prayer: 'Prayer Request',
     con_form_name: 'Your Name',
